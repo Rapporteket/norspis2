@@ -1,6 +1,16 @@
-#import data (and convert it to a tibble for convinience, e.g. easier to work with in the console than a data.frame)
-
-#(function name when writing aarsrapport 2019 (in 2020): import11_data)
+#' Import data locally (and convert it to a tibble for convinience - easier to work with in the console than a data.frame)
+#'
+#' FEA refers to "forlopsoversikt", "enkeltledd" and "alle scorer"
+#'
+#' Note: This function's name when writing aarsrapport 2019 (in 2020) was: import11_data)
+#'
+#' @param path_data path of you data (F,E, and A - named NorSpis_ForlopsOversikt_datadump_DATE, NorSpis_EnkeltLeddNum_datadump_DATE and NorSpis_AlleScorer_datadump_DATE
+#' @param date_data date on the format "2020-12-31" (which the names of your data files will end in current download set up from Rapporteket)
+#'
+#' @return a tibble with the data (invisible)
+#' @export
+#'
+#' @examples
 fun1_import_data_FEA <- function(path_data="F:/2020-28-12_data-til-utvikling/", #disk and folder of data to import
                                  date_data="2020-12-28"){ #date of data
   #Load data

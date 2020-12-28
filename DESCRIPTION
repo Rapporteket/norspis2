@@ -1,13 +1,14 @@
 Package: norspis2
-Title: What the Package Does (One Line, Title Case)
+Title: Plots and Tables of Results and Data Quality in NorSpis
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    person(given = "Mads",
+           family = "Rohde",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
+           email = "mro046@nlsh.no",
            comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: What license it uses
+Description: A Package to make Plots and Tables of Results and Data Quality in Norwegian Quality Registry for Eating Disorders (NorSpis).
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 6.1.1

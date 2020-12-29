@@ -5,7 +5,7 @@
 #' Note: This function's name when writing aarsrapport 2019 (in 2020) was: import11_data)
 #'
 #' Use this function like this:
-#' RegData <- fun1_import_data_FEA()
+#' RegData <- fun1_1_import_data_FEA()
 #'
 #'
 #' @param path_data path of you data (F,E, and A - named NorSpis_ForlopsOversikt_datadump_DATE, NorSpis_EnkeltLeddNum_datadump_DATE and NorSpis_AlleScorer_datadump_DATE
@@ -16,7 +16,7 @@
 #'
 #' @examples
 
-fun1_import_data_FEA <- function(path_data="F:/2020-28-12_data-til-utvikling/", #disk and folder of data to import
+fun1_1_import_data_FEA <- function(path_data="F:/2020-28-12_data-til-utvikling/", #disk and folder of data to import
                                  date_data="2020-12-28"){ #date of data
   #Load data
   NorSpisForlop <- utils::read.table(paste0(path_data, "NorSpis_ForlopsOversikt_datadump_", date_data,".csv"),

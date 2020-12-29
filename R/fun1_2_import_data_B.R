@@ -17,7 +17,7 @@
 #'
 #' @examples
 
-fun2_import_data_B<- function(path_data="F:/2020-28-12_data-til-utvikling/", #disk and folder of data to import
+fun1_2_import_data_B <- function(path_data="F:/2020-28-12_data-til-utvikling/", #disk and folder of data to import
                               date_data="2020-12-28"){
   NorSpisBehandling <- utils::read.table(paste0(path_data, "NorSpis_BehandlingNum_datadump_", date_data,".csv"),
                                          sep=';',dec=',', header=T, encoding = 'UTF-8', stringsAsFactors = FALSE, fill = TRUE)

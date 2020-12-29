@@ -10,7 +10,7 @@ fun1_import_data_FEA(path_data = "F:/2020-28-12_data-til-utvikling/",
 \arguments{
 \item{path_data}{path of you data (F,E, and A - named NorSpis_ForlopsOversikt_datadump_DATE, NorSpis_EnkeltLeddNum_datadump_DATE and NorSpis_AlleScorer_datadump_DATE}
 
-\item{date_data}{date on the format "2020-12-31" (which the names of your data files will end in current download set up from Rapporteket)}
+\item{date_data}{date on the format "2020-12-31" (the names of your data files will end in with date current download set up from Rapporteket)}
 }
 \value{
 a tibble with the data (invisible)

@@ -12,6 +12,13 @@ Installation
 
 This package is made for use in Norwegian Quality Registry for Eating Disorders (NorSpis), and has little utility outside the ecosystem of Norwegian medical quality registries. Still we aim to make the functions so that is should be possible for anyone to input standardized anonymous/summary data frames to the plot and table functions, and get plots and tables on our standardized format.
 
+So far the package contains functions to prepare:
+
+-   five differently structured datasets (RegData, RegDataBeh, RegDataNatVal, RegDataStartEnd, RegDataStartEndNatVal)
+-   three tables (DQ\_missing ,DQ\_regCount, and patChar)
+-   two figures (one simple distribution figure and one two compare proportions at different hospital units).
+-   The figures have functions for tables belonging to them (figTable), which must be run first and used as input to the figure functions.
+
 You can install the released version/development version of norspis2 from [GitHub](https://github.com/) with:
 
 ``` r

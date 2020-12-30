@@ -2,6 +2,8 @@
 #'
 #' fun2_1_1.. must be run first.
 #'
+#' Note: This function's name when writing aarsrapport 2019 (in 2020) was: make211_dataBeh_newVarGlobal
+#'
 #' @param myInData1 RegData
 #' @param myInData2 RegDataBeh
 #'

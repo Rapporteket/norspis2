@@ -3,4 +3,7 @@
 export(fun1_1_import_data_FEA)
 export(fun1_2_import_data_B)
 export(fun2_1_1_RegData_newVarGlobal)
+export(fun2_1_2_RegData_newVarFrmt)
+export(fun2_1_3_RegData_newVarMAsNA)
+export(fun2_1_4_RegData_newVarDich)
 export(fun2_2_RegDataBeh_newVarGlobal)

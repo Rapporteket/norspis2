@@ -15,3 +15,6 @@ fun2_2_RegDataBeh_newVarGlobal(myInData1 = RegData,
 \description{
 fun2_1_1.. must be run first.
 }
+\details{
+Note: This function's name when writing aarsrapport 2019 (in 2020) was: make211_dataBeh_newVarGlobal
+}

@@ -9,6 +9,8 @@ fun2_1_1_RegData_newVarGlobal(myInData = RegData)
 \arguments{
 \item{myInData}{RegData
 
+Output is data, with new var. that will be used extensively (like AvdNavn which is name of hospital unit)
+
 Note: This function's name when writing aarsrapport 2019 (in 2020) was: make21_data_newVarGlobal}
 }
 \value{

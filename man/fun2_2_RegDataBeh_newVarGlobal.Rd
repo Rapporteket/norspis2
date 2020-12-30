@@ -12,6 +12,9 @@ fun2_2_RegDataBeh_newVarGlobal(myInData1 = RegData,
 
 \item{myInData2}{RegDataBeh}
 }
+\value{
+output (invisible)
+}
 \description{
 fun2_1_1.. must be run first.
 }

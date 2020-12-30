@@ -7,7 +7,7 @@
 #' @param myInData1 RegData
 #' @param myInData2 RegDataBeh
 #'
-#' @return
+#' @return output (invisible)
 #' @export
 #'
 #' @examples

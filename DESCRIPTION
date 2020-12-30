@@ -17,4 +17,8 @@ Suggests:
 Imports: 
     tibble,
     dplyr,
-    lubridate
+    lubridate,
+    wrapr,
+    forcats,
+    stringr,
+    scales

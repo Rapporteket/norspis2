@@ -200,7 +200,7 @@ fun2_1_3_RegData_newVarMAsNA  <- function(myInData = RegData){
 
 
   # DiagVSF_MISSING_NAMES (with missing coded as NA and categories as NAMES)
-  RegData <- RegData %>% mutate(DiagVSF_MISSING_NAMES = case_when(
+  RegData <- RegData %>% dplyr::mutate(DiagVSF_MISSING_NAMES = dplyr::case_when(
     DiagVSF == "F500" ~ "F50.0",
     DiagVSF == "F501" ~ "F50.1",
     DiagVSF == "F502" ~ "F50.2",
@@ -233,7 +233,7 @@ fun2_1_3_RegData_newVarMAsNA  <- function(myInData = RegData){
 
   #DiagBUAkse1_MISSING_NAMES
   #Code values containing the different diagnoses
-  RegData <- RegData %>% mutate(DiagBUAkse1_MISSING_NAMES = case_when(
+  RegData <- RegData %>% dplyr::mutate(DiagBUAkse1_MISSING_NAMES = dplyr::case_when(
     grepl("F500", DiagBUAkse1, fixed = T) == T ~ "F50.0",
     grepl("F501", DiagBUAkse1, fixed = T) == T ~ "F50.1",
     grepl("F502", DiagBUAkse1, fixed = T) == T ~ "F50.2",
@@ -266,7 +266,7 @@ fun2_1_3_RegData_newVarMAsNA  <- function(myInData = RegData){
 
 
   # DiagSF_V_BU_MISSING_NAMES (with missing coded as NA and categories as NAMES) (DiagVSF and DiagBUAkse1 combined)
-  RegData <- RegData %>% mutate(DiagSF_V_BU_MISSING_NAMES = case_when(
+  RegData <- RegData %>% dplyr::mutate(DiagSF_V_BU_MISSING_NAMES = dplyr::case_when(
     DiagVSF_MISSING_NAMES == "F50.0"| DiagBUAkse1_MISSING_NAMES == "F50.0" ~ "F50.0" ,
     DiagVSF_MISSING_NAMES == "F50.1"| DiagBUAkse1_MISSING_NAMES == "F50.1" ~ "F50.1",
     DiagVSF_MISSING_NAMES == "F50.2"| DiagBUAkse1_MISSING_NAMES == "F50.2" ~ "F50.2",
@@ -300,7 +300,7 @@ fun2_1_3_RegData_newVarMAsNA  <- function(myInData = RegData){
 
 
   #DiagDSM5Hoved_V_BU_MISSING_NAMES (DiagVDSM5Hoved and DiagBUDSM5Hoved combined )
-  RegData <- RegData %>% mutate(DiagDSM5Hoved_V_BU_MISSING_NAMES = case_when(
+  RegData <- RegData %>% dplyr::mutate(DiagDSM5Hoved_V_BU_MISSING_NAMES = dplyr::case_when(
     DiagVDSM5Hoved == "0" | DiagBUDSM5Hoved == "0" ~ "307.52 Pica (ICD-10: F50.8)", #"307.52 \n Pica \n (ICD-10: F50.8)", #"307.52 \n Pica \n (ICD-10: F50.8)",
     DiagVDSM5Hoved == "1" | DiagBUDSM5Hoved == "1" ~ "307.53 Dr?vtygging (ICD-10: F98.21)", #"307.53 \n Dr?vtygging \n (ICD-10: F98.21)", #"307.53 \n Dr?vtygging \n (ICD-10: F98.21)",
     DiagVDSM5Hoved == "2" | DiagBUDSM5Hoved == "2" ~ "307.59 Unnv./restr. (ICD-10: F50.8)",#"307.59 \n Unnv./restr. \n (ICD-10: F50.8)",#"307.59 \n Unnv./restr. \n (ICD-10: F50.8)",
@@ -329,7 +329,7 @@ fun2_1_3_RegData_newVarMAsNA  <- function(myInData = RegData){
 
 
   #DiagVSomatiske_CAT_MISSING
-  RegData <- RegData %>% mutate(DiagVSomatiske_CAT_MISSING = case_when(
+  RegData <- RegData %>% dplyr::mutate(DiagVSomatiske_CAT_MISSING = dplyr::case_when(
     DiagVSomatiske == "0"  ~ "Ingen relevant somatiske",
     DiagVSomatiske == "1" & DiagVMalabsorpsjon == "1" ~ "Malabsorpsj.tilstander",
     DiagVSomatiske == "1" & DiagVDiabetes == "1" ~ "Diabetes",
@@ -347,14 +347,14 @@ fun2_1_3_RegData_newVarMAsNA  <- function(myInData = RegData){
                                                ordered = TRUE)
 
   #MedPsykofarmaka_CAT_MISSING Psykofarmakologisk behandling
-  RegData <- RegData %>% mutate(MedPsykofarmaka_CAT_MISSING = case_when(
+  RegData <- RegData %>% dplyr::mutate(MedPsykofarmaka_CAT_MISSING = dplyr::case_when(
     RegRegtype %in% c(1,2,3,4,5,6) & MedPsykofarmaka == "null" ~ NA_character_,
     MedPsykofarmaka == "0" ~ "Nei",
     MedPsykofarmaka == "1" ~ "Ja",
     MedPsykofarmaka == "null" ~ "null"))
 
   #MedAntidepressiva_CAT_MISSING
-  RegData <- RegData %>% mutate(MedAntidepressiva_CAT_MISSING = case_when(
+  RegData <- RegData %>% dplyr::mutate(MedAntidepressiva_CAT_MISSING = dplyr::case_when(
     RegRegtype %in% c(1,2,3,4,5,6) & MedPsykofarmaka == "null" ~ NA_character_,
     MedPsykofarmaka == "0" & MedAntidepressiva  == "0" ~ "Nei",
     MedPsykofarmaka == "1" & MedAntidepressiva  == "0" ~ "Nei",
@@ -362,7 +362,7 @@ fun2_1_3_RegData_newVarMAsNA  <- function(myInData = RegData){
     MedAntidepressiva  == "null" ~ "null"))
 
   #MedNevroleptika_CAT_MISSING
-  RegData <- RegData %>% mutate(MedNevroleptika_CAT_MISSING = case_when(
+  RegData <- RegData %>% dplyr::mutate(MedNevroleptika_CAT_MISSING = dplyr::case_when(
     RegRegtype %in% c(1,2,3,4,5,6) & MedPsykofarmaka == "null" ~ NA_character_,
     MedPsykofarmaka == "0" & MedNevroleptika  == "0" ~ "Nei",
     MedPsykofarmaka == "1" & MedNevroleptika  == "0" ~ "Nei",
@@ -370,7 +370,7 @@ fun2_1_3_RegData_newVarMAsNA  <- function(myInData = RegData){
     MedNevroleptika  == "null" ~ "null"))
 
   #MedBenzodiazepiner_CAT_MISSING
-  RegData <- RegData %>% mutate(MedBenzodiazepiner_CAT_MISSING = case_when(
+  RegData <- RegData %>% dplyr::mutate(MedBenzodiazepiner_CAT_MISSING = dplyr::case_when(
     RegRegtype %in% c(1,2,3,4,5,6) & MedPsykofarmaka == "null" ~ NA_character_,
     MedPsykofarmaka == "0" & MedBenzodiazepiner  == "0" ~ "Nei",
     MedPsykofarmaka == "1" & MedBenzodiazepiner  == "0" ~ "Nei",
@@ -378,7 +378,7 @@ fun2_1_3_RegData_newVarMAsNA  <- function(myInData = RegData){
     MedBenzodiazepiner  == "null" ~ "null"))
 
   #MedAnnenMedBeh_CAT_MISSING
-  RegData <- RegData %>% mutate(MedAnnenMedBeh_CAT_MISSING = case_when(
+  RegData <- RegData %>% dplyr::mutate(MedAnnenMedBeh_CAT_MISSING = dplyr::case_when(
     RegRegtype %in% c(1,2,3,4,5,6) & MedPsykofarmaka == "null" ~ NA_character_,
     MedPsykofarmaka == "0" & MedAnnenMedBeh  == "0" ~ "Nei",
     MedPsykofarmaka == "1" & MedAnnenMedBeh  == "0" ~ "Nei",
@@ -386,7 +386,7 @@ fun2_1_3_RegData_newVarMAsNA  <- function(myInData = RegData){
     MedAnnenMedBeh  == "null" ~ "null"))
 
   #MedBlodprove_CAT_MISSING
-  RegData <- RegData %>% mutate(MedBlodprove_CAT_MISSING = case_when(
+  RegData <- RegData %>% dplyr::mutate(MedBlodprove_CAT_MISSING = dplyr::case_when(
     RegRegtype %in% c(1,2,3,4,5,6) & MedBlodprove == "null" ~ NA_character_,
     MedBlodprove == "0" ~ "Nei",
     MedBlodprove == "1" ~ "Ja",
@@ -401,7 +401,7 @@ fun2_1_3_RegData_newVarMAsNA  <- function(myInData = RegData){
                                              ordered = TRUE)
 
   #MedBeintetthMaling_CAT_MISSING
-  RegData <- RegData %>% mutate(MedBeintetthMaling_CAT_MISSING = case_when(
+  RegData <- RegData %>% dplyr::mutate(MedBeintetthMaling_CAT_MISSING = dplyr::case_when(
     RegRegtype %in% c(1,2,3,4,5,6) & MedBeintetthMaling == "null" ~ NA_character_,
     MedBeintetthMaling == "0" ~ "Nei",
     MedBeintetthMaling == "1" ~ "Ja",
@@ -416,7 +416,7 @@ fun2_1_3_RegData_newVarMAsNA  <- function(myInData = RegData){
                                                    ordered = TRUE)
 
   #B17FysMishandl
-  RegData <- RegData %>% mutate(B17FysMishandl_CAT_MISSING = case_when(
+  RegData <- RegData %>% dplyr::mutate(B17FysMishandl_CAT_MISSING = dplyr::case_when(
     #RegRegtype %in% c(1,2,3,4) & B17FysMishandl == "null" ~ NA_character_, #should not be necessary as 9 is missing value for this question
     B17FysMishandl == "0" ~ "Nei",
     B17FysMishandl == "1" ~ "Ja",
@@ -424,7 +424,7 @@ fun2_1_3_RegData_newVarMAsNA  <- function(myInData = RegData){
     B17FysMishandl == "null" & RegRegtype %in% c(1,2,3,4) ~ NA_character_,
     B17FysMishandl == "null" ~"null"))
   #B18PsykMishandl
-  RegData <- RegData %>% mutate(B18PsykMishandl_CAT_MISSING = case_when(
+  RegData <- RegData %>% dplyr::mutate(B18PsykMishandl_CAT_MISSING = dplyr::case_when(
     #RegRegtype %in% c(1,2,3,4) & B17FysMishandl == "null" ~ NA_character_, #should not be necessary as 9 is missing value for this question
     B18PsykMishandl == "0" ~ "Nei",
     B18PsykMishandl == "1" ~ "Ja",
@@ -433,7 +433,7 @@ fun2_1_3_RegData_newVarMAsNA  <- function(myInData = RegData){
     B18PsykMishandl == "null" ~"null"))
 
   #B19Overgrep
-  RegData <- RegData %>% mutate(B19Overgrep_CAT_MISSING = case_when(
+  RegData <- RegData %>% dplyr::mutate(B19Overgrep_CAT_MISSING = dplyr::case_when(
     #RegRegtype %in% c(1,2,3,4) & B17FysMishandl == "null" ~ NA_character_, #should not be necessary as 9 is missing value for this question
     B19Overgrep == "0" ~ "Nei",
     B19Overgrep == "1" ~ "Ja",
@@ -443,7 +443,7 @@ fun2_1_3_RegData_newVarMAsNA  <- function(myInData = RegData){
 
 
   #B20Mobbing
-  RegData <- RegData %>% mutate(B20Mobbing_CAT_MISSING = case_when(
+  RegData <- RegData %>% dplyr::mutate(B20Mobbing_CAT_MISSING = dplyr::case_when(
     #RegRegtype %in% c(1,2,3,4) & B17FysMishandl == "null" ~ NA_character_, #should not be necessary as 9 is missing value for this question
     B20Mobbing == "0" ~ "Nei",
     B20Mobbing == "1" ~ "Ja",
@@ -456,15 +456,15 @@ fun2_1_3_RegData_newVarMAsNA  <- function(myInData = RegData){
   ##doing as above, but more effectively, using a for loop
   ##FIX/IMPROVE: currently the suffix _CAT_MISSING is not added, so original variable is overwritten (we want to keep original var.)
 
-  myVarQuo <- c(quo(B21SelvskadTidl),
-                quo(B22SelvskadSisteAr),
-                quo(B23SelvmordFTidl),
-                quo(B24SelvmordFSisteAr),
-                quo(B25Avhengighet))
+  myVarQuo <- c(rlang::quo(B21SelvskadTidl),
+                rlang::quo(B22SelvskadSisteAr),
+                rlang::quo(B23SelvmordFTidl),
+                rlang::quo(B24SelvmordFSisteAr),
+                rlang::quo(B25Avhengighet))
 
   for(i in 1:length(myVarQuo)){
 
-    RegData <- RegData %>% mutate(!!myVarQuo[[i]] := case_when(#paste0(!!myVarQuo[[i]],"_CAT_MISSING") := case_when
+    RegData <- RegData %>% dplyr::mutate(!!myVarQuo[[i]] := dplyr::case_when(#paste0(!!myVarQuo[[i]],"_CAT_MISSING") := case_when
       #RegRegtype %in% c(1,2,3,4) & B17FysMishandl == "null" ~ NA_character_, #should not be necessary as 9 is missing value for this question
       !!myVarQuo[[i]] == "0" ~ "Nei",
       !!myVarQuo[[i]] == "1" ~ "Ja",
@@ -484,14 +484,14 @@ fun2_1_3_RegData_newVarMAsNA  <- function(myInData = RegData){
   #PT02BleInvolv_01_MISSING,
   #PT04KontaktBrukerorg_01_MISSING,
   #PT05OrientertBrukerorg_01_MISSING,
-  myVarQuo2 <- c(quo(PT01OnsketInvolv),
-                 quo(PT02BleInvolv),
-                 quo(PT04KontaktBrukerorg),
-                 quo(PT05OrientertBrukerorg))
+  myVarQuo2 <- c(rlang::quo(PT01OnsketInvolv),
+                 rlang::quo(PT02BleInvolv),
+                 rlang::quo(PT04KontaktBrukerorg),
+                 rlang::quo(PT05OrientertBrukerorg))
 
   for(i in 1:length(myVarQuo2)){
 
-    RegData <- RegData %>% mutate(!!myVarQuo2[[i]] := case_when(
+    RegData <- RegData %>% dplyr::mutate(!!myVarQuo2[[i]] := dplyr::case_when(
       RegRegtype %in% c(5,6) & PasientAlder >= 16 & !!myVarQuo2[[i]] == "null" ~ NA_character_,
       !!myVarQuo2[[i]] == "0" ~ "0",
       !!myVarQuo2[[i]] == "1" ~ "1",
@@ -502,7 +502,7 @@ fun2_1_3_RegData_newVarMAsNA  <- function(myInData = RegData){
 
   ##Pasienterfaringer (PasOpp)
   #PO05Involvert_CAT_MISSING
-  RegData <- RegData %>% mutate(PO05Involvert_CAT_MISSING = case_when(
+  RegData <- RegData %>% dplyr::mutate(PO05Involvert_CAT_MISSING = dplyr::case_when(
     #RegRegtype %in% c(1,2,3,4) & B17FysMishandl == "null" ~ NA_character_, #should not be necessary as 9 is missing value for this question
     PO05Involvert == "0" ~ "Ikke i det hele tatt",
     PO05Involvert == "1" ~ "I liten grad",
@@ -523,7 +523,7 @@ fun2_1_3_RegData_newVarMAsNA  <- function(myInData = RegData){
                                               ordered = TRUE)
 
   #MedBMI_withIsoBMIBGSvalues (MedBMI but with MedISOBMIBGS values for those that have ISOBMIBGS values)
-  RegData <- RegData %>% mutate(MedBMI_withIsoBMIBGSvalues = case_when(
+  RegData <- RegData %>% dplyr::mutate(MedBMI_withIsoBMIBGSvalues = dplyr::case_when(
     MedIsoBMIBGS !="null" ~ MedIsoBMIBGS, #those with ISOBMIBGS values get ISoBMIBGS values
     TRUE ~ as.character(MedBMI))) #rest gets ordinary BMI values
 

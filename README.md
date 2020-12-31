@@ -16,8 +16,50 @@ So far the package contains functions to prepare:
 
 -   five differently structured datasets (RegData, RegDataBeh, RegDataNatVal, RegDataStartEnd, RegDataStartEndNatVal)
 -   three tables (DQ\_missing ,DQ\_regCount, and patChar)
--   two figures (one simple distribution figure and one two compare proportions at different hospital units).
+-   two figures (one simple distribution figure and one to compare proportions at different hospital units).
 -   The figures have functions for tables belonging to them (figTable), which must be run first and used as input to the figure functions.
+
+Preliminary example that works
+
+``` r
+library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
+
+RegData <- norspis2::fun1_1_import_data_FEA()
+RegData <- norspis2::fun2_1_1_RegData_newVarGlobal()
+RegData <- norspis2::fun2_1_2_RegData_newVarFrmt()
+#> Warning in norspis2::fun2_1_2_RegData_newVarFrmt(): NAs introduced by
+#> coercion
+
+#> Warning in norspis2::fun2_1_2_RegData_newVarFrmt(): NAs introduced by
+#> coercion
+
+#> Warning in norspis2::fun2_1_2_RegData_newVarFrmt(): NAs introduced by
+#> coercion
+
+#> Warning in norspis2::fun2_1_2_RegData_newVarFrmt(): NAs introduced by
+#> coercion
+RegData <- norspis2::fun2_1_3_RegData_newVarMAsNA()
+RegData <- norspis2::fun2_1_4_RegData_newVarDich()
+#> Warning in norspis2::fun2_1_4_RegData_newVarDich(): NAs introduced by
+#> coercion
+  
+
+RegDataNatVal <- norspis2::fun2_3_RegDataNatVal()
+
+tab <- norspis2::make_figTable_unitCompar(RegDataNatVal, rlang::quo(PROP_PO10Pasientsikkerhet))
+fig <- norspis2::make_figFig_unitCompar(tab)
+fig
+```
+
+<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
 
 You can install the released version/development version of norspis2 from [GitHub](https://github.com/) with:
 

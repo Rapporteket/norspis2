@@ -55,107 +55,107 @@ fun2_1_4_RegData_newVarDich <- function(myInData=RegData){
 
   ##Variables indicating "missing"
   #EDEQ60GlobalScore_miss
-  RegData <- RegData %>% mutate(EDEQ60GlobalScore_miss = case_when(
+  RegData <- RegData %>% dplyr::mutate(EDEQ60GlobalScore_miss = dplyr::case_when(
     !is.na(EDEQ60GlobalScore) & RegRegtype %in% c(1,2,3,4,5,6) ~ as.character(EDEQ60GlobalScore), #just keeping numeric values as is
     is.na(EDEQ60GlobalScore) & RegRegtype %in% c(1,2,3,4,5,6) ~ NA_character_,
     TRUE ~ "null")) #this means that RegRegType 98 and 99 are coded as "null" (and exluded from missing calc)
 
   #EDEQ60GlobalScore_missStart
-  RegData <- RegData %>% mutate(EDEQ60GlobalScore_missStart = case_when(
+  RegData <- RegData %>% dplyr::mutate(EDEQ60GlobalScore_missStart = dplyr::case_when(
     !is.na(EDEQ60GlobalScore) & RegRegtype %in% c(1,2,3,4) ~ as.character(EDEQ60GlobalScore), #just keeping numeric values as is
     is.na(EDEQ60GlobalScore) & RegRegtype %in% c(1,2,3,4) ~ NA_character_,
     TRUE ~ "null"))
 
   #EDEQ60GlobalScore_missEnd
-  RegData <- RegData %>% mutate(EDEQ60GlobalScore_missEnd = case_when(
+  RegData <- RegData %>% dplyr::mutate(EDEQ60GlobalScore_missEnd = dplyr::case_when(
     !is.na(EDEQ60GlobalScore) & RegRegtype %in% c(5,6) ~ as.character(EDEQ60GlobalScore), #just keeping numeric values as is
     is.na(EDEQ60GlobalScore) & RegRegtype %in% c(5,6) ~ NA_character_,
     TRUE ~ "null"))
 
 
   #CIA30GlobalScore_miss
-  RegData <- RegData %>% mutate(CIA30GlobalScore_miss = case_when(
+  RegData <- RegData %>% dplyr::mutate(CIA30GlobalScore_miss = dplyr::case_when(
     !is.na(CIA30GlobalScore) & RegRegtype %in% c(1,2,3,4,5,6) ~ as.character(CIA30GlobalScore), #just keeping numeric values as is
     is.na(CIA30GlobalScore) & RegRegtype %in% c(1,2,3,4,5,6) ~ NA_character_,
     TRUE ~ "null")) #this means that RegRegType 98 and 99 are coded as "null" (and exluded from missing calc)
 
   #CIA30GlobalScore_missStart
-  RegData <- RegData %>% mutate(CIA30GlobalScore_missStart = case_when(
+  RegData <- RegData %>% dplyr::mutate(CIA30GlobalScore_missStart = dplyr::case_when(
     !is.na(CIA30GlobalScore) & RegRegtype %in% c(1,2,3,4) ~ as.character(CIA30GlobalScore), #just keeping numeric values as is
     is.na(CIA30GlobalScore) & RegRegtype %in% c(1,2,3,4) ~ NA_character_,
     TRUE ~ "null"))
 
   #CIA30GlobalScore_missEnd
-  RegData <- RegData %>% mutate(CIA30GlobalScore_missEnd = case_when(
+  RegData <- RegData %>% dplyr::mutate(CIA30GlobalScore_missEnd = dplyr::case_when(
     !is.na(CIA30GlobalScore) & RegRegtype %in% c(5,6) ~ as.character(CIA30GlobalScore), #just keeping numeric values as is
     is.na(CIA30GlobalScore) & RegRegtype %in% c(5,6) ~ NA_character_,
     TRUE ~ "null"))
   #MedBMI_miss
-  RegData <- RegData %>% mutate(MedBMI_miss = case_when(
+  RegData <- RegData %>% dplyr::mutate(MedBMI_miss = dplyr::case_when(
     !is.na(MedBMI) & RegRegtype %in% c(1,2,3,4,5,6) ~ as.character(MedBMI), #just keeping numeric values as is
     is.na(MedBMI) & RegRegtype %in% c(1,2,3,4,5,6) ~ NA_character_,
     TRUE ~ "null")) #this means that RegRegType 98 and 99 are coded as "null" (and exluded from missing calc)
 
   #MedBMI_missStart
-  RegData <- RegData %>% mutate(MedBMI_missStart = case_when(
+  RegData <- RegData %>% dplyr::mutate(MedBMI_missStart = dplyr::case_when(
     !is.na(MedBMI) & RegRegtype %in% c(1,2,3,4) ~ as.character(MedBMI), #just keeping numeric values as is
     is.na(MedBMI) & RegRegtype %in% c(1,2,3,4) ~ NA_character_,
     TRUE ~ "null"))
 
   #MedBMI_missEnd
-  RegData <- RegData %>% mutate(MedBMI_missEnd = case_when(
+  RegData <- RegData %>% dplyr::mutate(MedBMI_missEnd = dplyr::case_when(
     !is.na(MedBMI) & RegRegtype %in% c(5,6) ~ as.character(MedBMI), #just keeping numeric values as is
     is.na(MedBMI) & RegRegtype %in% c(5,6) ~ NA_character_,
     TRUE ~ "null"))
 
   #PT03Utfallsvurd_miss
-  RegData <- RegData %>% mutate(PT03Utfallsvurd_miss = case_when(
+  RegData <- RegData %>% dplyr::mutate(PT03Utfallsvurd_miss = dplyr::case_when(
     PT03Utfallsvurd %in% c(1,2,3,4,5) ~ PT03Utfallsvurd, #just keeping numeric values as is
     PasientAlder >= 16 & PT03Utfallsvurd %in% c(9,"null") & RegRegtype %in% c(5,6)  ~ NA_character_, # 9 missing is coded as missing
     TRUE ~ "null"))
   #PO09Utbytte_miss
-  RegData <- RegData %>% mutate(PO09Utbytte_miss = case_when(
+  RegData <- RegData %>% dplyr::mutate(PO09Utbytte_miss = dplyr::case_when(
     PO09Utbytte %in% c(0,1,2,3,4) ~ PO09Utbytte, #just keeping numeric values as is
     PO09Utbytte %in% c(9,99, "null") & RegRegtype %in% c(5,6)  ~ NA_character_, #9 and 99 which is "ikke aktuelt" and "ikke besvart" is also coded as missing
     TRUE ~ "null"))
   #PasOppTilfredshet_miss
-  RegData <- RegData %>% mutate(PasOppTilfredshet_miss = case_when(
+  RegData <- RegData %>% dplyr::mutate(PasOppTilfredshet_miss = dplyr::case_when(
     PasOppTilfredshet != "null" ~ PasOppTilfredshet, #just keeping numeric values as is
     PasOppTilfredshet == "null" & RegRegtype %in% c(5,6)  ~ NA_character_,
     TRUE ~ "null"))
   #PasOppErfaring_miss
-  RegData <- RegData %>% mutate(PasOppErfaring_miss = case_when(
+  RegData <- RegData %>% dplyr::mutate(PasOppErfaring_miss = dplyr::case_when(
     PasOppErfaring != "null" ~ PasOppErfaring, #just keeping numeric values as is
     PasOppErfaring == "null" & RegRegtype %in% c(5,6)  ~ NA_character_,
     TRUE ~ "null"))
   #PasOppTilgjengelighet_miss
-  RegData <- RegData %>% mutate(PasOppTilgjengelighet_miss = case_when(
+  RegData <- RegData %>% dplyr::mutate(PasOppTilgjengelighet_miss = dplyr::case_when(
     PasOppTilgjengelighet != "null" ~ PasOppTilgjengelighet, #just keeping numeric values as is
     PasOppTilgjengelighet == "null" & RegRegtype %in% c(5,6)  ~ NA_character_,
     TRUE ~ "null"))
   #PasOppSikkerhet_miss
-  RegData <- RegData %>% mutate(PasOppSikkerhet_miss = case_when(
+  RegData <- RegData %>% dplyr::mutate(PasOppSikkerhet_miss = dplyr::case_when(
     PasOppSikkerhet != "null" ~ PasOppSikkerhet, #just keeping numeric values as is
     PasOppSikkerhet == "null" & RegRegtype %in% c(5,6)  ~ NA_character_,
     TRUE ~ "null"))
 
   #PT01OnsketInvolv_miss
-  RegData <- RegData %>% mutate(PT01OnsketInvolv_miss = case_when(
+  RegData <- RegData %>% dplyr::mutate(PT01OnsketInvolv_miss = dplyr::case_when(
     PT01OnsketInvolv %in% c(0,1) ~ PT01OnsketInvolv, #just keeping numeric values
     PasientAlder >= 16 & PT01OnsketInvolv %in% c(9,"null") & RegRegtype %in% c(5,6)  ~ NA_character_,
     TRUE ~ "null"))
   #PT02BleIvolv_miss
-  RegData <- RegData %>% mutate(PT02BleInvolv_miss = case_when(
+  RegData <- RegData %>% dplyr::mutate(PT02BleInvolv_miss = dplyr::case_when(
     PT02BleInvolv %in% c(0,1) ~ PT02BleInvolv, #just keeping numeric values
     PasientAlder  >= 16 & PT02BleInvolv %in% c(9,"null") & RegRegtype %in% c(5,6)  ~ NA_character_,
     TRUE ~ "null"))
   #PT04KontaktBrukerorg_miss
-  RegData <- RegData %>% mutate(PT04KontaktBrukerorg_miss = case_when(
+  RegData <- RegData %>% dplyr::mutate(PT04KontaktBrukerorg_miss = dplyr::case_when(
     PT04KontaktBrukerorg %in% c(0,1) ~ PT04KontaktBrukerorg, #just keeping numeric values
     PasientAlder  >= 16 & PT04KontaktBrukerorg %in% c(9,"null") & RegRegtype %in% c(5,6)  ~ NA_character_,
     TRUE ~ "null"))
   #PT05OrientertBrukerorg_miss
-  RegData <- RegData %>% mutate(PT05OrientertBrukerorg_miss = case_when(
+  RegData <- RegData %>% dplyr::mutate(PT05OrientertBrukerorg_miss = dplyr::case_when(
     PT05OrientertBrukerorg %in% c(0,1) ~ PT05OrientertBrukerorg, #just keeping numeric values
     PasientAlder  >= 16 & PT05OrientertBrukerorg %in% c(9,"null") & RegRegtype %in% c(5,6)  ~ NA_character_,
     TRUE ~ "null"))

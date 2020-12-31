@@ -31,8 +31,8 @@ make_figTable_unitCompar <- function(myIndata_NatVal, myInvar01 = myVar01) {
 
 
   #group_by together with summarize is what we need to make the summary we want(see Wickham, R for Data Science)
-  group_by(AvdNavn)%>%
-    summarize(perc := mean(!!myInvar01, na.rm = T),#mean() of a 0-1 variable gives proportion
+  dplyr::group_by(AvdNavn)%>%
+    dplyr::summarize(perc := mean(!!myInvar01, na.rm = T),#mean() of a 0-1 variable gives proportion
               n := sum(!is.na(!!myInvar01))
               #perc_missing = mean(MISSING_PO10Pasientsikkerhet, na.rm = T)*100,
               #n_missing = sum(MISSING_PO10Pasientsikkerhet>=1, na.rm = T),
@@ -51,15 +51,15 @@ make_figTable_unitCompar <- function(myIndata_NatVal, myInvar01 = myVar01) {
 
 
 
-  mutate(perc = case_when(perc >= 0 & #When perc is between 0-1 we multiply by 100, else we keep the perc value (which will then be a mean ordinary mean value)
+  dplyr::mutate(perc = dplyr::case_when(perc >= 0 & #When perc is between 0-1 we multiply by 100, else we keep the perc value (which will then be a mean ordinary mean value)
                             perc <= 1 ~ perc*100,
                           TRUE ~perc)) %>%
-    mutate(AvdNavn = paste0(AvdNavn, ' (', n,')' )) %>% #makes hospital names include N
-    mutate(perc = ifelse(n<5, 0.00000123, perc)) %>% #removes hospitals w n<20 (choose 0.00000123 as an easy identifiable value and same as
-    mutate(!!myInvar01 := 0)%>%
-    mutate(!!myInvar01 := (colnames(.[,4])))%>%#create new variable with name same as myinVar name, and set thevalues equal to name of 4. columns whic is the new myInvar01 column
+    dplyr::mutate(AvdNavn = paste0(AvdNavn, ' (', n,')' )) %>% #makes hospital names include N
+    dplyr::mutate(perc = ifelse(n<5, 0.00000123, perc)) %>% #removes hospitals w n<20 (choose 0.00000123 as an easy identifiable value and same as
+    dplyr::mutate(!!myInvar01 := 0)%>%
+    dplyr::mutate(!!myInvar01 := (colnames(.[,4])))%>%#create new variable with name same as myinVar name, and set thevalues equal to name of 4. columns whic is the new myInvar01 column
 
-    mutate(perc = case_when(is.nan(perc) ~ 0.00000123, #recode nan - choose 0.00000123 (as above for units with N<5)
+    dplyr::mutate(perc = dplyr::case_when(is.nan(perc) ~ 0.00000123, #recode nan - choose 0.00000123 (as above for units with N<5)
                             TRUE ~ perc))
   #mutate(my_bar_lab = factor(ifelse(perc == 0.00000123,'',paste0(round(perc,1),'%'))))
   #<-make bar label (inside/above bar, e.g. percentages), but not for those which should be emtpy, i.e those with 0.00000123 values. I did this in fig function in earlier version, but moved it here to
@@ -77,7 +77,7 @@ make_figTable_unitCompar <- function(myIndata_NatVal, myInvar01 = myVar01) {
     forcats::fct_reorder(myInData_NatVal_summarized$perc, .desc=F) #CHANGE to T for opposite order
   ## Then we first sort by N and then by percentage
   myInData_NatVal_summarized <- myInData_NatVal_summarized %>%
-    arrange(n) %>%
-    arrange(perc)
+    dplyr::arrange(n) %>%
+    dplyr::arrange(perc)
 
 }

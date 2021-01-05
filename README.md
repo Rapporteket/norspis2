@@ -23,43 +23,20 @@ Preliminary example that works
 
 ``` r
 library(dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
 
-RegData <- norspis2::fun1_1_import_data_FEA()
-RegData <- norspis2::fun2_1_1_RegData_newVarGlobal()
-RegData <- norspis2::fun2_1_2_RegData_newVarFrmt()
-#> Warning in norspis2::fun2_1_2_RegData_newVarFrmt(): NAs introduced by
-#> coercion
+RegData2 <- norspis2::fun1_1_import_data_FEA(path_data="F:/2020-28-12_data-til-utvikling/", #disk and folder of data to import
+                                            date_data="2020-12-28")
+RegData2 <- norspis2::fun2_1_1_RegData_newVarGlobal(myInData=RegData2)
+RegData2 <- norspis2::fun2_1_2_RegData_newVarFrmt(myInData=RegData2)
+RegData2 <- norspis2::fun2_1_3_RegData_newVarMAsNA(myInData = RegData2)
+RegData2 <- norspis2::fun2_1_4_RegData_newVarDich(myInData=RegData2)
 
-#> Warning in norspis2::fun2_1_2_RegData_newVarFrmt(): NAs introduced by
-#> coercion
-
-#> Warning in norspis2::fun2_1_2_RegData_newVarFrmt(): NAs introduced by
-#> coercion
-
-#> Warning in norspis2::fun2_1_2_RegData_newVarFrmt(): NAs introduced by
-#> coercion
-RegData <- norspis2::fun2_1_3_RegData_newVarMAsNA()
-RegData <- norspis2::fun2_1_4_RegData_newVarDich()
-#> Warning in norspis2::fun2_1_4_RegData_newVarDich(): NAs introduced by
-#> coercion
-  
-
-RegDataNatVal <- norspis2::fun2_3_RegDataNatVal()
+RegDataNatVal <- norspis2::fun2_3_RegDataNatVal(myInData=RegData2)
 
 tab <- norspis2::make_figTable_unitCompar(RegDataNatVal, rlang::quo(PROP_PO10Pasientsikkerhet))
 fig <- norspis2::make_figFig_unitCompar(tab)
 fig
 ```
-
-<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
 
 You can install the released version/development version of norspis2 from [GitHub](https://github.com/) with:
 

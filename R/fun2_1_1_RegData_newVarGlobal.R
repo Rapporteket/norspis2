@@ -11,27 +11,27 @@
 #'
 #' @examples
 
-fun2_1_1_RegData_newVarGlobal <- function(myInData=RegData){
+fun2_1_1_RegData_newVarGlobal <- function(myInData){
 
   # Hospital department names
-  RegData$AvdNavn <- RegData$AvdRESH
+  myInData$AvdNavn <- myInData$AvdRESH
 
-  RegData$AvdNavn[RegData$AvdNavn==105806] <- 'Levanger (regional)'
-  RegData$AvdNavn[RegData$AvdNavn==109979] <- 'Oslo (regional)'
-  RegData$AvdNavn[RegData$AvdNavn==110361] <- 'Oslo, Gaustad (spes.pol.)'
-  RegData$AvdNavn[RegData$AvdNavn==700698] <- 'Troms? (regional, BU)'
-  RegData$AvdNavn[RegData$AvdNavn==700821] <- 'Bod? (regional, V)'
-  RegData$AvdNavn[RegData$AvdNavn==707383] <- 'Ski (DPS, pol.)'
-  RegData$AvdNavn[RegData$AvdNavn==4204191] <-'Fredrikstad (Capio, d?gn)'
-  RegData$AvdNavn[RegData$AvdNavn==4207041] <- 'Ski (DPS, d?gn)'
-  RegData$AvdNavn[RegData$AvdNavn==4209009] <- 'T?nsberg (BUP, s.team)'
-  RegData$AvdNavn[RegData$AvdNavn==4210562] <- 'Bod? (BUP, s.team)'
-  RegData$AvdNavn[RegData$AvdNavn==4210626] <- 'Mosj?en (BUP)'
-  RegData$AvdNavn[RegData$AvdNavn==4210825] <-  'Mosj?en (DPS)'
-  RegData$AvdNavn[RegData$AvdNavn==107026] <- 'Bergen (regional)'
-  RegData$AvdNavn[RegData$AvdNavn==4210303] <- 'Tr.heim (spes.pol.)'
+  myInData$AvdNavn[myInData$AvdNavn==105806] <- 'Levanger (regional)'
+  myInData$AvdNavn[myInData$AvdNavn==109979] <- 'Oslo (regional)'
+  myInData$AvdNavn[myInData$AvdNavn==110361] <- 'Oslo, Gaustad (spes.pol.)'
+  myInData$AvdNavn[myInData$AvdNavn==700698] <- 'Troms? (regional, BU)'
+  myInData$AvdNavn[myInData$AvdNavn==700821] <- 'Bod? (regional, V)'
+  myInData$AvdNavn[myInData$AvdNavn==707383] <- 'Ski (DPS, pol.)'
+  myInData$AvdNavn[myInData$AvdNavn==4204191] <-'Fredrikstad (Capio, d?gn)'
+  myInData$AvdNavn[myInData$AvdNavn==4207041] <- 'Ski (DPS, d?gn)'
+  myInData$AvdNavn[myInData$AvdNavn==4209009] <- 'T?nsberg (BUP, s.team)'
+  myInData$AvdNavn[myInData$AvdNavn==4210562] <- 'Bod? (BUP, s.team)'
+  myInData$AvdNavn[myInData$AvdNavn==4210626] <- 'Mosj?en (BUP)'
+  myInData$AvdNavn[myInData$AvdNavn==4210825] <-  'Mosj?en (DPS)'
+  myInData$AvdNavn[myInData$AvdNavn==107026] <- 'Bergen (regional)'
+  myInData$AvdNavn[myInData$AvdNavn==4210303] <- 'Tr.heim (spes.pol.)'
 
 
-  output <- RegData
+  output <- myInData
   return(invisible(output))
 }

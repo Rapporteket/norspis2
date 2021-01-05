@@ -38,17 +38,17 @@ So far the package contains functions to prepare:
 
 Preliminary example that works
 
-```{r}
+```{r, eval=F}
 library(dplyr)
 
-RegData <- norspis2::fun1_1_import_data_FEA()
-RegData <- norspis2::fun2_1_1_RegData_newVarGlobal()
-RegData <- norspis2::fun2_1_2_RegData_newVarFrmt()
-RegData <- norspis2::fun2_1_3_RegData_newVarMAsNA()
-RegData <- norspis2::fun2_1_4_RegData_newVarDich()
-  
+RegData2 <- norspis2::fun1_1_import_data_FEA(path_data="F:/2020-28-12_data-til-utvikling/", #disk and folder of data to import
+                                            date_data="2020-12-28")
+RegData2 <- norspis2::fun2_1_1_RegData_newVarGlobal(myInData=RegData2)
+RegData2 <- norspis2::fun2_1_2_RegData_newVarFrmt(myInData=RegData2)
+RegData2 <- norspis2::fun2_1_3_RegData_newVarMAsNA(myInData = RegData2)
+RegData2 <- norspis2::fun2_1_4_RegData_newVarDich(myInData=RegData2)
 
-RegDataNatVal <- norspis2::fun2_3_RegDataNatVal()
+RegDataNatVal <- norspis2::fun2_3_RegDataNatVal(myInData=RegData2)
 
 tab <- norspis2::make_figTable_unitCompar(RegDataNatVal, rlang::quo(PROP_PO10Pasientsikkerhet))
 fig <- norspis2::make_figFig_unitCompar(tab)

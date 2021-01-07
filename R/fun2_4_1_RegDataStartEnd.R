@@ -12,10 +12,10 @@
 #'
 #' @examples
 
-fun2_4_1_RegDataStartEnd <- function(myInData=RegData){
+fun2_4_1_RegDataStartEnd <- function(myInData){
 
   #Transform to tibble
-  RegData <- as_tibble(RegData)
+  RegData <- as_tibble(myInData)
 
   # Make the primary data set:
   ## Make one dataset with only the end registrations

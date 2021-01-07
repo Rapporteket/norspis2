@@ -31,7 +31,6 @@ fun2_1_1_RegData_newVarGlobal <- function(myInData){
   myInData$AvdNavn[myInData$AvdNavn==107026] <- 'Bergen (regional)'
   myInData$AvdNavn[myInData$AvdNavn==4210303] <- 'Tr.heim (spes.pol.)'
 
-
   output <- myInData
   return(invisible(output))
 }

@@ -4,7 +4,7 @@
 \alias{fun2_1_1_RegData_newVarGlobal}
 \title{Make variable with hospital department names (Global refers to that the varaibel(s) made her will be used globally/often)}
 \usage{
-fun2_1_1_RegData_newVarGlobal(myInData = RegData)
+fun2_1_1_RegData_newVarGlobal(myInData)
 }
 \arguments{
 \item{myInData}{RegData

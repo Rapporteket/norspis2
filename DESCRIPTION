@@ -22,4 +22,5 @@ Imports:
     forcats,
     stringr,
     scales,
-    rlang
+    rlang,
+    ggplot2

@@ -4,7 +4,7 @@
 \alias{fun2_4_2_RegDataStartEnd_newVar}
 \title{Title}
 \usage{
-fun2_4_2_RegDataStartEnd_newVar(myInData = RegDataStartEnd)
+fun2_4_2_RegDataStartEnd_newVar(myInData)
 }
 \arguments{
 \item{myInData}{RegDataStartEnd}

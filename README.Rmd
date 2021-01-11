@@ -41,9 +41,9 @@ So far the package contains functions to prepare:
 * The figures have functions for tables belonging to them (figTable), which must be run first and used as input to the figure functions. 
 
 
-Preliminary example that works
+Preliminary example that works (but only locally at NLSH)
 
-```{r}
+```{r, eval=FALSE}
 library(dplyr)
 
 RegData <- norspis2::fun1_1_import_data_FEA()

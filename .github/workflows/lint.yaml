@@ -1,12 +1,12 @@
 on:
   push:
     branches:
-      - v0.2
-      - master
+      - are-sin-grein
+      - main
   pull_request:
     branches:
-      - v0.2
-      - master
+      - are-sin-grein
+      - main
 
 name: lint
 

@@ -36,7 +36,7 @@ So far the package contains functions to prepare:
   - The figures have functions for tables belonging to them (figTable),
     which must be run first and used as input to the figure functions.
 
-Preliminary example that works (but only locally at NLSH)
+Preliminary example that works (but only locally at NLSH…)
 
 ``` r
 library(dplyr)
@@ -86,8 +86,8 @@ summary(cars)
 #>  Max.   :25.0   Max.   :120.00
 ```
 
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date.
+You may render `README.Rmd` manually, to keep `README.md` up-to-date.
+However, you may also leave this to the ci process at GitHub.
 
 You can also embed plots, for example:
 

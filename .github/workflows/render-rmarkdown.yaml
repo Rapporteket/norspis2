@@ -1,7 +1,8 @@
 on:
   push:
-    paths:
-      - '**.Rmd'
+    branches:
+      - main
+      - are-sin-grein
 
 name: Render Rmarkdown files
 

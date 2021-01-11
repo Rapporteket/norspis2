@@ -29,7 +29,7 @@ jobs:
           Rscript -e 'for (file in commandArgs(TRUE)) rmarkdown::render(file)' ${RMD_PATH[*]}
       - name: Commit results
         run: |
-          git add README.md
+          git add README.md man/figures/README-*
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
           git commit ${RMD_PATH[*]/.Rmd/.md} -m 'Re-build Rmarkdown files' || echo "No changes to commit"

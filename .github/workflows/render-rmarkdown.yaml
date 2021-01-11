@@ -4,14 +4,14 @@ on:
       - main
       - are-sin-grein
 
-name: Render Rmarkdown files
+name: Render README.Rmd
 
 jobs:
   render:
-    name: Render Rmarkdown files
+    name: Render README.Rmd
     runs-on: macOS-latest
     env:
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_PAT: ${{ secrets.GT }}
     steps:
       - uses: actions/checkout@v2
         with:

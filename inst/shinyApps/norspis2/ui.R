@@ -180,7 +180,9 @@ ui <- tagList(
           ),
 
           mainPanel(
-            plotOutput(outputId = 'fordelingerMed', width="800px", height = "800px")
+            plotOutput(outputId = 'fordelingerMed',
+                       width="800px",
+                       height = "800px")
 
           )
         )#,
@@ -245,7 +247,9 @@ ui <- tagList(
           ),
 
           mainPanel(
-            plotOutput(outputId = 'fordelingerInd', width="800px", height = "800px")
+            plotOutput(outputId = 'fordelingerInd',
+                       width="800px",
+                       height = "800px")
 
           )
         ),
@@ -404,9 +408,11 @@ ui <- tagList(
         ),
 
         h5("Bygget med",
-           img(src = "https://www.rstudio.com/wp-content/uploads/2014/04/shiny.png", height = "30px"),
+           img(src = "https://www.rstudio.com/wp-content/uploads/2014/04/shiny.png",
+               height = "30px"),
            "by",
-           img(src = "https://rstudio.com/wp-content/uploads/2014/07/RStudio-Logo-Blue-Gray.png", height ="30px"),
+           img(src = "https://rstudio.com/wp-content/uploads/2014/07/RStudio-Logo-Blue-Gray.png",
+               height ="30px"),
            ".")
       ),
       mainPanel(
@@ -526,13 +532,21 @@ ui <- tagList(
           )
         ),
         # under development, consider to hide/show by commenting out/in
-        tabPanel("Registreringsoversikt",
-                 sidebarPanel(width = 3,
-                              dateRangeInput(inputId = 'datovalgRegOvers', start = "2018-01-01", end = "2021-12-31", #start = "2012-01-01", end = Sys.Date()
-                                             label = "Velg tidsperiode", separator="t.o.m.", language="nb")
-                 ),
-                 mainPanel(DT::dataTableOutput("tableOvers")
-                 )
+        tabPanel(
+          "Registreringsoversikt",
+          sidebarPanel(
+            width = 3,
+            dateRangeInput(
+              inputId = 'datovalgRegOvers',
+              start = "2018-01-01",
+              end = "2021-12-31", #end = Sys.Date()
+              label = "Velg tidsperiode",
+              separator="t.o.m.",
+              language="nb")
+          ),
+          mainPanel(
+            DT::dataTableOutput("tableOvers")
+          )
         )#,
         #tabPanel("Registreringsoversikt (utvidet)",
         #         sidebarPanel(width = 3,

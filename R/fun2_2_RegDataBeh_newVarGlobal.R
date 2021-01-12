@@ -12,10 +12,10 @@
 #'
 #' @examples
 
-fun2_2_RegDataBeh_newVarGlobal <- function(myInData1=RegData, myInData2=RegDataBeh){
+fun2_2_RegDataBeh_newVarGlobal <- function(myInData1, myInData2){
 
   #Join:
-  RegDataBeh <- dplyr::left_join(RegDataBeh, RegData[, c("AvdNavn", "HovedDato", "ForlopsID")], by="ForlopsID")
+  RegDataBeh <- dplyr::left_join(myInData2, myInData1[, c("AvdNavn", "HovedDato", "ForlopsID")], by="ForlopsID")
 
   output <- RegDataBeh
   return(invisible(output))

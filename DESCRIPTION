@@ -23,4 +23,5 @@ Imports:
     stringr,
     scales,
     rlang,
-    wrapr
+    wrapr,
+    ggplot2

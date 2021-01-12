@@ -1,5 +1,9 @@
 #' Filter function for start-end registrations (RegDataStartEnd):
 #'
+#' We use a separate filter function for start-end data. Star-data have the suffix x, and end-data have the suffix y.
+#' We can thus for instance filter on dateFrom.x and dateTo.x, if we want to filter on dates of the start registrations,
+#' or dateFrom.y and dateTo.y if we want to filter on dates of end registrations.
+#'
 #' Note: This function's name when writing aarsrapport 2019 (in 2020) was: make291_data_filtered
 #'
 #' @param RegDataStartEnd myInData

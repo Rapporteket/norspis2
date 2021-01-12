@@ -19,8 +19,9 @@
 #' @export
 #'
 #' @examples
-fun2_4_2_RegDataStartEnd_newVar <- function(myInData=RegDataStartEnd){
+fun2_4_2_RegDataStartEnd_newVar <- function(myInData){
 
+  RegDataStartEnd <- myInData
   #EDEQ60GlobalScore_CHANGE (KI1/QI1)
   #EDEQ60GlobalScoreRCI (0-1)       ### basert verdier gitt av ?.R? i e-post 06.05.2019
   #as.numeric (#have to use sub, becuase values contain commas (,) not period (.))

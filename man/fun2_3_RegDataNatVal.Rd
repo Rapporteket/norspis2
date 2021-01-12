@@ -4,13 +4,13 @@
 \alias{fun2_3_RegDataNatVal}
 \title{Make RegData with a set of rows that represent national values}
 \usage{
-fun2_3_RegDataNatVal(myInData = RegData)
+fun2_3_RegDataNatVal(myInData)
 }
 \arguments{
 \item{myInData}{RegData}
 }
 \value{
-RegData_NatVal (invisible)
+myInData_NatVal (invisible)
 }
 \description{
 Note: This function's name when writing aarsrapport 2019 (in 2020) was: make25_dataNatVal

@@ -4,7 +4,7 @@
 \alias{fun2_5_RegDataStartEndNatVal}
 \title{Make start-end data with national values#'}
 \usage{
-fun2_5_RegDataStartEndNatVal(myInData = RegDataStartEnd)
+fun2_5_RegDataStartEndNatVal(myInData)
 }
 \arguments{
 \item{myInData}{RegDataStartEnd}

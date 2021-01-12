@@ -4,13 +4,13 @@
 \alias{fun2_1_3_RegData_newVarMAsNA}
 \title{Make variables where missing is coded as NA (MAsNA)}
 \usage{
-fun2_1_3_RegData_newVarMAsNA(myInData = RegData)
+fun2_1_3_RegData_newVarMAsNA(myInData)
 }
 \arguments{
 \item{myInData}{RegData}
 }
 \value{
-RegData (invisble)
+myInData (invisble)
 }
 \description{
 Output is data, with new variables where missing is coded as NA. Some are categoricial, and som have values that are labels.

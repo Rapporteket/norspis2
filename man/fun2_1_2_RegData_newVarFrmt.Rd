@@ -4,7 +4,7 @@
 \alias{fun2_1_2_RegData_newVarFrmt}
 \title{Make variables with new formats from old variables (Frmt refers to formatted)}
 \usage{
-fun2_1_2_RegData_newVarFrmt(myInData = RegData)
+fun2_1_2_RegData_newVarFrmt(myInData)
 }
 \arguments{
 \item{myInData}{RegData}

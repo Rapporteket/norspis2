@@ -27,5 +27,8 @@ fun3_1_filter_RegData(RegData = myInData, regStatus = c(0, 1, -1),
 RegData_filtered
 }
 \description{
+This function is also used to filter RegData with national values (NatVal) (as long as they are NOT start-end data)
+}
+\details{
 Note: This function's name when writing aarsrapport 2019 (in 2020) was: make29_data_filtered
 }

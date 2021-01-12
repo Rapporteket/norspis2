@@ -4,13 +4,13 @@
 \alias{fun2_1_4_RegData_newVarDich}
 \title{Make dichotomous variables (dich)}
 \usage{
-fun2_1_4_RegData_newVarDich(myInData = RegData)
+fun2_1_4_RegData_newVarDich(myInData)
 }
 \arguments{
 \item{myInData}{RegData}
 }
 \value{
-RegData (invisible)
+myInData (invisible)
 }
 \description{
 Output is data, with new variables that ar dichotomous.

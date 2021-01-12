@@ -18,6 +18,5 @@ Note: This function's name when writing aarsrapport 2019 (in 2020) was: make_pro
 summary table with propoprtions at each unit/hosptital and one national value to go into make_figFig_unitCompar
 }
 \description{
-Function to make data table for plot with comparison of hospitals
-Making a small summary table which will go into the plot with  percentages (proportions) within each group (hospital):
+This funcition works with both ordinary data (RegData) and data with added national values (RegDataNatVal)
 }

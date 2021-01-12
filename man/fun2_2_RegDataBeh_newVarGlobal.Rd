@@ -4,8 +4,7 @@
 \alias{fun2_2_RegDataBeh_newVarGlobal}
 \title{Make RegDatabeh with new global variables (Global refers to that the varaibel(s) made her will be used globally/often)}
 \usage{
-fun2_2_RegDataBeh_newVarGlobal(myInData1 = RegData,
-  myInData2 = RegDataBeh)
+fun2_2_RegDataBeh_newVarGlobal(myInData1, myInData2)
 }
 \arguments{
 \item{myInData1}{RegData}

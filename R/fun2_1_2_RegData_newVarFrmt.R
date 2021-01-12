@@ -11,7 +11,7 @@
 #'
 #' @examples
 
-fun2_1_2_RegData_newVarFrmt <- function(myInData=RegData){
+fun2_1_2_RegData_newVarFrmt <- function(myInData){
   #Made/formatted:
   #HovedDato_FRMT
   #AvdodDato_FRMT
@@ -27,15 +27,15 @@ fun2_1_2_RegData_newVarFrmt <- function(myInData=RegData){
   # - Variabels with integers and some "null" values in .csv file are imported as characters.
 
   #date formats (give the the suffix _FRMT just to make it easy to identify later, as working with dates often are subject to errors)
-  RegData$HovedDato_FRMT <- as.Date(RegData$HovedDato)#,format="%d.%m.%Y") #HovedDato
-  RegData$AvdodDato_FRMT <- as.Date(RegData$AvdodDato, format="%Y-%m-%d") #AvdodDato
+  myInData$HovedDato_FRMT <- as.Date(myInData$HovedDato)#,format="%d.%m.%Y") #HovedDato
+  myInData$AvdodDato_FRMT <- as.Date(myInData$AvdodDato, format="%Y-%m-%d") #AvdodDato
 
   #numeric formats ("null" values will here become NA, and you will get a warning: "NAs intorduced by coercion")
-  RegData$PasientAlder <- as.numeric(RegData$PasientAlder)
-  RegData$EDEQ60GlobalScore <- as.numeric(RegData$EDEQ60GlobalScore)
-  RegData$CIA30GlobalScore <- as.numeric(RegData$CIA30GlobalScore)
-  RegData$MedBMI <- as.numeric(RegData$MedBMI)
+  myInData$PasientAlder <- as.numeric(myInData$PasientAlder)
+  myInData$EDEQ60GlobalScore <- as.numeric(myInData$EDEQ60GlobalScore)
+  myInData$CIA30GlobalScore <- as.numeric(myInData$CIA30GlobalScore)
+  myInData$MedBMI <- as.numeric(myInData$MedBMI)
 
-  output <- RegData
+  output <- myInData
   return(invisible(output))
 }

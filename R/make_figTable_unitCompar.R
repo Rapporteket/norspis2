@@ -1,6 +1,8 @@
 #' Function to make data table for plot with comparison of hospitals
 #' Making a small summary table which will go into the plot with  percentages (proportions) within each group (hospital):
 #'
+#' This funcition works with both ordinary data (RegData) and data with added national values (RegDataNatVal)
+#'
 #' @param myIndata_NatVal myIndata_NatVal <- RegData_NatVal
 #' @param myInvar01 myVar01 <- quo(PROP_PO10Pasientsikkerhet)
 #'

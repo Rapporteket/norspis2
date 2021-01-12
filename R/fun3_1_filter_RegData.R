@@ -1,5 +1,7 @@
 #' Filter function for RegData (NOT start-end data):
 #'
+#' This function is also used to filter RegData with national values (NatVal) (as long as they are NOT start-end data)
+#'
 #' Note: This function's name when writing aarsrapport 2019 (in 2020) was: make29_data_filtered
 #'
 #' @param RegData myInData

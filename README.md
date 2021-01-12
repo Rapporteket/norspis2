@@ -1,4 +1,5 @@
 
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # norspis2
@@ -15,7 +16,7 @@ maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www
 <!-- badges: end -->
 
 The goal of norspis2 is to make standardized plots, tables and
-documents, that fits the norms of Norwegian medical quality registries.
+documents, that fits the norms of Norwegian medical quality registries
 
 ## Installation
 

@@ -2,7 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
-^README.md$
 *.html
 *.pdf
 *.xlsx

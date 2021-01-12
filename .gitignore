@@ -2,11 +2,8 @@
 .Rhistory
 .RData
 .Ruserdata
-*.png
 *.html
 *.pdf
 *.xlsx
 *.csv
 *.txt
-
-

@@ -16,6 +16,11 @@ knitr::opts_chunk$set(
 # norspis2
 
 <!-- badges: start -->
+[![Version](https://img.shields.io/github/v/release/rapporteket/norspis2?sort=semver)](https://github.com/rapporteket/norspis2/releases)
+[![R build status](https://github.com/Rapporteket/norspis2/workflows/R-CMD-check/badge.svg)](https://github.com/Rapporteket/norspis2/actions)
+[![codecov.io](https://codecov.io/github/Rapporteket/norspis2/norspis2.svg?branch=main)](https://codecov.io/github/Rapporteket/norspis2?branch=main)
+[![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+[![Doc](https://img.shields.io/badge/Doc--grey.svg)](https://rapporteket.github.io/norspis2/)
 <!-- badges: end -->
 
 The goal of norspis2 is to make standardized plots, tables and documents, that fits the norms of Norwegian medical quality registries.
@@ -36,9 +41,9 @@ So far the package contains functions to prepare:
 * The figures have functions for tables belonging to them (figTable), which must be run first and used as input to the figure functions. 
 
 
-Preliminary example that works
+Preliminary example that works (but only locally at NLSH...)
 
-```{r, eval=F}
+```{r, eval=FALSE}
 library(dplyr)
 
 
@@ -100,7 +105,7 @@ What is special about using `README.Rmd` instead of just `README.md`? You can in
 summary(cars)
 ```
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date.
+You may render `README.Rmd` manually, to keep `README.md` up-to-date. However, you may also leave this to the ci process at GitHub.
 
 You can also embed plots, for example:
 

@@ -74,9 +74,6 @@ shinyServer(function(input, output, session) {
   } else {
     print("Make sure that all necessary data are loaded locally - the script to
           import data locally is located locally at NLSH (on NorSpis' disk)")
-
-    reshID = '700821' #TESTNO" , Oslo: 109979, Bodø: 700821
-    userRole <-'SC'
   }
 
   # ----The different outputs----
@@ -103,7 +100,7 @@ shinyServer(function(input, output, session) {
 
   #End tab Administrasjon/Nøkkeltall
   output$fordelinger <- renderPlot({
-    norspis::NorSpisFigAndeler(
+    norspis2::NorSpis1FigAndeler(
       reshID=reshID,
       RegData=RegData,
       valgtVar=input$valgtVar,

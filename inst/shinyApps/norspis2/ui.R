@@ -31,7 +31,6 @@ ui <- tagList(
     theme = "rap/bootstrap.css",
     id = "tabs",
 
-
     # All the various tabs
 
     tabPanel(

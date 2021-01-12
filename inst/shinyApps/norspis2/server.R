@@ -4,6 +4,9 @@ shinyServer(function(input, output, session) {
 
   # Hide/show tabs
   hideTab(inputId = "tabs", target = "FIGUR: Sammenligninger (sykehus)")
+  hideTab(inputId = "tabs", target = "Sykehussammenligninger")
+  hideTab(inputId = "tabs", target = "Datakvalitet")
+  hideTab(inputId = "tabs", target = "Administrasjon")
 
   # Navbar user widget
   output$appUserName <- renderText(getUserFullName(session))
@@ -59,7 +62,8 @@ shinyServer(function(input, output, session) {
     userRole <- rapbase::getUserRole(session)
     author <- paste0(userFullName, "/", "Rapporteket")
 
-    # RegData <- NorSpisELAlleScorData(datoFra = '2015-01-01', datoTil = '2099-01-01',
+    # RegData <- NorSpisELAlleScorData(datoFra = '2015-01-01',
+    #                                  datoTil = '2099-01-01',
     #                                  session = session)
     RegData <- NULL
 
@@ -78,112 +82,148 @@ shinyServer(function(input, output, session) {
   # ----The different outputs----
   # Administrasjons/Nøkkeltall
   output$antallPas <- renderText({
-    NorSpisNokkeltall(RegData,
-                      enhetsUtvalgEgenNasjonal=input$valgtEnhetNokkeltall,
-                      reshID = reshID)
-                      #enhetsUtvalg = userRole
+    norspis::NorSpisNokkeltall(
+      RegData,
+      enhetsUtvalgEgenNasjonal=input$valgtEnhetNokkeltall,
+      reshID = reshID)
+    #enhetsUtvalg = userRole
   })
 
   output$plotAntallRegTid <- renderPlot({
-    if (dim(RegData)[1] > 0) {
-      NorSpisNokkeltallTid(RegData,
-                           enhetsUtvalgEgenNasjonal=input$valgtEnhetNokkeltall,
-                           reshID)
-    } else {
-      NULL
-    }
+  if (dim(RegData)[1] > 0) {
+    NorSpisNokkeltallTid(
+      RegData,
+      enhetsUtvalgEgenNasjonal=input$valgtEnhetNokkeltall,
+      reshID)
+  } else {
+    NULL
+  }
 
   })
-  #End tab Administrasjon/Nøkkeltall
 
+  #End tab Administrasjon/Nøkkeltall
   output$fordelinger <- renderPlot({
-    NorSpisFigAndeler(RegData=RegData, datoFra=input$datovalg[1], valgtVar=input$valgtVar, datoTil=input$datovalg[2],
-                      #erMann=as.numeric(input$erMann), deactivated 04.01.2021
-                      reshID=reshID, enhetsUtvalg=as.numeric(input$enhetsUtvalg), outfile='',
-                      #minald=as.numeric(input$alder[1]), deactivated 04.01.2021
-                      #maxald=as.numeric(input$alder[2]), deactivated 04.01.2021
-                      # minbmistart=as.numeric(input$bmistart[1]), deactivated 04.01.2021
-                      # maxbmistart=as.numeric(input$bmistart[2]), deactivated 04.01.2021
-                      regType=as.numeric(input$regType)#,
-                      # enhetstypeDogn=as.numeric(input$enhetstypeDogn),deactivated 04.01.2021
-                      # enhetstypeRegional=as.numeric(input$enhetstypeRegional)deactivated 04.01.2021
+    norspis::NorSpisFigAndeler(
+      reshID=reshID,
+      RegData=RegData,
+      valgtVar=input$valgtVar,
+      datoFra=input$datovalg[1],
+      datoTil=input$datovalg[2],
+      enhetsUtvalg=as.numeric(input$enhetsUtvalg),
+      regType=as.numeric(input$regType),
+      outfile=''
     )
   })
 
   output$fordelingerMed <- renderPlot({
-    NorSpisFigAndeler(RegData=RegData,
-                      reshID=reshID,
-                      datoFra=input$datovalgMed[1], valgtVar=input$valgtVarMed, datoTil=input$datovalgMed[2],
-                      #erMann=as.numeric(input$erMann), deactivated 04.01.2021
-                      enhetsUtvalg=as.numeric(input$enhetsUtvalgMed), outfile='',
-                      #minald=as.numeric(input$alder[1]), deactivated 04.01.2021
-                      #maxald=as.numeric(input$alder[2]), deactivated 04.01.2021
-                      # minbmistart=as.numeric(input$bmistart[1]), deactivated 04.01.2021
-                      # maxbmistart=as.numeric(input$bmistart[2]), deactivated 04.01.2021
-                      regType=as.numeric(input$regTypeMed)#,
-                      # enhetstypeDogn=as.numeric(input$enhetstypeDogn),deactivated 04.01.2021
-                      # enhetstypeRegional=as.numeric(input$enhetstypeRegional)deactivated 04.01.2021
+    norspis::NorSpisFigAndeler(
+      reshID=reshID,
+      RegData=RegData,
+      valgtVar=input$valgtVarMed,
+      datoFra=input$datovalgMed[1],
+      datoTil=input$datovalgMed[2],
+      enhetsUtvalg=as.numeric(input$enhetsUtvalgMed),
+      regType=as.numeric(input$regTypeMed),
+      outfile=''
     )
   })
 
   output$fordelingerInd <- renderPlot({
     norspis::NorSpisFigAndeler(
-      RegData=RegData,
       reshID=reshID,
-      datoFra=input$datovalgInd[1],
+      RegData=RegData,
       valgtVar=input$valgtVarInd,
+      enhetsUtvalg=as.numeric(input$enhetsUtvalgInd),
+      datoFra=input$datovalgInd[1],
       datoTil=input$datovalgInd[2],
-      #erMann=as.numeric(input$erMann), deactivated 04.01.2021
-      enhetsUtvalg=as.numeric(input$enhetsUtvalgInd), outfile='',
-      #minald=as.numeric(input$alder[1]), deactivated 04.01.2021
-      #maxald=as.numeric(input$alder[2]), deactivated 04.01.2021
-      # minbmistart=as.numeric(input$bmistart[1]), deactivated 04.01.2021
-      # maxbmistart=as.numeric(input$bmistart[2]), deactivated 04.01.2021
-      regType=as.numeric(input$regTypeInd)#,
-      # enhetstypeDogn=as.numeric(input$enhetstypeDogn),deactivated 04.01.2021
-      # enhetstypeRegional=as.numeric(input$enhetstypeRegional)deactivated 04.01.2021
+      regType=as.numeric(input$regTypeInd),
+      outfile=''
     )
   })
 
   output$fordelingerPas <- renderPlot({
-    NorSpisFigAndeler(RegData=RegData,
-                      reshID=reshID,
-                      datoFra=input$datovalgPas[1], valgtVar=input$valgtVarPas, datoTil=input$datovalgPas[2],
-                      #erMann=as.numeric(input$erMann), deactivated 04.01.2021
-                      enhetsUtvalg=as.numeric(input$enhetsUtvalgPas), outfile='',
-                      #minald=as.numeric(input$alder[1]), deactivated 04.01.2021
-                      #maxald=as.numeric(input$alder[2]), deactivated 04.01.2021
-                      # minbmistart=as.numeric(input$bmistart[1]), deactivated 04.01.2021
-                      # maxbmistart=as.numeric(input$bmistart[2]), deactivated 04.01.2021
-                      regType=as.numeric(input$regTypePas)#,
-                      # enhetstypeDogn=as.numeric(input$enhetstypeDogn),deactivated 04.01.2021
-                      # enhetstypeRegional=as.numeric(input$enhetstypeRegional)deactivated 04.01.2021
+    norspis::NorSpisFigAndeler(
+      reshID=reshID,
+      RegData=RegData,
+      valgtVar=input$valgtVarPas,
+      enhetsUtvalg=as.numeric(input$enhetsUtvalgPas),
+      datoFra=input$datovalgPas[1],
+      datoTil=input$datovalgPas[2],
+      regType=as.numeric(input$regTypePas),
+      outfile=''
     )
   })
 
   output$sykehusSammenlign <- renderPlot({
-    norspis2::make_figFig_unitCompar(norspis2::make_figTable_unitCompar(DL$RegDataNatVal2, rlang::quo(PROP_PO10Pasientsikkerhet)))
+    norspis2::make_figFig_unitCompar(
+      norspis2::make_figTable_unitCompar(
+        DL$RegDataNatVal2,
+        rlang::quo(PROP_PO10Pasientsikkerhet)))
 
   })
 
 
   output$andelerGrVar <- renderPlot({
-    NorSpisFigAndelerGrVar(RegData=RegData, datoFra=input$datovalgAndelGrVar[1], valgtVar=input$valgtVarAndelGrVar, datoTil=input$datovalgAndelGrVar[2], #erMann=erMann,
-                           grVar='SykehusAvdNavn', outfile='',
-                           minald=as.numeric(input$alderAndelGrVar[1]), maxald=as.numeric(input$alderAndelGrVar[2]), reshID=reshID)#, enhetsUtvalg=enhetsUtvalg,
+    norspis::NorSpisFigAndelerGrVar(
+      reshID=reshID,
+      RegData=RegData,
+      valgtVar=input$valgtVarAndelGrVar,
+      grVar='SykehusAvdNavn',
+      datoFra=input$datovalgAndelGrVar[1],
+      datoTil=input$datovalgAndelGrVar[2],
+      minald=as.numeric(input$alderAndelGrVar[1]),
+      maxald=as.numeric(input$alderAndelGrVar[2]),
+      outfile=''
+      )
   })
 
   output$PrePost <- renderPlot({
-    NorSpisFigPrePost(RegData=RegData, valgtVar=input$valgtVarPrePost,
-                      datoFra='2012-01-01',datoTil='2050-12-31',
-                      datoFraSluttreg = input$datovalgPrePost[1], datoTilSluttreg = input$datovalgPrePost[2], valgtMaal='Gjsn',
-                      minald=as.numeric(input$alderPrePost[1]), maxald=as.numeric(input$alderPrePost[2]),
-                      minbmistart = as.numeric(input$bmistartPrePost[1]), maxbmistart = as.numeric(input$bmistartPrePost[2]),
-                      erMann=as.numeric(input$erMannPrePost), outfile='',
-                      hentData=0, preprosess=1, regType='',enhetsUtvalg=as.numeric(input$enhetsUtvalgPrePost), reshID=reshID, diagnose = as.character(input$diagnosePrePost))
+    norspis::NorSpisFigPrePost(
+      RegData=RegData,
+      valgtVar=input$valgtVarPrePost,
+      datoFra='2012-01-01',
+      datoTil='2050-12-31',
+      datoFraSluttreg = input$datovalgPrePost[1],
+      datoTilSluttreg = input$datovalgPrePost[2],
+      valgtMaal='Gjsn',
+      minbmistart = as.numeric(input$bmistartPrePost[1]),
+      maxbmistart = as.numeric(input$bmistartPrePost[2]),
+      outfile='',
+      hentData=0,
+      preprosess=1,
+      regType='',
+      enhetsUtvalg=as.numeric(input$enhetsUtvalgPrePost),
+      reshID=reshID,
+      diagnose = as.character(input$diagnosePrePost))
   })
 
-  ##PDF-rapporter (FIKS: fungerer ikke - se https://rdrr.io/github/Rapporteket/nordicscir/src/inst/shinyApps/nordicscir/app.R og https://community.rstudio.com/t/commands-to-create-a-pdf-file/6264 )
+
+  output$tableOvers <- DT::renderDataTable({
+    norspis::NorSpisTabRegStatus(
+      RegData = RegData,
+      userRole = userRole,
+      reshID = reshID,
+      datoFra=input$datovalgRegOvers[1],
+      datoTil=input$datovalgRegOvers[2])
+
+  })
+
+  output$tableOversUtv <- DT::renderDataTable({
+    norspis::NorSpisTabRegStatusUtvidet(
+      RegData = RegData,
+      userRole = userRole,
+      reshID = reshID,
+      datoFra=input$datovalgRegOversUtv[1],
+      datoTil=input$datovalgRegOversUtv[2])
+
+  })
+
+
+
+  ###-----PDF-report-----
+  #(FIKS: fungerer ikke -
+  #se https://rdrr.io/github/Rapporteket/nordicscir/src/inst/shinyApps/nordicscir/app.R
+  #og https://community.rstudio.com/t/commands-to-create-a-pdf-file/6264 )
   #funksjon for å kjøre Rmd-filer (render file funksjon)
   contentFile <- function(file, srcFil, tmpFile) {
     src <- normalizePath(system.file(srcFil, package="norspis"))
@@ -211,7 +251,9 @@ shinyServer(function(input, output, session) {
     },
 
     content = function(file){
-      contentFile(file, srcFil="NorSpisMndRapp.Rmd", tmpFile="tmpNorSpisMndRapp.Rmd")
+      contentFile(file,
+                  srcFil="NorSpisMndRapp.Rmd",
+                  tmpFile="tmpNorSpisMndRapp.Rmd")
     }
   )
   # content = function(file){
@@ -230,38 +272,15 @@ shinyServer(function(input, output, session) {
   # )
   #
 
-
-  ##Output med kommentar fra vartilrettelegg (beskrivelse av figuren o.l)).
-  # output$beskrivelse <- renderText({
-  #       'Legg inn "kommentar" fra varTilrettelegg her'
-  # }
-  # )
-  output$tableOvers <- DT::renderDataTable({
-    NorSpisTabRegStatus(RegData = RegData,
-                        userRole = userRole,
-                        reshID = reshID,
-                        datoFra=input$datovalgRegOvers[1],
-                        datoTil=input$datovalgRegOvers[2])
-
-  })
-
-  output$tableOversUtv <- DT::renderDataTable({
-    NorSpisTabRegStatusUtvidet(RegData = RegData,
-                               userRole = userRole,
-                               reshID = reshID,
-                               datoFra=input$datovalgRegOversUtv[1],
-                               datoTil=input$datovalgRegOversUtv[2])
-
-  })
-
   ## Samlerapporter
   output$samlerapport <- renderUI({
-    htmlRenderRmd(srcFile = input$srcFile,
-                  params = list(title=paste("Rapport fra NorSpis for", reshID,
-                                            "enhet i NorSpis frem til oktober 2019"),
-                                author=paste0(reshID, "/Rapporteket"),
-                                reshID=reshID,
-                                tableFormat="html")
+    htmlRenderRmd(
+      srcFile = input$srcFile,
+      params = list(title=paste("Rapport fra NorSpis for", reshID,
+                                "enhet i NorSpis frem til oktober 2019"),
+                    author=paste0(reshID, "/Rapporteket"),
+                    reshID=reshID,
+                    tableFormat="html")
     )
   })
 
@@ -276,6 +295,6 @@ shinyServer(function(input, output, session) {
                                  "enhet i NorSpis frem til oktober 2019"))
     }
   )
-
+  ###-----PDF-report (END)
 
 })

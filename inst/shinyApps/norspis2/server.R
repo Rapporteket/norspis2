@@ -158,21 +158,6 @@ shinyServer(function(input, output, session) {
 
   })
 
-
-  output$andelerGrVar <- renderPlot({
-    norspis::NorSpisFigAndelerGrVar(
-      reshID=reshID,
-      RegData=RegData,
-      valgtVar=input$valgtVarAndelGrVar,
-      grVar='SykehusAvdNavn',
-      datoFra=input$datovalgAndelGrVar[1],
-      datoTil=input$datovalgAndelGrVar[2],
-      minald=as.numeric(input$alderAndelGrVar[1]),
-      maxald=as.numeric(input$alderAndelGrVar[2]),
-      outfile=''
-      )
-  })
-
   output$PrePost <- renderPlot({
     norspis2::NorSpis1FigPrePost(
       RegData=RegData,

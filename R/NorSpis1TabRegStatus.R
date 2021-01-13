@@ -14,17 +14,21 @@
 #'
 #' @examples
 
-NorSpis1TabRegStatus <- function(RegData, userRole, reshID, datoFra, datoTil) {
+NorSpis1TabRegStatus <- function(RegData,
+                                 userRole,
+                                 reshID,
+                                 datoFra,
+                                 datoTil) {
 
   #Pre-process data:
-  RegData <- NorSpis1_1_Preprosess(RegData=RegData) #blant annet velger
-  #man her kun ferdigstilte registreringer
+  RegData <- NorSpis1_1_Preprosess(RegData=RegData)
+  #blant annet velger man her i preprosess-funksjonen kun
+  #ferdigstilte registreringer
 
   #------- Gjøre utvalg
-  NorSpisUtvalg <- NorSpis1_3_Utvalg(
-    RegData=RegData,
-    datoFra=datoFra,
-    datoTil=datoTil)
+  NorSpisUtvalg <- NorSpis1_3_Utvalg(RegData=RegData,
+                                     datoFra=datoFra,
+                                     datoTil=datoTil)
 
   RegData <- NorSpisUtvalg$RegData
   utvalgTxt <- NorSpisUtvalg$utvalgTxt

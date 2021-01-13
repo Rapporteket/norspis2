@@ -1,6 +1,5 @@
 library(shiny)
 library(shinyBS) # Additional Bootstrap Controls
-library(norspis)
 library(norspis2)
 library(rapmap)
 library(shiny)
@@ -92,7 +91,6 @@ ui <- tagList(
                              "Start: Startregistrering, voksne"=3,
                              "Start Startregistrering, barn og unge"=4)
               )
-
             ),
 
             h5("Bygget med",
@@ -114,7 +112,6 @@ ui <- tagList(
                                 organization = uiOutput("appOrgName"),
                                 addUserInfo = TRUE),
             tags$head(tags$link(rel="shortcut icon", href="rap/favicon.ico"))
-
 
           )
         ),
@@ -380,53 +377,6 @@ ui <- tagList(
       )
 
     ),#tab Resultater
-    tabPanel(
-      "FIGUR: Sammenligninger (sykehus)",
-      sidebarPanel(
-        width = 3,
-        wellPanel(
-          selectInput(
-            inputId = "valgtVarAndelGrVar",
-            label="Variabel",
-            choices = c(
-              'Undervektstatus (KI)' = 'IkkeUndervektSlutt',
-              'Utfallsvurdering (KI)' = 'PT03Utfallsvurd',
-              'Utbyttevurdering (KI)' = 'PO09Utbytte',
-              'Endring EDE-Q (KI)'='EDEQ60GlobalScoreRCI',
-              'Endring CIA (KI)'='CIA30GlobalScoreRCI')
-          ),
-          dateRangeInput(
-            inputId = 'datovalgAndelGrVar',
-            start = "2018-01-01",
-            end = "2021-12-31",#end = Sys.Date()
-            label = "2. Velg tidsperiode",
-            separator="t.o.m.",
-            language="nb"
-          ),
-          sliderInput(
-            inputId="alderAndelGrVar",
-            label = "Alder",
-            min = 0,
-            max = 110,
-            value = c(0, 110)
-          )
-        ),
-
-        h5("Bygget med",
-           img(src = "https://www.rstudio.com/wp-content/uploads/2014/04/shiny.png",
-               height = "30px"),
-           "by",
-           img(src = "https://rstudio.com/wp-content/uploads/2014/07/RStudio-Logo-Blue-Gray.png",
-               height ="30px"),
-           ".")
-      ),
-      mainPanel(
-        plotOutput(
-          outputId = 'andelerGrVar',
-          width="800px",
-          height = "800px")
-      )
-    ),#tab sammenlignigner sykehus
 
     tabPanel(
       "Datakvalitet",

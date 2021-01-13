@@ -3,7 +3,6 @@ library(shiny)
 shinyServer(function(input, output, session) {
 
   # Hide/show tabs
-  hideTab(inputId = "tabs", target = "FIGUR: Sammenligninger (sykehus)")
   hideTab(inputId = "tabs", target = "Sykehussammenligninger")
   hideTab(inputId = "tabs", target = "Datakvalitet")
   hideTab(inputId = "tabs", target = "Administrasjon")
@@ -113,7 +112,7 @@ shinyServer(function(input, output, session) {
   })
 
   output$fordelingerMed <- renderPlot({
-    norspis::NorSpisFigAndeler(
+    norspis2::NorSpis1FigAndeler(
       reshID=reshID,
       RegData=RegData,
       valgtVar=input$valgtVarMed,
@@ -126,7 +125,7 @@ shinyServer(function(input, output, session) {
   })
 
   output$fordelingerInd <- renderPlot({
-    norspis::NorSpisFigAndeler(
+    norspis2::NorSpis1FigAndeler(
       reshID=reshID,
       RegData=RegData,
       valgtVar=input$valgtVarInd,
@@ -139,7 +138,7 @@ shinyServer(function(input, output, session) {
   })
 
   output$fordelingerPas <- renderPlot({
-    norspis::NorSpisFigAndeler(
+    norspis2::NorSpis1FigAndeler(
       reshID=reshID,
       RegData=RegData,
       valgtVar=input$valgtVarPas,
@@ -175,7 +174,7 @@ shinyServer(function(input, output, session) {
   })
 
   output$PrePost <- renderPlot({
-    norspis::NorSpisFigPrePost(
+    norspis2::NorSpis1FigPrePost(
       RegData=RegData,
       valgtVar=input$valgtVarPrePost,
       datoFra='2012-01-01',

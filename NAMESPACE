@@ -2,6 +2,10 @@
 
 export(NorSpis1FigAndeler)
 export(NorSpis1FigPrePost)
+export(NorSpis1Nokkeltall)
+export(NorSpis1NokkeltallTid)
+export(NorSpis1TabRegStatus)
+export(NorSpis1TabRegStatusUtvidet)
 export(NorSpis1_1_Preprosess)
 export(NorSpis1_2_VarTilrettelegg)
 export(NorSpis1_3_Utvalg)

@@ -3,9 +3,9 @@ library(shiny)
 shinyServer(function(input, output, session) {
 
   # Hide/show tabs
-  hideTab(inputId = "tabs", target = "Sykehussammenligninger")
-  hideTab(inputId = "tabs", target = "Datakvalitet")
-  hideTab(inputId = "tabs", target = "Administrasjon")
+  #hideTab(inputId = "tabs", target = "Sykehussammenligninger")
+  #hideTab(inputId = "tabs", target = "Datakvalitet")
+  #hideTab(inputId = "tabs", target = "Administrasjon")
 
   # Navbar user widget
   output$appUserName <- renderText(getUserFullName(session))
@@ -78,7 +78,7 @@ shinyServer(function(input, output, session) {
   # ----The different outputs----
   # Administrasjons/Nøkkeltall
   output$antallPas <- renderText({
-    norspis::NorSpisNokkeltall(
+    norspis2::NorSpis1Nokkeltall(
       RegData,
       enhetsUtvalgEgenNasjonal=input$valgtEnhetNokkeltall,
       reshID = reshID)
@@ -87,7 +87,7 @@ shinyServer(function(input, output, session) {
 
   output$plotAntallRegTid <- renderPlot({
   if (dim(RegData)[1] > 0) {
-    NorSpisNokkeltallTid(
+    norspis2::NorSpis1NokkeltallTid(
       RegData,
       enhetsUtvalgEgenNasjonal=input$valgtEnhetNokkeltall,
       reshID)
@@ -180,7 +180,7 @@ shinyServer(function(input, output, session) {
 
 
   output$tableOvers <- DT::renderDataTable({
-    norspis::NorSpisTabRegStatus(
+    norspis2::NorSpis1TabRegStatus(
       RegData = RegData,
       userRole = userRole,
       reshID = reshID,
@@ -190,7 +190,7 @@ shinyServer(function(input, output, session) {
   })
 
   output$tableOversUtv <- DT::renderDataTable({
-    norspis::NorSpisTabRegStatusUtvidet(
+    norspis2::NorSpis1TabRegStatusUtvidet(
       RegData = RegData,
       userRole = userRole,
       reshID = reshID,

@@ -66,9 +66,21 @@ shinyServer(function(input, output, session) {
     #                                  session = session)
     RegData <- NULL
 
+    ####TODO AreEdv need to remember to import RegDataBeh as
+    #as well (new in NorSpis2) and run the function to make the
+    #five datasets norspis2 plans to use
+    RegDataBeh <- ''
+
+    DL <- norspis2::fun2_dataList(myInData1 = RegData,
+                                  myInData2 = RegDataBeh)
+    #### TODO-END
+
     # if (userRole != "SC") {
     #   hideTab(inputId = "tabs", target = "OVERSIKT: Registreringer")
     # }
+
+
+
 
   } else {
     print("Make sure that all necessary data are loaded locally - the script to

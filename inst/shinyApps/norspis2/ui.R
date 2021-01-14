@@ -89,7 +89,7 @@ ui <- tagList(
                 selected = c("Start: Kun utredning, voksne"=1,
                              "Start: Kun utredning, barn og unge"=2,
                              "Start: Startregistrering, voksne"=3,
-                             "Start Startregistrering, barn og unge"=4)
+                             "Start: Startregistrering, barn og unge"=4)
               )
             ),
 

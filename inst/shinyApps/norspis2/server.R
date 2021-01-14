@@ -67,10 +67,10 @@ shinyServer(function(input, output, session) {
     RegData <- NULL
 
     ####TODO AreEdv need to remember to import RegDataBeh as
-    #as well (new in NorSpis2) and run the function to make the
-    #five datasets norspis2 plans to use
+    #as well (new in NorSpis2) ...
     RegDataBeh <- ''
-
+    #...and run the function to make the
+    # five datasets norspis2 plans to use
     DL <- norspis2::fun2_dataList(myInData1 = RegData,
                                   myInData2 = RegDataBeh)
     #### TODO-END

@@ -116,7 +116,9 @@ make_figFig_unitCompar <- function(
             my_proptable_hospitals$AvdNavn, "Nasjonal"),]$perc,
           col='forestgreen',
           size=1,
-          linetype=1) #to set goal value at national value: "my_proptable_hospitals[stringr::str_detect(my_proptable_hospitals$AvdNavn, "Nasjonal"),]$perc"
+          linetype=1) #to set goal value at national value, use:
+      #"my_proptable_hospitals[stringr::str_detect(
+      #  my_proptable_hospitals$AvdNavn, "Nasjonal"),]$perc"
 
     } else {
       fig <-   fig +

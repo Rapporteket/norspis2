@@ -181,29 +181,30 @@ NorSpis1FigAndeler  <- function(RegData, valgtVar,
   tittel2 = NorSpisVarSpes$tittel2
   kommentar = NorSpisVarSpes$kommentar
 
-  lagFig <- 0
-  if (lagFig == 1) {
-    #cexgr <- 1-ifelse(AntGr>20, 0.25*AntGr/60, 0)
-    NorSpisFigSoyler(RegData,
-                     AggVerdier,
-                     Ngr,
-                     tittel=NorSpisVarSpes$tittel,
-                     hovedgrTxt=NorSpisUtvalg$hovedgrTxt,
-                     smltxt=NorSpisUtvalg$smltxt,
-                     msdtxt='msd',
-                     Ngr = Ngr,
-                     KImaal <- NorSpisVarSpes$KImaal,
-                     N=N,
-                     retn='V',
-                     utvalgTxt,
-                     grtxt=NorSpisVarSpes$grtxt,
-                     grtxt2=grtxt2,
-                     medSml=NorSpisUtvalg$medSml,
-                     xAkseTxt=NorSpisVarSpes$xAkseTxt,
-                     yAkseTxt=yAkseTxt,
-                     outfile=outfile)
-    #ENDRE så figurparametrene skrives fullt ut i parameterkallet
-  }
+  #
+  # lagFig <- 0
+  # if (lagFig == 1) {
+  #   #cexgr <- 1-ifelse(AntGr>20, 0.25*AntGr/60, 0)
+  #   NorSpisFigSoyler(RegData,
+  #                    AggVerdier,
+  #                    Ngr,
+  #                    tittel=NorSpisVarSpes$tittel,
+  #                    hovedgrTxt=NorSpisUtvalg$hovedgrTxt,
+  #                    smltxt=NorSpisUtvalg$smltxt,
+  #                    msdtxt='msd',
+  #                    Ngr = Ngr,
+  #                    KImaal <- NorSpisVarSpes$KImaal,
+  #                    N=N,
+  #                    retn='V',
+  #                    utvalgTxt,
+  #                    grtxt=NorSpisVarSpes$grtxt,
+  #                    grtxt2=grtxt2,
+  #                    medSml=NorSpisUtvalg$medSml,
+  #                    xAkseTxt=NorSpisVarSpes$xAkseTxt,
+  #                    yAkseTxt=yAkseTxt,
+  #                    outfile=outfile)
+  #   #ENDRE så figurparametrene skrives fullt ut i parameterkallet
+  # }
 
 
 

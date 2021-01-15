@@ -22,6 +22,9 @@ Imports:
     forcats,
     stringr,
     scales,
+    shinyBS,
+    shinydashboard,
+    shinyWidgets,
     rlang,
     wrapr,
     ggplot2

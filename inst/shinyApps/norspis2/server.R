@@ -3,10 +3,9 @@ library(shiny)
 shinyServer(function(input, output, session) {
 
   # Hide/show tabs
-  hideTab(inputId = "tabs", target = "FIGUR: Sammenligninger (sykehus)")
-  hideTab(inputId = "tabs", target = "Sykehussammenligninger")
-  hideTab(inputId = "tabs", target = "Datakvalitet")
-  hideTab(inputId = "tabs", target = "Administrasjon")
+  #hideTab(inputId = "tabs", target = "Sykehussammenligninger")
+  #hideTab(inputId = "tabs", target = "Datakvalitet")
+  #hideTab(inputId = "tabs", target = "Administrasjon")
 
   # Navbar user widget
   output$appUserName <- renderText(getUserFullName(session))
@@ -67,22 +66,31 @@ shinyServer(function(input, output, session) {
     #                                  session = session)
     RegData <- NULL
 
+    ####TODO AreEdv need to remember to import RegDataBeh as
+    #as well (new in NorSpis2) ...
+    RegDataBeh <- ''
+    #...and run the function to make the
+    # five datasets norspis2 plans to use
+    DL <- norspis2::fun2_dataList(myInData1 = RegData,
+                                  myInData2 = RegDataBeh)
+    #### TODO-END
+
     # if (userRole != "SC") {
     #   hideTab(inputId = "tabs", target = "OVERSIKT: Registreringer")
     # }
 
+
+
+
   } else {
     print("Make sure that all necessary data are loaded locally - the script to
           import data locally is located locally at NLSH (on NorSpis' disk)")
-
-    reshID = '700821' #TESTNO" , Oslo: 109979, Bodø: 700821
-    userRole <-'SC'
   }
 
   # ----The different outputs----
   # Administrasjons/Nøkkeltall
   output$antallPas <- renderText({
-    norspis::NorSpisNokkeltall(
+    norspis2::NorSpis1Nokkeltall(
       RegData,
       enhetsUtvalgEgenNasjonal=input$valgtEnhetNokkeltall,
       reshID = reshID)
@@ -91,7 +99,7 @@ shinyServer(function(input, output, session) {
 
   output$plotAntallRegTid <- renderPlot({
   if (dim(RegData)[1] > 0) {
-    NorSpisNokkeltallTid(
+    norspis2::NorSpis1NokkeltallTid(
       RegData,
       enhetsUtvalgEgenNasjonal=input$valgtEnhetNokkeltall,
       reshID)
@@ -103,7 +111,7 @@ shinyServer(function(input, output, session) {
 
   #End tab Administrasjon/Nøkkeltall
   output$fordelinger <- renderPlot({
-    norspis::NorSpisFigAndeler(
+    norspis2::NorSpis1FigAndeler(
       reshID=reshID,
       RegData=RegData,
       valgtVar=input$valgtVar,
@@ -116,7 +124,7 @@ shinyServer(function(input, output, session) {
   })
 
   output$fordelingerMed <- renderPlot({
-    norspis::NorSpisFigAndeler(
+    norspis2::NorSpis1FigAndeler(
       reshID=reshID,
       RegData=RegData,
       valgtVar=input$valgtVarMed,
@@ -129,7 +137,7 @@ shinyServer(function(input, output, session) {
   })
 
   output$fordelingerInd <- renderPlot({
-    norspis::NorSpisFigAndeler(
+    norspis2::NorSpis1FigAndeler(
       reshID=reshID,
       RegData=RegData,
       valgtVar=input$valgtVarInd,
@@ -142,7 +150,7 @@ shinyServer(function(input, output, session) {
   })
 
   output$fordelingerPas <- renderPlot({
-    norspis::NorSpisFigAndeler(
+    norspis2::NorSpis1FigAndeler(
       reshID=reshID,
       RegData=RegData,
       valgtVar=input$valgtVarPas,
@@ -155,30 +163,21 @@ shinyServer(function(input, output, session) {
   })
 
   output$sykehusSammenlign <- renderPlot({
-    norspis2::make_figFig_unitCompar(
-      norspis2::make_figTable_unitCompar(
-        DL$RegDataNatVal2,
-        rlang::quo(PROP_PO10Pasientsikkerhet)))
+        #filter
+        dat <- norspis2::fun3_1_filter_RegData(RegData = DL$RegDataNatVal2,
+                                               ageFrom = 5,
+                                               ageTo = 15)
+      #table to plot
+      tab <- norspis2::make_figTable_unitCompar(
+        dat,
+        rlang::quo(PROP_PO10Pasientsikkerhet))
+    #plot
+    norspis2::make_figFig_unitCompar(tab)
 
-  })
-
-
-  output$andelerGrVar <- renderPlot({
-    norspis::NorSpisFigAndelerGrVar(
-      reshID=reshID,
-      RegData=RegData,
-      valgtVar=input$valgtVarAndelGrVar,
-      grVar='SykehusAvdNavn',
-      datoFra=input$datovalgAndelGrVar[1],
-      datoTil=input$datovalgAndelGrVar[2],
-      minald=as.numeric(input$alderAndelGrVar[1]),
-      maxald=as.numeric(input$alderAndelGrVar[2]),
-      outfile=''
-      )
   })
 
   output$PrePost <- renderPlot({
-    norspis::NorSpisFigPrePost(
+    norspis2::NorSpis1FigPrePost(
       RegData=RegData,
       valgtVar=input$valgtVarPrePost,
       datoFra='2012-01-01',
@@ -199,7 +198,7 @@ shinyServer(function(input, output, session) {
 
 
   output$tableOvers <- DT::renderDataTable({
-    norspis::NorSpisTabRegStatus(
+    norspis2::NorSpis1TabRegStatus(
       RegData = RegData,
       userRole = userRole,
       reshID = reshID,
@@ -209,7 +208,7 @@ shinyServer(function(input, output, session) {
   })
 
   output$tableOversUtv <- DT::renderDataTable({
-    norspis::NorSpisTabRegStatusUtvidet(
+    norspis2::NorSpis1TabRegStatusUtvidet(
       RegData = RegData,
       userRole = userRole,
       reshID = reshID,

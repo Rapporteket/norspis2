@@ -1,5 +1,4 @@
 
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # norspis2
@@ -16,9 +15,11 @@ maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www
 <!-- badges: end -->
 
 The goal of norspis2 is to make standardized plots, tables and
-documents, that fits the norms of Norwegian medical quality registries
+documents, that fits the norms of Norwegian medical quality registries.
 
 ## Installation
+
+Test comment.
 
 This package is made for use in Norwegian Quality Registry for Eating
 Disorders (NorSpis), and has little utility outside the ecosystem of
@@ -42,16 +43,38 @@ Preliminary example that works (but only locally at NLSH…)
 ``` r
 library(dplyr)
 
-RegData <- norspis2::fun1_1_import_data_FEA()
-RegData <- norspis2::fun2_1_1_RegData_newVarGlobal()
-RegData <- norspis2::fun2_1_2_RegData_newVarFrmt()
-RegData <- norspis2::fun2_1_3_RegData_newVarMAsNA()
-RegData <- norspis2::fun2_1_4_RegData_newVarDich()
-  
 
-RegDataNatVal <- norspis2::fun2_3_RegDataNatVal()
+RegData <- norspis2::fun1_1_import_data_FEA(path_data="F:/2020-28-12_data-til-utvikling/", #disk and folder of data to import
+                                            date_data="2020-12-28")
 
-tab <- norspis2::make_figTable_unitCompar(RegDataNatVal, rlang::quo(PROP_PO10Pasientsikkerhet))
+RegDataBeh <- norspis2::fun1_2_import_data_B(path_data="F:/2020-28-12_data-til-utvikling/", #disk and folder of data to import
+                                               date_data="2020-12-28")
+
+#Five datasets (outputted in a list):
+DL <- norspis2::fun2_dataList(myInData1 = RegData, myInData2 = RegDataBeh)
+
+# RegDataNatVal2_filtered <- fun3_1_filter_RegData(RegData = RegDataNatVal2,
+#                                     regStatus = c(1),#c(0,1,-1),
+#                                     regType = c(0,1,2,3,4,5,6,98,99),
+#                                     dateFrom = "2012-01-01",
+#                                     dateTo = "2100-12-31",
+#                                     ageFrom = 0,
+#                                     ageTo = 200)
+
+# RegDataStartEnd <- fun3_2_filter_RegDataStartEnd(RegDataStartEnd = myInData,
+#                                                 BasisRegStatus.x = c(0,1,-1),
+#                                                 RegRegType.x = c(0,1,2,3,4,5,6,98,99),
+#                                                 RegRegType.y = c(5,6,98,99,NA),
+#                                                 dateFrom.x = "2012-01-01",
+#                                                 dateTo.x = "2100-12-31",
+#                                                 dateFrom.y = "2012-01-01",
+#                                                 dateTo.y = "2100-12-31",
+#                                                 ageFrom.x = 0,
+#                                                 ageTo.x = 200,
+#                                                 ageFrom.y = 0,
+#                                                 ageTo.y = 200)
+
+tab <- norspis2::make_figTable_unitCompar(DL$RegDataNatVal2, rlang::quo(PROP_PO10Pasientsikkerhet))
 fig <- norspis2::make_figFig_unitCompar(tab)
 fig
 ```

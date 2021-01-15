@@ -4,8 +4,10 @@
 \alias{make_table_DQ_missing}
 \title{Make data quality table with proportions of missing values for chosen variables.}
 \usage{
-make_table_DQ_missing(RegData = myFilteredData,
-  varsInMissTab = myvarStringMiss)
+make_table_DQ_missing(
+  RegData = myFilteredData,
+  varsInMissTab = myvarStringMiss
+)
 }
 \arguments{
 \item{RegData}{myFilteredData}

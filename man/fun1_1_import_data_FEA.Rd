@@ -4,8 +4,10 @@
 \alias{fun1_1_import_data_FEA}
 \title{Import data locally (and convert it to a tibble for convinience - easier to work with in the console than a data.frame)}
 \usage{
-fun1_1_import_data_FEA(path_data = "F:/2020-28-12_data-til-utvikling/",
-  date_data = "2020-12-28")
+fun1_1_import_data_FEA(
+  path_data = "F:/2020-28-12_data-til-utvikling/",
+  date_data = "2020-12-28"
+)
 }
 \arguments{
 \item{path_data}{path of you data (F,E, and A - named NorSpis_ForlopsOversikt_datadump_DATE, NorSpis_EnkeltLeddNum_datadump_DATE and NorSpis_AlleScorer_datadump_DATE}

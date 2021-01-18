@@ -1,7 +1,6 @@
 library(shiny)
 library(shinyBS) # Additional Bootstrap Controls
 library(norspis2)
-library(rapmap)
 library(shiny)
 library(shinyalert)
 library(shinydashboard)

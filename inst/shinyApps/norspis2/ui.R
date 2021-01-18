@@ -23,7 +23,7 @@ ui <- tagList(
     # Title, logo and such
     title = div(
       a(includeHTML(system.file('www/logo.svg', package='rapbase'))),
-      "Norsk kvalitetsregister for behandling av spiseforstyrrelser"),
+      "Rapporteket for NorSpis"),
     windowTitle = "Norsk kvalitetsregister
                      for behandling av spiseforstyrrelser",
     theme = "rap/bootstrap.css",

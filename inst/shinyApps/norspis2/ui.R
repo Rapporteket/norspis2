@@ -361,7 +361,21 @@ ui <- tagList(
           sidebarPanel(
             width = 3,
             wellPanel(
-
+              selectInput(
+                inputId = "valgtVarSykehusSammenlign",
+                label="Variabel",
+                choices = c(#"dasf"= "dgfhgjhk",
+                            "Pasientsikkerhet" = "PROP_PO10Pasientsikkerhet",
+                            "Utbytte" = "PROP_PO09Utbytte")
+              ),
+              dateRangeInput(
+                inputId = 'datovalgSykehusSammenlign',
+                start = "2018-01-01",
+                end = "2021-12-31",# Sys.Date(),
+                label = "Tidsperiode (datoene gjelder sluttregistreringen)",
+                separator="t.o.m.",
+                language="nb"
+              )
             )
           ),
 

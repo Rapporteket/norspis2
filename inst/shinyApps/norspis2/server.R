@@ -165,12 +165,17 @@ shinyServer(function(input, output, session) {
   output$sykehusSammenlign <- renderPlot({
         #filter
         dat <- norspis2::fun3_1_filter_RegData(RegData = DL$RegDataNatVal2,
-                                               ageFrom = 5,
-                                               ageTo = 15)
+                                               dateFrom =
+                                                 input$datovalgSykehusSammenlign[1],
+                                               dateTo =
+                                                 input$datovalgSykehusSammenlign[2],
+                                               regStatus = 1)#only complete reg
       #table to plot
+
+
       tab <- norspis2::make_figTable_unitCompar(
-        dat,
-        rlang::quo(PROP_PO10Pasientsikkerhet))
+        myIndata_NatVal =  dat,
+        myInvar01 = input$valgtVarSykehusSammenlign)#rlang::quo(PROP_PO10Pasientsikkerhet))#input$valgtVarSykehusSammenlign)#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(!!input$valgtVarSykehusSammenlign))
     #plot
     norspis2::make_figFig_unitCompar(tab)
 

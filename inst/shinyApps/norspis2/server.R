@@ -56,32 +56,24 @@ shinyServer(function(input, output, session) {
 
     # Parameters that will remain throughout the session
     ## setting values that do depend on a Rapporteket context
+    registryName <- "norspis"
     reshID <- rapbase::getUserReshId(session)
     userFullName <- rapbase::getUserFullName(session)
     userRole <- rapbase::getUserRole(session)
     author <- paste0(userFullName, "/", "Rapporteket")
 
-    # RegData <- NorSpisELAlleScorData(datoFra = '2015-01-01',
-    #                                  datoTil = '2099-01-01',
-    #                                  session = session)
-    RegData <- NULL
+    # Get data
+    alle_scorer <-
+      norspis2::query_alle_scorer(registryName, reshID)
+    enkelt_ledd_num <-
+      norspis2::query_enkelt_ledd_num(registryName, reshID)
+    forlops_oversikt <-
+      norspis2::query_forlops_oversikt(registryName, reshID)
+    query_behandling_num <-
+      norspis2::query_behandling_num(registryName, reshID)
 
-    ####TODO AreEdv need to remember to import RegDataBeh as
-    #as well (new in NorSpis2) ...
-    RegDataBeh <- ''
-    #...and run the function to make the
-    # five datasets norspis2 plans to use
-    DL <- norspis2::fun2_dataList(myInData1 = RegData,
-                                  myInData2 = RegDataBeh)
-    #### TODO-END
-
-    # if (userRole != "SC") {
-    #   hideTab(inputId = "tabs", target = "OVERSIKT: Registreringer")
-    # }
-
-
-
-
+    # Curate data
+    ## Mads: run your funs on above data ending up with DL
   } else {
     print("Make sure that all necessary data are loaded locally - the script to
           import data locally is located locally at NLSH (on NorSpis' disk)")

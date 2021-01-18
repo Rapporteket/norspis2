@@ -4,15 +4,9 @@
 \alias{fun3_1_filter_RegData}
 \title{Filter function for RegData (NOT start-end data):}
 \usage{
-fun3_1_filter_RegData(
-  RegData = myInData,
-  regStatus = c(0, 1, -1),
-  regType = c(0, 1, 2, 3, 4, 5, 6, 98, 99),
-  dateFrom = "2012-01-01",
-  dateTo = "2100-12-31",
-  ageFrom = 0,
-  ageTo = 200
-)
+fun3_1_filter_RegData(RegData = myInData, regStatus = c(0, 1, -1),
+  regType = c(0, 1, 2, 3, 4, 5, 6, 98, 99), dateFrom = "2012-01-01",
+  dateTo = "2100-12-31", ageFrom = 0, ageTo = 200)
 }
 \arguments{
 \item{RegData}{myInData}

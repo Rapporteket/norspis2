@@ -4,12 +4,8 @@
 \alias{NorSpis1_2_VarTilrettelegg}
 \title{Funksjon for å tilrettelegge variable for beregning.}
 \usage{
-NorSpis1_2_VarTilrettelegg(
-  RegData,
-  valgtVar,
-  grVar = "SykehusNavn",
-  figurtype = "andeler"
-)
+NorSpis1_2_VarTilrettelegg(RegData, valgtVar, grVar = "SykehusNavn",
+  figurtype = "andeler")
 }
 \arguments{
 \item{figurtype}{}

@@ -4,13 +4,8 @@
 \alias{NorSpis1TabRegStatusUtvidet}
 \title{Tabell med tellinger, per behandlingsenhet/sykehusavdeling}
 \usage{
-NorSpis1TabRegStatusUtvidet(
-  RegData = RegData,
-  userRole,
-  reshID,
-  datoFra,
-  datoTil
-)
+NorSpis1TabRegStatusUtvidet(RegData = RegData, userRole, reshID, datoFra,
+  datoTil)
 }
 \arguments{
 \item{datoTil}{}

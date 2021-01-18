@@ -3,39 +3,24 @@
 \name{NorSpis1FigPrePost}
 \alias{NorSpis1FigPrePost}
 \title{Søylediagram som viser sentralmå, gjennomsnitt/median, ved to ulike tidspunkter
-(før og etter/ved starten og slutten av behandlingen)}
+-før og etter/ved starten og slutten av behandlingen}
 \usage{
-NorSpis1FigPrePost(
-  RegData,
-  reshID,
-  outfile = "",
-  hentData = 0,
-  preprosess = 1,
-  enhetsUtvalg = 1,
-  valgtMaal = "Gjsn",
-  valgtVar,
-  datoFra = "2012-04-01",
-  datoTil = "2050-12-31",
-  datoFraSluttreg = "",
-  datoTilSluttreg = "",
-  minbmistart = 0,
-  maxbmistart = 200,
-  minald = 0,
-  maxald = 130,
-  erMann = "",
-  regType = "",
-  diagnose = ""
-)
+NorSpis1FigPrePost(RegData, reshID, outfile = "", hentData = 0,
+  preprosess = 1, enhetsUtvalg = 1, valgtMaal = "Gjsn", valgtVar,
+  datoFra = "2012-04-01", datoTil = "2050-12-31",
+  datoFraSluttreg = "", datoTilSluttreg = "", minbmistart = 0,
+  maxbmistart = 200, minald = 0, maxald = 130, erMann = "",
+  regType = "", diagnose = "")
 }
 \arguments{
-\item{valgtMaal}{Sentralmål 'Med' gir median, alt annet gir gjennomsnitt}
+\item{valgtMaal}{Sentralmaal 'Med' gir median, alt annet gir gjennomsnitt}
 
 \item{valgtVar}{Variabelen det skal vises resultat for}
 
 \item{diagnose}{}
 }
 \value{
-Figur med gjennomsnitt eller median ved to ulike tidspunkt.
+Figur med gjennomsnitt eller median ved to ulike tidspunkt
 }
 \description{
 Pre/post-sammenligningsfigur har litt anndre datofiltre enn f.eks. figur for andelsfordelingsfigur. Dette fordi:
@@ -44,8 +29,4 @@ Pre/post-sammenligningsfigur har litt anndre datofiltre enn f.eks. figur for and
  men må ta hensyn til at både start-og sluttregistrenger skal være med i figur.
 Se ellers figurtekst som kommer ut til PrePost-figur i Shiny-applikasjonen
 for å forstå hvilke datoer som er sortert på.
-}
-\examples{
-/ ',
-\%')
 }

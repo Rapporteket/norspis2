@@ -4,13 +4,8 @@
 \alias{make_figFig_unitCompar}
 \title{Figure with comparisons of hospital units}
 \usage{
-make_figFig_unitCompar(
-  my_proptable_hospitals,
-  my_y_lab = "Andel (\%)",
-  my_title = "",
-  YellowGoal = "mean",
-  GreenGoal = "mean"
-)
+make_figFig_unitCompar(my_proptable_hospitals, my_y_lab = "Andel (\%)",
+  my_title = "", YellowGoal = "mean", GreenGoal = "mean")
 }
 \arguments{
 \item{my_proptable_hospitals}{my_proptable_hospitals <- RegData_NatVal_summarized #with NATIONA vulues!}

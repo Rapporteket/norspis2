@@ -63,17 +63,50 @@ shinyServer(function(input, output, session) {
     author <- paste0(userFullName, "/", "Rapporteket")
 
     # Get data
+    #Message to Are: Beneath each four imports you see two lines that
+    #changes some values/names. This is at least necessary locally,
+    #but maybe not on when the data is imported directrly from database, and
+    #if so you must delete those eight lines of code.
     alle_scorer <-
       norspis2::query_alle_scorer(registryName, reshID)
+    colnames(alle_scorer)[1] <- 'ForlopsID'
+    alle_scorer[is.na(alle_scorer)] <- 'null'
+
     enkelt_ledd_num <-
       norspis2::query_enkelt_ledd_num(registryName, reshID)
+    colnames(enkelt_ledd_num)[1] <- 'PasientID'
+    enkelt_ledd_num[is.na(enkelt_ledd_num)] <- 'null'
+
     forlops_oversikt <-
       norspis2::query_forlops_oversikt(registryName, reshID)
+    colnames(forlops_oversikt)[1] <- 'AvdRESH' #necessary
+    forlops_oversikt[is.na(forlops_oversikt)] <- 'null' #necessary
+
     query_behandling_num <-
       norspis2::query_behandling_num(registryName, reshID)
+    colnames(query_behandling_num)[1] <- 'BehandlingID' #because first column is
+                                                     #imported with strange
+                                                     #prefix we must rename it
+    query_behandling_num[is.na(query_behandling_num)] <- 'null'
 
-    # Curate data
-    ## Mads: run your funs on above data ending up with DL
+
+    #Message to Are: The following mirrors what I do loacally (first I merge
+    #the four datasets into two datasets, then I change them to tibbles and
+    # finally run the two datasets in the fun2_dataList() function.
+    # (changing to tibbles may not neccessary, but convinient for
+    # me when I work loacally)
+    #Merge data
+    ForlAlleSc <- merge(forlops_oversikt, alle_scorer, suffixes = c('','y'),
+                        by = "ForlopsID", all = FALSE)
+    RegData <- merge(ForlAlleSc, enkelt_ledd_num, suffixes = c('','X'),
+                     by = "ForlopsID", all = FALSE)
+
+    RegData <- tibble::as_tibble(RegData)
+    RegDataBeh <- tibble::as_tibble(query_behandling_num)
+
+    DL <- norspis2::fun2_dataList(myInData1 = RegData, myInData2 = query_behandling_num)
+    #END - message/code to Are.
+
   } else {
     print("Make sure that all necessary data are loaded locally - the script to
           import data locally is located locally at NLSH (on NorSpis' disk)")

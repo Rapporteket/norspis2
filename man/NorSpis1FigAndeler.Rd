@@ -4,33 +4,15 @@
 \alias{NorSpis1FigAndeler}
 \title{Title}
 \usage{
-NorSpis1FigAndeler(
-  RegData,
-  valgtVar,
-  datoFra = "2012-01-01",
-  datoTil = "3000-12-31",
-  datoFraSluttreg = "",
-  datoTilSluttreg = "",
-  minald = 0,
-  maxald = 130,
-  minbmistart = 0,
-  maxbmistart = 200,
-  regType = "",
-  enhetstypeDogn = "",
-  enhetstypeRegional = "",
-  erMann = "",
-  outfile = "",
-  hentData = 0,
-  preprosess = 1,
-  reshID,
-  enhetsUtvalg = 1
-)
+NorSpis1FigAndeler(RegData, valgtVar, datoFra = "2012-01-01",
+  datoTil = "3000-12-31", datoFraSluttreg = "", datoTilSluttreg = "",
+  minald = 0, maxald = 130, minbmistart = 0, maxbmistart = 200,
+  regType = "", enhetstypeDogn = "", enhetstypeRegional = "",
+  erMann = "", outfile = "", hentData = 0, preprosess = 1, reshID,
+  enhetsUtvalg = 1)
 }
 \arguments{
 \item{enhetsUtvalg}{}
-}
-\value{
-
 }
 \description{
 Title

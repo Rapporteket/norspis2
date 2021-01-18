@@ -4,7 +4,8 @@
 \alias{NorSpis1NokkeltallTid}
 \title{Plot of key figures over time}
 \usage{
-NorSpis1NokkeltallTid(RegData, enhetsUtvalgEgenNasjonal = "nasjonal", reshID)
+NorSpis1NokkeltallTid(RegData, enhetsUtvalgEgenNasjonal = "nasjonal",
+  reshID)
 }
 \arguments{
 \item{RegData}{Registry data}

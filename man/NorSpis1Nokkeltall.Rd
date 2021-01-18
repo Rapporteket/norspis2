@@ -4,7 +4,8 @@
 \alias{NorSpis1Nokkeltall}
 \title{Different key figures to display in dashboard}
 \usage{
-NorSpis1Nokkeltall(RegData, enhetsUtvalgEgenNasjonal = "nasjonal", reshID)
+NorSpis1Nokkeltall(RegData, enhetsUtvalgEgenNasjonal = "nasjonal",
+  reshID)
 }
 \arguments{
 \item{RegData}{Registry data}

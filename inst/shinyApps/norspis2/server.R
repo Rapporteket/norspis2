@@ -69,24 +69,22 @@ server <- function(input, output, session) {
     #if so you must delete those eight lines of code.
     alle_scorer <-
       norspis2::query_alle_scorer(registryName, reshID)
-    colnames(alle_scorer)[1] <- 'ForlopsID'
+    # why set NA values to character string 'null'?
     alle_scorer[is.na(alle_scorer)] <- 'null'
 
     enkelt_ledd_num <-
       norspis2::query_enkelt_ledd_num(registryName, reshID)
-    colnames(enkelt_ledd_num)[1] <- 'PasientID'
+    # why set NA values to character string 'null'?
     enkelt_ledd_num[is.na(enkelt_ledd_num)] <- 'null'
 
     forlops_oversikt <-
       norspis2::query_forlops_oversikt(registryName, reshID)
-    colnames(forlops_oversikt)[1] <- 'AvdRESH' #necessary
+    # why set NA values to character string 'null'?
     forlops_oversikt[is.na(forlops_oversikt)] <- 'null' #necessary
 
     query_behandling_num <-
       norspis2::query_behandling_num(registryName, reshID)
-    colnames(query_behandling_num)[1] <- 'BehandlingID' #because first column is
-                                                     #imported with strange
-                                                     #prefix we must rename it
+    # why set NA values to character string 'null'?
     query_behandling_num[is.na(query_behandling_num)] <- 'null'
 
 

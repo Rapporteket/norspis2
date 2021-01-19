@@ -70,22 +70,22 @@ server <- function(input, output, session) {
     alle_scorer <-
       norspis2::query_alle_scorer(registryName, reshID)
     # why set NA values to character string 'null'?
-    alle_scorer[is.na(alle_scorer)] <- 'null'
+    #alle_scorer[is.na(alle_scorer)] <- 'null'
 
     enkelt_ledd_num <-
       norspis2::query_enkelt_ledd_num(registryName, reshID)
     # why set NA values to character string 'null'?
-    enkelt_ledd_num[is.na(enkelt_ledd_num)] <- 'null'
+    #enkelt_ledd_num[is.na(enkelt_ledd_num)] <- 'null'
 
     forlops_oversikt <-
       norspis2::query_forlops_oversikt(registryName, reshID)
     # why set NA values to character string 'null'?
-    forlops_oversikt[is.na(forlops_oversikt)] <- 'null' #necessary
+    #forlops_oversikt[is.na(forlops_oversikt)] <- 'null' #necessary
 
     query_behandling_num <-
       norspis2::query_behandling_num(registryName, reshID)
     # why set NA values to character string 'null'?
-    query_behandling_num[is.na(query_behandling_num)] <- 'null'
+    #query_behandling_num[is.na(query_behandling_num)] <- 'null'
 
 
     #Message to Are: The following mirrors what I do loacally (first I merge
@@ -324,4 +324,4 @@ server <- function(input, output, session) {
   )
   ###-----PDF-report (END)
 
-})
+}

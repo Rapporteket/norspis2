@@ -1,6 +1,6 @@
 library(shiny)
 
-shinyServer(function(input, output, session) {
+server <- function(input, output, session) {
 
   # Hide/show tabs
   #hideTab(inputId = "tabs", target = "Sykehussammenligninger")

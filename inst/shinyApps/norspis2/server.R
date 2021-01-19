@@ -56,31 +56,56 @@ shinyServer(function(input, output, session) {
 
     # Parameters that will remain throughout the session
     ## setting values that do depend on a Rapporteket context
+    registryName <- "norspis"
     reshID <- rapbase::getUserReshId(session)
     userFullName <- rapbase::getUserFullName(session)
     userRole <- rapbase::getUserRole(session)
     author <- paste0(userFullName, "/", "Rapporteket")
 
-    # RegData <- NorSpisELAlleScorData(datoFra = '2015-01-01',
-    #                                  datoTil = '2099-01-01',
-    #                                  session = session)
-    RegData <- NULL
+    # Get data
+    #Message to Are: Beneath each four imports you see two lines that
+    #changes some values/names. This is at least necessary locally,
+    #but maybe not on when the data is imported directrly from database, and
+    #if so you must delete those eight lines of code.
+    alle_scorer <-
+      norspis2::query_alle_scorer(registryName, reshID)
+    colnames(alle_scorer)[1] <- 'ForlopsID'
+    alle_scorer[is.na(alle_scorer)] <- 'null'
 
-    ####TODO AreEdv need to remember to import RegDataBeh as
-    #as well (new in NorSpis2) ...
-    RegDataBeh <- ''
-    #...and run the function to make the
-    # five datasets norspis2 plans to use
-    DL <- norspis2::fun2_dataList(myInData1 = RegData,
-                                  myInData2 = RegDataBeh)
-    #### TODO-END
+    enkelt_ledd_num <-
+      norspis2::query_enkelt_ledd_num(registryName, reshID)
+    colnames(enkelt_ledd_num)[1] <- 'PasientID'
+    enkelt_ledd_num[is.na(enkelt_ledd_num)] <- 'null'
 
-    # if (userRole != "SC") {
-    #   hideTab(inputId = "tabs", target = "OVERSIKT: Registreringer")
-    # }
+    forlops_oversikt <-
+      norspis2::query_forlops_oversikt(registryName, reshID)
+    colnames(forlops_oversikt)[1] <- 'AvdRESH' #necessary
+    forlops_oversikt[is.na(forlops_oversikt)] <- 'null' #necessary
+
+    query_behandling_num <-
+      norspis2::query_behandling_num(registryName, reshID)
+    colnames(query_behandling_num)[1] <- 'BehandlingID' #because first column is
+                                                     #imported with strange
+                                                     #prefix we must rename it
+    query_behandling_num[is.na(query_behandling_num)] <- 'null'
 
 
+    #Message to Are: The following mirrors what I do loacally (first I merge
+    #the four datasets into two datasets, then I change them to tibbles and
+    # finally run the two datasets in the fun2_dataList() function.
+    # (changing to tibbles may not neccessary, but convinient for
+    # me when I work loacally)
+    #Merge data
+    ForlAlleSc <- merge(forlops_oversikt, alle_scorer, suffixes = c('','y'),
+                        by = "ForlopsID", all = FALSE)
+    RegData <- merge(ForlAlleSc, enkelt_ledd_num, suffixes = c('','X'),
+                     by = "ForlopsID", all = FALSE)
 
+    RegData <- tibble::as_tibble(RegData)
+    RegDataBeh <- tibble::as_tibble(query_behandling_num)
+
+    DL <- norspis2::fun2_dataList(myInData1 = RegData, myInData2 = query_behandling_num)
+    #END - message/code to Are.
 
   } else {
     print("Make sure that all necessary data are loaded locally - the script to
@@ -165,12 +190,17 @@ shinyServer(function(input, output, session) {
   output$sykehusSammenlign <- renderPlot({
         #filter
         dat <- norspis2::fun3_1_filter_RegData(RegData = DL$RegDataNatVal2,
-                                               ageFrom = 5,
-                                               ageTo = 15)
+                                               dateFrom =
+                                                 input$datovalgSykehusSammenlign[1],
+                                               dateTo =
+                                                 input$datovalgSykehusSammenlign[2],
+                                               regStatus = 1)#only complete reg
       #table to plot
+
+
       tab <- norspis2::make_figTable_unitCompar(
-        dat,
-        rlang::quo(PROP_PO10Pasientsikkerhet))
+        myIndata_NatVal =  dat,
+        myInvar01 = input$valgtVarSykehusSammenlign)#rlang::quo(PROP_PO10Pasientsikkerhet))#input$valgtVarSykehusSammenlign)#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(!!input$valgtVarSykehusSammenlign))
     #plot
     norspis2::make_figFig_unitCompar(tab)
 

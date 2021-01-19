@@ -10,9 +10,13 @@ make_figTable_unitCompar(myIndata_NatVal, myInvar01 = myVar01)
 \arguments{
 \item{myIndata_NatVal}{myIndata_NatVal <- RegData_NatVal}
 
-\item{myInvar01}{myVar01 <- quo(PROP_PO10Pasientsikkerhet)
+\item{myInvar01}{myVar01 <- PROP_PO10Pasientsikkerhet
 
-Note: This function's name when writing aarsrapport 2019 (in 2020) was: make_proptable_hospitals}
+Note: This function's name when writing aarsrapport 2019 (in 2020) was:
+make_proptable_hospitals(), and we then had to pass myVar01 on the format:
+myVar01 <- quo(PROP_PO10Pasientsikkerhet). This had to be fixed when
+implemented function in Shiny application, so that we "quo()" the variable
+name after it has been passed/inside our make_figTable_unitCompar function.}
 }
 \value{
 summary table with propoprtions at each unit/hosptital and one national value to go into make_figFig_unitCompar

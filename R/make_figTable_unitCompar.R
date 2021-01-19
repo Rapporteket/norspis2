@@ -4,9 +4,13 @@
 #' This funcition works with both ordinary data (RegData) and data with added national values (RegDataNatVal)
 #'
 #' @param myIndata_NatVal myIndata_NatVal <- RegData_NatVal
-#' @param myInvar01 myVar01 <- quo(PROP_PO10Pasientsikkerhet)
+#' @param myInvar01 myVar01 <- PROP_PO10Pasientsikkerhet
 #'
-#' Note: This function's name when writing aarsrapport 2019 (in 2020) was: make_proptable_hospitals
+#' Note: This function's name when writing aarsrapport 2019 (in 2020) was:
+#' make_proptable_hospitals(), and we then had to pass myVar01 on the format:
+#' myVar01 <- quo(PROP_PO10Pasientsikkerhet). This had to be fixed when
+#' implemented function in Shiny application, so that we "quo()" the variable
+#' name after it has been passed/inside our make_figTable_unitCompar function.
 #'
 #' @return summary table with propoprtions at each unit/hosptital and one national value to go into make_figFig_unitCompar
 #' @export
@@ -15,6 +19,10 @@
 
 make_figTable_unitCompar <- function(myIndata_NatVal,
                                      myInvar01 = myVar01) {
+
+  myInvar01 <- sym({{noquote(myInvar01)}})
+  myInvar01 <- quo({{myInvar01}})
+
 
   myInData_NatVal_summarized <- myIndata_NatVal %>%
   #group_by together with summarize (see Wickham, R for Data Science)

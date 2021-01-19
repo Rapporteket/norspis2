@@ -1,7 +1,6 @@
 library(shiny)
 library(shinyBS) # Additional Bootstrap Controls
 library(norspis2)
-library(rapmap)
 library(shiny)
 library(shinyalert)
 library(shinydashboard)
@@ -24,7 +23,7 @@ ui <- tagList(
     # Title, logo and such
     title = div(
       a(includeHTML(system.file('www/logo.svg', package='rapbase'))),
-      "Norsk kvalitetsregister for behandling av spiseforstyrrelser"),
+      "Rapporteket for NorSpis"),
     windowTitle = "Norsk kvalitetsregister
                      for behandling av spiseforstyrrelser",
     theme = "rap/bootstrap.css",
@@ -361,7 +360,21 @@ ui <- tagList(
           sidebarPanel(
             width = 3,
             wellPanel(
-
+              selectInput(
+                inputId = "valgtVarSykehusSammenlign",
+                label="Variabel",
+                choices = c(#"dasf"= "dgfhgjhk",
+                            "Pasientsikkerhet" = "PROP_PO10Pasientsikkerhet",
+                            "Utbytte" = "PROP_PO09Utbytte")
+              ),
+              dateRangeInput(
+                inputId = 'datovalgSykehusSammenlign',
+                start = "2018-01-01",
+                end = "2021-12-31",# Sys.Date(),
+                label = "Tidsperiode (datoene gjelder sluttregistreringen)",
+                separator="t.o.m.",
+                language="nb"
+              )
             )
           ),
 

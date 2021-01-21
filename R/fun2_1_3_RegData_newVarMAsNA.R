@@ -1,7 +1,9 @@
 #' Make variables where missing is coded as NA (MAsNA)
 #'
-#' Output is data, with new variables where missing is coded as NA. Some are categoricial, and som have values that are labels.
-#' Accordingly the new variables are named with suffixes _MISSING, CAT, and _NAMES (TODO: rename to for instance  MaSNA, NumCat and LabCat)
+#' Output is data, with new variables where missing is coded as NA.
+#' Some are categoricial, and som have values that are labels.
+#' Accordingly the new variables are named with suffixes _MISSING, CAT, and _NAMES
+#' (TODO: rename to for instance  MaSNA, NumCat and LabCat)
 #'
 #'
 #' Note: This function's name when writing aarsrapport 2019 (in 2020) was: make23_data_newVar

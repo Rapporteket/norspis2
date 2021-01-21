@@ -11,7 +11,7 @@
 #'
 #' @examples
 
-fun2_1_2_RegData_newVarFrmt <- function(myInData){
+fun2_1_2_RegData_newVarFrmt <- function(myInData) {
   #Made/formatted:
   #HovedDato_FRMT
   #AvdodDato_FRMT
@@ -36,6 +36,5 @@ fun2_1_2_RegData_newVarFrmt <- function(myInData){
   myInData$CIA30GlobalScore <- as.numeric(myInData$CIA30GlobalScore)
   myInData$MedBMI <- as.numeric(myInData$MedBMI)
 
-  output <- myInData
-  return(invisible(output))
+  myInData
 }

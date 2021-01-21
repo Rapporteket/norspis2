@@ -22,7 +22,7 @@ fun1_1_import_data_FEA <- function(path_data="F:/2020-28-12_data-til-utvikling/"
   NorSpisForlop <- utils::read.table(paste0(path_data, "NorSpis_ForlopsOversikt_datadump_", date_data,".csv"),
                                      sep=';', dec=',', header=T, encoding = 'UTF-8', stringsAsFactors = FALSE, fill = TRUE)
   colnames(NorSpisForlop)[1] <- 'AvdRESH'
-  NorSpisForlop[is.na(NorSpisForlop)] <- 'null'
+  #NorSpisForlop[is.na(NorSpisForlop)] <- 'null'
 
   NorSpisEnkeltledd <- utils::read.table(paste0(path_data, "NorSpis_EnkeltLeddNum_datadump_", date_data,".csv"),
                                          sep=';',dec=',', header=T, encoding = 'UTF-8', stringsAsFactors = FALSE, fill = TRUE)

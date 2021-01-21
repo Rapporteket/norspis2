@@ -74,18 +74,22 @@ server <- function(input, output, session) {
 
     enkelt_ledd_num <-
       norspis2::query_enkelt_ledd_num(registryName, reshID)
+    # strange type of ID in db...
+    enkelt_ledd_num$ForlopsID <- as.integer(enkelt_ledd_num$ForlopsID)
     # why set NA values to character string 'null'?
     #enkelt_ledd_num[is.na(enkelt_ledd_num)] <- 'null'
 
     forlops_oversikt <-
       norspis2::query_forlops_oversikt(registryName, reshID)
+    # strange type of ID in db...
+    forlops_oversikt$ForlopsID <- as.integer(forlops_oversikt$ForlopsID)
     # why set NA values to character string 'null'?
     #forlops_oversikt[is.na(forlops_oversikt)] <- 'null' #necessary
 
-    query_behandling_num <-
+    behandling_num <-
       norspis2::query_behandling_num(registryName, reshID)
     # why set NA values to character string 'null'?
-    #query_behandling_num[is.na(query_behandling_num)] <- 'null'
+    #behandling_num[is.na(query_behandling_num)] <- 'null'
 
 
     #Message to Are: The following mirrors what I do loacally (first I merge
@@ -100,9 +104,9 @@ server <- function(input, output, session) {
                      by = "ForlopsID", all = FALSE)
 
     RegData <- tibble::as_tibble(RegData)
-    RegDataBeh <- tibble::as_tibble(query_behandling_num)
+    RegDataBeh <- tibble::as_tibble(behandling_num)
 
-    DL <- norspis2::fun2_dataList(myInData1 = RegData, myInData2 = query_behandling_num)
+    DL <- norspis2::fun2_dataList(myInData1 = RegData, myInData2 = RegDataBeh)
     #END - message/code to Are.
 
   } else {

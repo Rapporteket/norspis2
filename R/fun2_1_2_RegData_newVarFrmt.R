@@ -36,5 +36,7 @@ fun2_1_2_RegData_newVarFrmt <- function(myInData) {
   myInData$CIA30GlobalScore <- as.numeric(myInData$CIA30GlobalScore)
   myInData$MedBMI <- as.numeric(myInData$MedBMI)
 
+  myInData$PasOppSikkerhet <- as.numeric(myInData$PasOppSikkerhet) #want similiar format as database
+
   myInData
 }

@@ -184,6 +184,7 @@ ui <- tagList(
       "Resultater",
       tabsetPanel(
         type="tabs",
+        id = "tabsets",
         tabPanel(
           "Indikatorer",
           sidebarPanel(
@@ -397,27 +398,28 @@ ui <- tagList(
 
     ),#tab Resultater
 
-    tabPanel(
-      "Datakvalitet",
-      tabsetPanel(
-        type="tabs",
-        tabPanel("Variabelkompletthet",
-                 fluidPage()
-        ),
-        tabPanel("Forløpskompletthet",
-                 sidebarPanel(width = 3),
-                 mainPanel()
-        ),
-        tabPanel("Tilslutning",
-                 sidebarPanel(width = 3),
-                 mainPanel()
-        ),
-        tabPanel("Dekningsgrad",
-                 sidebarPanel(width = 3),
-                 mainPanel()
-        )#,
-      )
-    ),#tab Datakvalitet
+    #TODO: This tab will be implemented later
+    # tabPanel(
+    #   "Datakvalitet",
+    #   tabsetPanel(
+    #     type="tabs",
+    #     tabPanel("Variabelkompletthet",
+    #              fluidPage()
+    #     ),
+    #     tabPanel("Forløpskompletthet",
+    #              sidebarPanel(width = 3),
+    #              mainPanel()
+    #     ),
+    #     tabPanel("Tilslutning",
+    #              sidebarPanel(width = 3),
+    #              mainPanel()
+    #     ),
+    #     tabPanel("Dekningsgrad",
+    #              sidebarPanel(width = 3),
+    #              mainPanel()
+    #     )#,
+    #   )
+    # ),#tab Datakvalitet
 
     tabPanel(
       "Administrasjon",

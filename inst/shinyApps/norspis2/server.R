@@ -2,10 +2,7 @@ library(shiny)
 
 server <- function(input, output, session) {
 
-  # Hide/show tabs
-  #hideTab(inputId = "tabs", target = "Sykehussammenligninger")
-  #hideTab(inputId = "tabs", target = "Datakvalitet")
-  #hideTab(inputId = "tabs", target = "Administrasjon")
+
 
   # Navbar user widget
   output$appUserName <- renderText(getUserFullName(session))
@@ -54,6 +51,8 @@ server <- function(input, output, session) {
   if (rapbase::isRapContext()) {
     raplog::appLogger(session = session, msg = "Starting NorSpis application")
 
+
+
     # Parameters that will remain throughout the session
     ## setting values that do depend on a Rapporteket context
     registryName <- "norspis"
@@ -61,6 +60,8 @@ server <- function(input, output, session) {
     userFullName <- rapbase::getUserFullName(session)
     userRole <- rapbase::getUserRole(session)
     author <- paste0(userFullName, "/", "Rapporteket")
+
+
 
     # Get data
     #Message to Are: Beneath each four imports you see two lines that
@@ -115,7 +116,18 @@ server <- function(input, output, session) {
   } else {
     print("Make sure that all necessary data are loaded locally - the script to
           import data locally is located locally at NLSH (on NorSpis' disk)")
+
   }
+
+  # Hide/show tabs
+  #hideTab(inputId = "tabs", target = "Sykehussammenligninger")
+  #hideTab(inputId = "tabs", target = "Datakvalitet")
+  if(!userRole %in% c('CC','SC')){
+    hideTab(inputId = "tabs", target = "Administrasjon")
+    hideTab(inputId = "tabsets", target = "Sykehussammenligninger")
+  }
+
+
 
   # ----The different outputs----
   # Administrasjons/Nøkkeltall

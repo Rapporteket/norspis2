@@ -2,7 +2,7 @@
 % Please edit documentation in R/NorSpis1FigPrePost.R
 \name{NorSpis1FigPrePost}
 \alias{NorSpis1FigPrePost}
-\title{NorSpis1FigPrePost}
+\title{Title}
 \usage{
 NorSpis1FigPrePost(RegData, reshID, outfile = "", hentData = 0,
   preprosess = 1, enhetsUtvalg = 1, valgtMaal = "Gjsn", valgtVar,
@@ -12,25 +12,8 @@ NorSpis1FigPrePost(RegData, reshID, outfile = "", hentData = 0,
   regType = "", diagnose = "")
 }
 \arguments{
-\item{valgtMaal}{Sentralmaal 'Med' gir median, alt annet gir gjennomsnitt}
-
-\item{valgtVar}{Variabelen det skal vises resultat for}
-
 \item{diagnose}{}
 }
-\value{
-Figur med gjennomsnitt eller median ved to ulike tidspunkt
-}
 \description{
-Søylediagram som viser sentralmå, gjennomsnitt/median, ved to ulike tidspunkter
-,før og etter/ved starten og slutten av behandlingen
-}
-\details{
-Pre/post-sammenligningsfigur har litt anndre datofiltre enn f.eks. figur for andelsfordelingsfigur. Dette fordi:
-datofilter for f.eks. andelsfordelingsfigur brukes i kombinasjon med filter for registreingstype,
-og fordi mens datofilter for pre/post-figur ikke kan brukes i kombinasjon med registreringstypefilter,
-men må ta hensyn til at både start-og sluttregistrenger skal være med i figur.
-
-Se ellers figurtekst som kommer ut til PrePost-figur i Shiny-applikasjonen
-for å forstå hvilke datoer som er sortert på.
+Title
 }

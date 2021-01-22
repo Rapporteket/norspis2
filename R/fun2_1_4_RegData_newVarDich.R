@@ -11,7 +11,7 @@
 #'
 #' @examples
 
-fun2_1_4_RegData_newVarDich <- function(myInData){
+fun2_1_4_RegData_newVarDich <- function(myInData) {
   ###Dicotomous (0-1) variables
 
   #Variables indicating "missing" (REAL missing values are then coded as NA, and those that should not be considered as "null")
@@ -134,15 +134,16 @@ fun2_1_4_RegData_newVarDich <- function(myInData){
     PasOppTilgjengelighet == "null" & RegRegtype %in% c(5,6)  ~ NA_character_,
     TRUE ~ "null"))
   #PasOppSikkerhet_miss
-  myInData <- myInData %>% dplyr::mutate(PasOppSikkerhet_miss = dplyr::case_when(
-    PasOppSikkerhet != "null" ~ PasOppSikkerhet, #just keeping numeric values as is
-    PasOppSikkerhet == "null" & RegRegtype %in% c(5,6)  ~ NA_character_,
-    TRUE ~ "null"))
+  myInData <- myInData %>%
+    dplyr::mutate(PasOppSikkerhet_miss = dplyr::case_when(
+      !is.na(PasOppSikkerhet) ~ PasOppSikkerhet, #just keeping numeric values as is
+      is.na(PasOppSikkerhet) & RegRegtype %in% c(5,6)  ~ NA_character_,
+      TRUE ~ "null"))
 
   #PT01OnsketInvolv_miss
   myInData <- myInData %>% dplyr::mutate(PT01OnsketInvolv_miss = dplyr::case_when(
     PT01OnsketInvolv %in% c(0,1) ~ PT01OnsketInvolv, #just keeping numeric values
-    PasientAlder >= 16 & PT01OnsketInvolv %in% c(9,"null") & RegRegtype %in% c(5,6)  ~ NA_character_,
+    PasientAlder >= 16 & PT01OnsketInvolv == 9 & is.na(PT01OnsketInvolv) & RegRegtype %in% c(5,6)  ~ NA_character_,
     TRUE ~ "null"))
   #PT02BleIvolv_miss
   myInData <- myInData %>% dplyr::mutate(PT02BleInvolv_miss = dplyr::case_when(
@@ -174,8 +175,7 @@ fun2_1_4_RegData_newVarDich <- function(myInData){
   myInData$PROP_PO10Pasientsikkerhet <- replace(myInData$PROP_PO10Pasientsikkerhet,
                                                myInData$PROP_PO10Pasientsikkerhet %in%
                                                  c("9",
-                                                   "99",
-                                                   "null"),
+                                                   "99"),
                                                NA)
 
   #as.numeric to enable calculations (this also removes "null" values (where there are any left) and introduces NAs)
@@ -207,8 +207,7 @@ fun2_1_4_RegData_newVarDich <- function(myInData){
   myInData$PROP_PO09Utbytte <- replace(myInData$PROP_PO09Utbytte,
                                       myInData$PROP_PO09Utbytte %in%
                                         c("9",
-                                          "99",
-                                          "null"),
+                                          "99"),
                                       NA)
   myInData$PROP_PO09Utbytte <- as.numeric(myInData$PROP_PO09Utbytte)
 
@@ -221,8 +220,7 @@ fun2_1_4_RegData_newVarDich <- function(myInData){
                                                 "5"="0") #Forverret
   myInData$PROP_PT03Utfallsvurd <- replace(myInData$PROP_PT03Utfallsvurd,
                                           myInData$PROP_PT03Utfallsvurd %in%
-                                            c("9",
-                                              "null"),
+                                            c("9"),
                                           NA)
   myInData$PROP_PT03Utfallsvurd <- as.numeric(myInData$PROP_PT03Utfallsvurd) #need to be numeric, also introduces NAs where "null"
 
@@ -245,7 +243,6 @@ fun2_1_4_RegData_newVarDich <- function(myInData){
   ### END: Quality indicators ###
 
 
-  output <- myInData
-  return(invisible(output))
+  myInData
 
 }

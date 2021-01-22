@@ -526,9 +526,11 @@ fun2_1_3_RegData_newVarMAsNA  <- function(myInData){
 
   #MedBMI_withIsoBMIBGSvalues (MedBMI but with MedISOBMIBGS values for those that have ISOBMIBGS values)
   myInData <- myInData %>% dplyr::mutate(MedBMI_withIsoBMIBGSvalues = dplyr::case_when(
-    MedIsoBMIBGS !="null" ~ MedIsoBMIBGS, #those with ISOBMIBGS values get ISoBMIBGS values
-    TRUE ~ as.character(MedBMI))) #rest gets ordinary BMI values
-
+    !is.na(MedIsoBMIBGS) ~ MedIsoBMIBGS, #those with ISOBMIBGS values get ISoBMIBGS values
+    TRUE ~ MedBMI)) #rest gets ordinary BMI values
+  #TODO remember a quality control of this variable, as we had to change
+  #the code to take into account NA (versus "null" before) when going
+  #into production with MAR.
 
   output <- myInData
   return(invisible(output))

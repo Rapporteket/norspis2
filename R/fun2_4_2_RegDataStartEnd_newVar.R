@@ -38,17 +38,19 @@ fun2_4_2_RegDataStartEnd_newVar <- function(myInData){
                                              RegDataStartEnd$EDEQ60GlobalScore.y < 2.5]           <- 4 #Symptomfri
 
 
-  RegDataStartEnd$EDEQ60GlobalScore_CHANGE_PROP <- dplyr::recode(RegDataStartEnd$EDEQ60GlobalScore_CHANGE,
-                                                                 "1"="0",#verre
-                                                                 "2"="0",#uendret
-                                                                 "3"="1",#bedring
-                                                                 "4"="1") #symptomfri
+  RegDataStartEnd$EDEQ60GlobalScore_CHANGE_PROP <-
+    dplyr::recode(RegDataStartEnd$EDEQ60GlobalScore_CHANGE,
+                  "1"="0",#verre
+                  "2"="0",#uendret
+                  "3"="1",#bedring
+                  "4"="1") #symptomfri
 
-  RegDataStartEnd$EDEQ60GlobalScore_CHANGE_NAMES <- dplyr::recode(RegDataStartEnd$EDEQ60GlobalScore_CHANGE,
-                                                                  "1"="Verre",
-                                                                  "2"="Uendret",
-                                                                  "3"="Bedring",
-                                                                  "4"="Symptomfri")
+  RegDataStartEnd$EDEQ60GlobalScore_CHANGE_NAMES <-
+    dplyr::recode(RegDataStartEnd$EDEQ60GlobalScore_CHANGE,
+                  "1"="Verre",
+                  "2"="Uendret",
+                  "3"="Bedring",
+                  "4"="Symptomfri")
 
 
   RegDataStartEnd$EDEQ60GlobalScore_kommentar <- 'Figuren viser andelen pasienter som kan kategoriseres som friske ved behandlingslutt basert p? endring i EDE-Q-sk?re (n?rmere definsjon
@@ -156,6 +158,5 @@ fun2_4_2_RegDataStartEnd_newVar <- function(myInData){
   # TRUE ~ "null"))
 
 
-  output <- RegDataStartEnd
-  return(invisible(output))
+  RegDataStartEnd
 }

@@ -11,16 +11,13 @@
 #'
 #' @examples
 
-fun2_5_RegDataStartEndNatVal <- function(myInData){
+fun2_5_RegDataStartEndNatVal <- function(myInData) {
+
   RegDataStartEnd <- myInData
   # Duplicating the data RegData but exchange AvdRESH and SykehusNavn - that will be the data that represent the national results:
   NatValStartEnd <- RegDataStartEnd %>%
     mutate(AvdRESH.x ='99999', SykehusNavn.x='Nasjonal', AvdNavn.x='Nasjonal') #snational RESH-id set to99999 and name to "Nasjonal".
 
   # Attaching national data RegData (so that it become double the size with half having AvdRESH.x and SykehusNavn 99999 and national)
-  RegDataStartEnd_NatVal <- rbind(RegDataStartEnd,NatValStartEnd)
-
-
-  output <- RegDataStartEnd_NatVal
-  return(invisible(output))
+  rbind(RegDataStartEnd, NatValStartEnd)
 }

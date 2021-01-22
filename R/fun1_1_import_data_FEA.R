@@ -27,12 +27,12 @@ fun1_1_import_data_FEA <- function(path_data="F:/2020-28-12_data-til-utvikling/"
   NorSpisEnkeltledd <- utils::read.table(paste0(path_data, "NorSpis_EnkeltLeddNum_datadump_", date_data,".csv"),
                                          sep=';',dec=',', header=T, encoding = 'UTF-8', stringsAsFactors = FALSE, fill = TRUE)
   colnames(NorSpisEnkeltledd)[1] <- 'PasientID'
-  NorSpisEnkeltledd[is.na(NorSpisEnkeltledd)] <- 'null'
+  #NorSpisEnkeltledd[is.na(NorSpisEnkeltledd)] <- 'null'
 
   NorSpisAlleScorer <- utils::read.table(paste0(path_data, "NorSpis_AlleScorer_datadump_", date_data,".csv"),
                                          sep=';', dec=',', header=T, encoding = 'UTF-8',stringsAsFactors = FALSE, fill = TRUE)
   colnames(NorSpisAlleScorer)[1] <- 'ForlopsID'
-  NorSpisAlleScorer[is.na(NorSpisAlleScorer)] <- 'null'
+  #NorSpisAlleScorer[is.na(NorSpisAlleScorer)] <- 'null'
 
   #Merge data
   ForlAlleSc <- merge(NorSpisForlop, NorSpisAlleScorer, suffixes = c('','y'), by = "ForlopsID", all = FALSE)

@@ -83,6 +83,9 @@ server <- function(input, output, session) {
       norspis2::query_forlops_oversikt(registryName, reshID)
     # strange type of ID in db...
     forlops_oversikt$ForlopsID <- as.integer(forlops_oversikt$ForlopsID)
+    # for now, just remove unused OppflgSekNr containing binary values
+    forlops_oversikt <- forlops_oversikt %>%
+      dplyr::select(-OppflgSekNr)
     # why set NA values to character string 'null'?
     #forlops_oversikt[is.na(forlops_oversikt)] <- 'null' #necessary
 

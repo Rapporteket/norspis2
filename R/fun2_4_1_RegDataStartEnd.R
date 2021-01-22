@@ -33,6 +33,5 @@ fun2_4_1_RegDataStartEnd <- function(myInData){
     arrange(ForlopsID.x, HovedDato_FRMT.y) %>%# Together with distinct below: to sort and keep olderst end registration
     distinct(ForlopsID.x, .keep_all = TRUE)
 
-  output <- RegDataStartEnd
-  return(invisible(output))
+  RegDataStartEnd
 }

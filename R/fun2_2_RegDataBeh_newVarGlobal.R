@@ -14,9 +14,8 @@
 
 fun2_2_RegDataBeh_newVarGlobal <- function(myInData1, myInData2){
 
-  #Join:
-  RegDataBeh <- dplyr::left_join(myInData2, myInData1[, c("AvdNavn", "HovedDato", "ForlopsID")], by="ForlopsID")
+  dplyr::left_join(
+    myInData2,
+    myInData1[, c("AvdNavn", "HovedDato", "ForlopsID")], by="ForlopsID")
 
-  output <- RegDataBeh
-  return(invisible(output))
 }

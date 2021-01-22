@@ -19,7 +19,7 @@ fun2_1_1_RegData_newVarGlobal <- function(myInData){
   myInData$AvdNavn[myInData$AvdNavn==105806] <- 'Levanger (regional)'
   myInData$AvdNavn[myInData$AvdNavn==109979] <- 'Oslo (regional)'
   myInData$AvdNavn[myInData$AvdNavn==110361] <- 'Oslo, Gaustad (spes.pol.)'
-  myInData$AvdNavn[myInData$AvdNavn==700698] <- 'Troms? (regional, BU)'
+  myInData$AvdNavn[myInData$AvdNavn==700698] <- 'Tromsø (regional, BU)'
   myInData$AvdNavn[myInData$AvdNavn==700821] <- 'Bod? (regional, V)'
   myInData$AvdNavn[myInData$AvdNavn==707383] <- 'Ski (DPS, pol.)'
   myInData$AvdNavn[myInData$AvdNavn==4204191] <-'Fredrikstad (Capio, d?gn)'
@@ -31,6 +31,5 @@ fun2_1_1_RegData_newVarGlobal <- function(myInData){
   myInData$AvdNavn[myInData$AvdNavn==107026] <- 'Bergen (regional)'
   myInData$AvdNavn[myInData$AvdNavn==4210303] <- 'Tr.heim (spes.pol.)'
 
-  output <- myInData
-  return(invisible(output))
+  myInData
 }

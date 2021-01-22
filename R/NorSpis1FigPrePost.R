@@ -1,10 +1,13 @@
+#' NorSpis1FigPrePost
+#'
 #' Søylediagram som viser sentralmå, gjennomsnitt/median, ved to ulike tidspunkter
-#' -før og etter/ved starten og slutten av behandlingen
+#' ,før og etter/ved starten og slutten av behandlingen
 #'
 #' Pre/post-sammenligningsfigur har litt anndre datofiltre enn f.eks. figur for andelsfordelingsfigur. Dette fordi:
-#' - datofilter for f.eks. andelsfordelingsfigur brukes i kombinasjon med filter for registreingstype
-#' - mens datofilter for pre/post-figur ikke kan brukes i kombinasjon med registreringstypefilter,
-#'  men må ta hensyn til at både start-og sluttregistrenger skal være med i figur.
+#' datofilter for f.eks. andelsfordelingsfigur brukes i kombinasjon med filter for registreingstype,
+#' og fordi mens datofilter for pre/post-figur ikke kan brukes i kombinasjon med registreringstypefilter,
+#' men må ta hensyn til at både start-og sluttregistrenger skal være med i figur.
+#'
 #' Se ellers figurtekst som kommer ut til PrePost-figur i Shiny-applikasjonen
 #' for å forstå hvilke datoer som er sortert på.
 #'

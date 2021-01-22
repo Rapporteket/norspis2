@@ -1,7 +1,9 @@
 #' Make variables where missing is coded as NA (MAsNA)
 #'
-#' Output is data, with new variables where missing is coded as NA. Some are categoricial, and som have values that are labels.
-#' Accordingly the new variables are named with suffixes _MISSING, CAT, and _NAMES (TODO: rename to for instance  MaSNA, NumCat and LabCat)
+#' Output is data, with new variables where missing is coded as NA.
+#' Some are categoricial, and som have values that are labels.
+#' Accordingly the new variables are named with suffixes _MISSING, CAT, and _NAMES
+#' (TODO: rename to for instance  MaSNA, NumCat and LabCat)
 #'
 #'
 #' Note: This function's name when writing aarsrapport 2019 (in 2020) was: make23_data_newVar
@@ -524,9 +526,11 @@ fun2_1_3_RegData_newVarMAsNA  <- function(myInData){
 
   #MedBMI_withIsoBMIBGSvalues (MedBMI but with MedISOBMIBGS values for those that have ISOBMIBGS values)
   myInData <- myInData %>% dplyr::mutate(MedBMI_withIsoBMIBGSvalues = dplyr::case_when(
-    MedIsoBMIBGS !="null" ~ MedIsoBMIBGS, #those with ISOBMIBGS values get ISoBMIBGS values
-    TRUE ~ as.character(MedBMI))) #rest gets ordinary BMI values
-
+    !is.na(MedIsoBMIBGS) ~ MedIsoBMIBGS, #those with ISOBMIBGS values get ISoBMIBGS values
+    TRUE ~ MedBMI)) #rest gets ordinary BMI values
+  #TODO remember a quality control of this variable, as we had to change
+  #the code to take into account NA (versus "null" before) when going
+  #into production with MAR.
 
   output <- myInData
   return(invisible(output))

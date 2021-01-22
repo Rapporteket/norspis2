@@ -22,7 +22,7 @@ fun1_2_import_data_B <- function(path_data="F:/2020-28-12_data-til-utvikling/", 
   NorSpisBehandling <- utils::read.table(paste0(path_data, "NorSpis_BehandlingNum_datadump_", date_data,".csv"),
                                          sep=';',dec=',', header=T, encoding = 'UTF-8', stringsAsFactors = FALSE, fill = TRUE)
   colnames(NorSpisBehandling)[1] <- 'BehandlingID' #because first column is importet with strange prefix we must rename it
-  NorSpisBehandling[is.na(NorSpisBehandling)] <- 'null'
+  #NorSpisBehandling[is.na(NorSpisBehandling)] <- 'null'
 
   #Change data name
   RegDataBeh <- NorSpisBehandling

@@ -1,6 +1,6 @@
 library(shiny)
 
-shinyServer(function(input, output, session) {
+server <- function(input, output, session) {
 
   # Hide/show tabs
   #hideTab(inputId = "tabs", target = "Sykehussammenligninger")
@@ -69,25 +69,27 @@ shinyServer(function(input, output, session) {
     #if so you must delete those eight lines of code.
     alle_scorer <-
       norspis2::query_alle_scorer(registryName, reshID)
-    colnames(alle_scorer)[1] <- 'ForlopsID'
-    alle_scorer[is.na(alle_scorer)] <- 'null'
+    # why set NA values to character string 'null'?
+    #alle_scorer[is.na(alle_scorer)] <- 'null'
 
     enkelt_ledd_num <-
       norspis2::query_enkelt_ledd_num(registryName, reshID)
-    colnames(enkelt_ledd_num)[1] <- 'PasientID'
-    enkelt_ledd_num[is.na(enkelt_ledd_num)] <- 'null'
+    # strange type of ID in db...
+    enkelt_ledd_num$ForlopsID <- as.integer(enkelt_ledd_num$ForlopsID)
+    # why set NA values to character string 'null'?
+    #enkelt_ledd_num[is.na(enkelt_ledd_num)] <- 'null'
 
     forlops_oversikt <-
       norspis2::query_forlops_oversikt(registryName, reshID)
-    colnames(forlops_oversikt)[1] <- 'AvdRESH' #necessary
-    forlops_oversikt[is.na(forlops_oversikt)] <- 'null' #necessary
+    # strange type of ID in db...
+    forlops_oversikt$ForlopsID <- as.integer(forlops_oversikt$ForlopsID)
+    # why set NA values to character string 'null'?
+    #forlops_oversikt[is.na(forlops_oversikt)] <- 'null' #necessary
 
-    query_behandling_num <-
+    behandling_num <-
       norspis2::query_behandling_num(registryName, reshID)
-    colnames(query_behandling_num)[1] <- 'BehandlingID' #because first column is
-                                                     #imported with strange
-                                                     #prefix we must rename it
-    query_behandling_num[is.na(query_behandling_num)] <- 'null'
+    # why set NA values to character string 'null'?
+    #behandling_num[is.na(query_behandling_num)] <- 'null'
 
 
     #Message to Are: The following mirrors what I do loacally (first I merge
@@ -102,9 +104,9 @@ shinyServer(function(input, output, session) {
                      by = "ForlopsID", all = FALSE)
 
     RegData <- tibble::as_tibble(RegData)
-    RegDataBeh <- tibble::as_tibble(query_behandling_num)
+    RegDataBeh <- tibble::as_tibble(behandling_num)
 
-    DL <- norspis2::fun2_dataList(myInData1 = RegData, myInData2 = query_behandling_num)
+    DL <- norspis2::fun2_dataList(myInData1 = RegData, myInData2 = RegDataBeh)
     #END - message/code to Are.
 
   } else {
@@ -326,4 +328,4 @@ shinyServer(function(input, output, session) {
   )
   ###-----PDF-report (END)
 
-})
+}

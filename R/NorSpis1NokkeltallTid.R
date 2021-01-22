@@ -8,8 +8,6 @@
 #' - Antall startregistreringer (ferdigstilte)
 #'
 #' @export
-#'
-#' @examples
 
 #UNIKE PASIENTER
 

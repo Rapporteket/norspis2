@@ -14,6 +14,9 @@ NorSpis1FigPrePost(RegData, reshID, outfile = "", hentData = 0,
 \arguments{
 \item{diagnose}{}
 }
+\value{
+Figure
+}
 \description{
 Title
 }

@@ -20,11 +20,9 @@
 #' @param regType
 #' @param diagnose
 #'
-#' @return
+#' @return Figure
 #' @export
-#'
-#'
-#'
+#' @example
 
 NorSpis1FigPrePost <- function(RegData,
                                reshID,

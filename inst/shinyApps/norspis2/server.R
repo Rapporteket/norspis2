@@ -179,16 +179,15 @@ server <- function(input, output, session) {
   })
 
   output$fordelingerOppsumTab <- renderUI({
-    myInData=RegData
-    myFilteredData <- make29_data_filtered(RegData = DL$RegData2,
-                                           regStatus = c(1),
-                                           regType = c(1,2,3,4),
-                                           dateFrom = "2012-01-01",
-                                           dateTo = "2019-12-31",
-                                           ageFrom = 0,
-                                           ageTo = 200)
+        #filter
+        dat2 <- norspis2::fun3_1_filter_RegData(RegData = DL$RegData2,
+                                               # dateFrom =
+                                               #   input$datovalgSykehusSammenlign[1],
+                                               # dateTo =
+                                               #   input$datovalgSykehusSammenlign[2],
+                                               regType = c(1,2,3,4), #only startreg
+                                               regStatus = 1)#only complete reg
 
-    #running the function make_popCharTab
     #Choose variables to present in table
     myvarString <- c(quo(PasientAlder_CAT_MISSING),
                      quo(B01Sivilstatus_MISSING_NAMES), #set all the variables you want to include. The quo is needed beacuse we use !! in the function
@@ -200,7 +199,7 @@ server <- function(input, output, session) {
                      quo(B07Hovedinntekt_MISSING_NAMES))
 
 
-    popCharTab <- make_popCharTab(RegData = myFilteredData, varsInTab = myvarString)
+    popCharTab <- norspis2::make_table_patChar(RegData = dat2, varsInTab = myvarString)
 
 
     #changing the names:
@@ -269,8 +268,6 @@ server <- function(input, output, session) {
                                                  input$datovalgSykehusSammenlign[2],
                                                regStatus = 1)#only complete reg
       #table to plot
-
-
       tab <- norspis2::make_figTable_unitCompar(
         myIndata_NatVal =  dat,
         myInvar01 = input$valgtVarSykehusSammenlign)#rlang::quo(PROP_PO10Pasientsikkerhet))#input$valgtVarSykehusSammenlign)#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(!!input$valgtVarSykehusSammenlign))

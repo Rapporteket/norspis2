@@ -13,8 +13,6 @@
 #' - registrering startet men ikke fullført
 #'
 #' @export
-#'
-#' @examples
 
 NorSpis1TabRegStatusUtvidet <- function(RegData = RegData,
                                         userRole,

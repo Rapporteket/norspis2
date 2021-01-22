@@ -11,8 +11,6 @@
 #'
 #' @return A DT::datatable
 #' @export
-#'
-#' @examples
 
 NorSpis1TabRegStatus <- function(RegData,
                                  userRole,

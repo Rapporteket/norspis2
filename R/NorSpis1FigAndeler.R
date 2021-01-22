@@ -20,10 +20,8 @@
 #' @param reshID
 #' @param enhetsUtvalg
 #'
-#' @return
+#' @return Figure
 #' @export
-#'
-#' @examples
 
 NorSpis1FigAndeler  <- function(RegData, valgtVar,
                                datoFra='2012-01-01',

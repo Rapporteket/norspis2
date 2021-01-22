@@ -9,8 +9,6 @@
 #' - Antall unike pasienter (ferdigstilte)
 #'
 #' @export
-#'
-#' @examples
 
 
 NorSpis1Nokkeltall <- function(RegData, enhetsUtvalgEgenNasjonal='nasjonal', reshID)

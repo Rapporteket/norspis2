@@ -14,6 +14,9 @@ NorSpis1FigAndeler(RegData, valgtVar, datoFra = "2012-01-01",
 \arguments{
 \item{enhetsUtvalg}{}
 }
+\value{
+Figure
+}
 \description{
 Title
 }

@@ -163,6 +163,62 @@ server <- function(input, output, session) {
     )
   })
 
+  output$fordelingerOppsumTab <- renderUI({
+    myInData=RegData
+    myFilteredData <- make29_data_filtered(RegData = DL$RegData2,
+                                           regStatus = c(1),
+                                           regType = c(1,2,3,4),
+                                           dateFrom = "2012-01-01",
+                                           dateTo = "2019-12-31",
+                                           ageFrom = 0,
+                                           ageTo = 200)
+
+    #running the function make_popCharTab
+    #Choose variables to present in table
+    myvarString <- c(quo(PasientAlder_CAT_MISSING),
+                     quo(B01Sivilstatus_MISSING_NAMES), #set all the variables you want to include. The quo is needed beacuse we use !! in the function
+                     quo(B03Bosituasjon_MISSING_NAMES),
+                     quo(B02EgneBarn_MISSING_NAMES),
+                     quo(B04PabegyntUtd_MISSING_NAMES),
+                     quo(B05FullfortUtd_MISSING_NAMES),
+                     quo(B06Hovedaktivitet_MISSING_NAMES),
+                     quo(B07Hovedinntekt_MISSING_NAMES))
+
+
+    popCharTab <- make_popCharTab(RegData = myFilteredData, varsInTab = myvarString)
+
+
+    #changing the names:
+    popCharTab[,1] <- dplyr::recode(popCharTab[,1][[1]],
+                                    "PasientAlder_CAT_MISSING" = "Alder",
+                                    "B01Sivilstatus_MISSING_NAMES"="Sivilstatus",
+                                    "B03Bosituasjon_MISSING_NAMES"="Bosituasjon",
+                                    "B02EgneBarn_MISSING_NAMES"="Egne barn",
+                                    "B04PabegyntUtd_MISSING_NAMES" = "P?begynt utdanning",
+                                    "B05FullfortUtd_MISSING_NAMES" = "Fullf?rt utdanning",
+                                    "B06Hovedaktivitet_MISSING_NAMES"="Hovedaktivitet",
+                                    "B07Hovedinntekt_MISSING_NAMES" = "Hovedinntekt"
+    )
+    #uniting first two columns
+    popCharTab <- popCharTab %>%
+      tidyr::unite("  ", 1:2, sep =" ")
+
+    #Just printing a flextable of the output above
+    ft <- flextable::flextable(popCharTab)
+    ft <- flextable::autofit(ft)
+    ft <- flextable::compose(ft, j =5, #minibar
+                             value = flextable::as_paragraph(
+                               flextable::minibar(value = N, max(N))
+                             ),
+                             part = "body")
+    ft <- flextable::merge_v(ft, j = 1:2) #vertical merge of values in first and second column
+    ft <- flextable::valign (ft, j = 1:2, valign = "top") #align the merged values in first and seceond column to the top
+
+    ft
+    flextable::htmltools_value(ft)
+
+  })
+
   output$fordelingerInd <- renderPlot({
     norspis2::NorSpis1FigAndeler(
       reshID=reshID,

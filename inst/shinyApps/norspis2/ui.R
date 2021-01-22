@@ -170,7 +170,13 @@ ui <- tagList(
                        width="800px",
                        height = "800px")
           )
-        )#,
+        ),
+        tabPanel(
+          "Oppsummeringstabeller",
+          sidebarPanel(),
+          mainPanel(
+            uiOutput(outputId = 'fordelingerOppsumTab')
+          ))
       )
     ),#tab FIGURER: Pasientkarakteristika"
 

@@ -25,6 +25,9 @@ Imports:
     shinyBS,
     shinydashboard,
     shinyWidgets,
+    rapFigurer,
     rlang,
     wrapr,
     ggplot2
+Remotes:
+    Rapporteket/rapFigurer

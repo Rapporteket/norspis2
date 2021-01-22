@@ -43,7 +43,7 @@ So far the package contains functions to prepare:
 * The figures have functions for tables belonging to them (figTable), which must be run first and used as input to the figure functions. 
 
 
-Preliminary example that works (but only locally at NLSH...)
+Preliminary example that works (but only locally at NLSH)
 
 ```{r, eval=FALSE}
 library(dplyr)

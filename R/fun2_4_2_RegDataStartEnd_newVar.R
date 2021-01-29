@@ -44,6 +44,7 @@ fun2_4_2_RegDataStartEnd_newVar <- function(myInData){
                   "2"="0",#uendret
                   "3"="1",#bedring
                   "4"="1") #symptomfri
+  RegDataStartEnd$EDEQ60GlobalScore_CHANGE_PROP <- as.numeric(RegDataStartEnd$EDEQ60GlobalScore_CHANGE_PROP)
 
   RegDataStartEnd$EDEQ60GlobalScore_CHANGE_NAMES <-
     dplyr::recode(RegDataStartEnd$EDEQ60GlobalScore_CHANGE,
@@ -84,10 +85,13 @@ fun2_4_2_RegDataStartEnd_newVar <- function(myInData){
   # MedBMI_start18.5_slutt18.5
   # MedBMI below 18.5 at start, but above at end (1), below 18.5 at start and still below at end (0)
   # We use the variable MedBMI_withIsoBMIBGSvalues  that we made earlier, so that those with IsoBMIBGS values use these value
-  RegDataStartEnd<- RegDataStartEnd %>%
+  RegDataStartEnd <- RegDataStartEnd %>%
     mutate(MedBMI_start18.5_slutt18.5 = case_when(
       MedBMI_withIsoBMIBGSvalues.x < 18.5 & MedBMI_withIsoBMIBGSvalues.y >= 18.5 ~ 1,#underweight at start, no more underweight at end
       MedBMI_withIsoBMIBGSvalues.x < 18.5 & MedBMI_withIsoBMIBGSvalues.y < 18.5 ~ 0))#underweight at start, still underweight at end
+
+  RegDataStartEnd$MedBMI_start18.5_slutt18.5 <- as.numeric(RegDataStartEnd$MedBMI_start18.5_slutt18.5)
+
 
   # comment <- '
   # - Figuren viser andelen paseinter som var undervektig ved behandlingsstart, men som ikke lenger var undervektig ved behandlingsslutt (bortfall av undervekt).

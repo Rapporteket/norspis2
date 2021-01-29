@@ -19,8 +19,22 @@
 fun1_1_import_data_FEA <- function(path_data="F:/2020-28-12_data-til-utvikling/", #disk and folder of data to import
                                  date_data="2020-12-28"){ #date of data
   #Load data
-  NorSpisForlop <- utils::read.table(paste0(path_data, "NorSpis_ForlopsOversikt_datadump_", date_data,".csv"),
-                                     sep=';', dec=',', header=T, encoding = 'UTF-8', stringsAsFactors = FALSE, fill = TRUE)
+  NorSpisForlop <-
+    data.table::fread(paste0(path_data, "NorSpis_ForlopsOversikt_datadump_",
+                             date_data,".csv"),
+                      sep=';',
+                      dec=',',
+                      header=T,
+                      encoding = 'UTF-8',
+                      stringsAsFactors = FALSE,
+                      fill = TRUE,
+                      drop = c("Fodselsdato", #no need read into R by default
+                               "KryptertFnr",#"drop" in fread,not read.table
+                                "AvdodDato"))
+
+  #no need to use exact age by default under dev. (change it by rounding)
+  NorSpisForlop$PasientAlder <- round(NorSpisForlop$PasientAlder, digits = 1)
+
   colnames(NorSpisForlop)[1] <- 'AvdRESH'
   #NorSpisForlop[is.na(NorSpisForlop)] <- 'null'
 

@@ -363,16 +363,19 @@ ui <- tagList(
           )
         ),
         tabPanel(
-          "Sykehussammenligninger",
+          "Sykehussammenligninger (slutt)",
           sidebarPanel(
             width = 3,
             wellPanel(
               selectInput(
                 inputId = "valgtVarSykehusSammenlign",
                 label="Variabel",
-                choices = c(#"dasf"= "dgfhgjhk",
-                            "Pasientsikkerhet" = "PROP_PO10Pasientsikkerhet",
-                            "Utbytte" = "PROP_PO09Utbytte")
+                choices = c("Pasientvurdert pasientsikkerhet" = "PROP_PO10Pasientsikkerhet",
+                            "KI 4: Pasientvurdert utbytte" = "PROP_PO09Utbytte",
+                            "KI 5: Pasientvurdert utfall" = "PROP_PT03Utfallsvurd",
+                            "Pasientvurdert tilgjengelighet" = "PasOppTilgjengelighet",
+                            "Pasientvurdert tilfredshet" = "PasOppTilfredshet",
+                            "Pasienterfaringer" = "PasOppErfaring")
               ),
               dateRangeInput(
                 inputId = 'datovalgSykehusSammenlign',
@@ -392,7 +395,40 @@ ui <- tagList(
               height = "800px")
 
           )
-        )#,
+
+        ),
+        tabPanel(
+          "Sykehussammenligninger (start/slutt)",
+          sidebarPanel(
+            width = 3,
+            wellPanel(
+              selectInput(
+                 inputId = "valgtVarSykehusSammenlign2",
+                 label="Variabel",
+                 choices = c("KI 1: Endring SF symptomer" = "EDEQ60GlobalScore_CHANGE_PROP",
+                             "KI 2: Endring i funksjon" = "CIA30GlobalScore_RCI_01",
+                             "KI 3: Bortfall undervekt" = "MedBMI_start18.5_slutt18.5"
+                             )
+              ),
+              dateRangeInput(
+                 inputId = 'datovalgSykehusSammenlign2',
+                 start = "2018-01-01",
+                 end = "2021-12-31",# Sys.Date(),
+                 label = "Tidsperiode (datoene gjelder sluttregistreringen)",
+                 separator="t.o.m.",
+                 language="nb"
+              )
+            )
+          ),
+
+          mainPanel(
+             plotOutput(
+               outputId = 'sykehusSammenlign2',
+               width="800px",
+               height = "800px")
+
+          )
+          )
 
       )
 

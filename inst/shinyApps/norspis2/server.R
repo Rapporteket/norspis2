@@ -2,8 +2,6 @@ library(shiny)
 
 server <- function(input, output, session) {
 
-
-
   # Navbar user widget
   output$appUserName <- renderText(getUserFullName(session))
   output$appOrgName <- renderText(getUserReshId(session))
@@ -272,7 +270,28 @@ server <- function(input, output, session) {
         myIndata_NatVal =  dat,
         myInvar01 = input$valgtVarSykehusSammenlign)#rlang::quo(PROP_PO10Pasientsikkerhet))#input$valgtVarSykehusSammenlign)#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(!!input$valgtVarSykehusSammenlign))
     #plot
-    norspis2::make_figFig_unitCompar(tab)
+    norspis2::make_figFig_unitCompar(tab,
+                                     YellowGoal = "",
+                                     GreenGoal = "")
+
+  })
+
+  output$sykehusSammenlign2 <- renderPlot({
+        #filter
+        dat <- norspis2::fun3_2_filter_RegDataStartEnd(RegData = DL$RegDataStartEndNatVal2,
+                                                       dateFrom.y  =
+                                                         input$datovalgSykehusSammenlign2[1],
+                                                       dateTo.y =
+                                                         input$datovalgSykehusSammenlign2[2],
+                                                       BasisRegStatus.y = 1)#only complete reg
+      #table to plot
+      tab <- norspis2::make_figTable_unitCompar(
+        myIndata_NatVal =  dat,
+        myInvar01 = input$valgtVarSykehusSammenlign2)#rlang::quo(PROP_PO10Pasientsikkerhet))#input$valgtVarSykehusSammenlign)#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(!!input$valgtVarSykehusSammenlign))
+    #plot
+    norspis2::make_figFig_unitCompar(tab,
+                                     YellowGoal = "",
+                                     GreenGoal = "")
 
   })
 

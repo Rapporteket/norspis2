@@ -46,6 +46,8 @@ make_figFig_unitCompar <- function(
   fjern_y = ggplot2::theme(panel.grid.major.y = ggplot2::element_blank(),
                   panel.grid.minor.y = ggplot2::element_blank())
 
+  my_color = "#084594"
+
   fig <-
     ggplot2::ggplot(my_proptable_hospitals)+
     #The bars:
@@ -53,7 +55,8 @@ make_figFig_unitCompar <- function(
              fill=factor(ifelse(stringr::str_detect(
                my_proptable_hospitals$AvdNavn,
                "Nasjonal"),
-               "grey", "#2171b5"))) +
+               "grey",
+               my_color))) +
 
     ggplot2::labs(y=my_y_lab, #my_proptable_hospitals$my_y_lab,#
          title = my_title)+#colnames(my_proptable_hospitals[,4]))+

@@ -39,7 +39,7 @@ fun2_1_2_RegData_newVarFrmt <- function(myInData) {
   myInData$HovedDato_FRMT <- as.Date(myInData$HovedDato)#,format="%d.%m.%Y")
 
   #we usually do not import variable AvdodDato, so only recode if present:
-    if (!is.null(myInData$AvdodDato)) {
+    if ("AvdodDato" %in% names(myInData)) {
   myInData$AvdodDato_FRMT <- as.Date(myInData$AvdodDato, format="%Y-%m-%d")
     }
   #numeric formats ("null" values will here become NA, and you will get a

@@ -35,12 +35,12 @@ make_figFig_variableDist <- function(my_proptable, mytitle){
   fjern_y = ggplot2::theme(panel.grid.major.y = ggplot2::element_blank(),
                   panel.grid.minor.y = ggplot2::element_blank())
 
-
+  my_color = "#084594"
 
   fig <-  ggplot2::ggplot(my_proptable) +
     #The bars:
     ggplot2::geom_col(mapping=ggplot2::aes(x = cat, y=perc*100),#,width=1/3
-             fill="#2171b5") +
+             fill=my_color) +
     ggplot2::geom_text(
       ggplot2::aes(x = cat, y= perc*100,
           label=scales::percent(perc), #to map percentace label at top of bar use "y= perc"
@@ -67,7 +67,7 @@ make_figFig_variableDist <- function(my_proptable, mytitle){
     ggplot2::theme(axis.ticks.y = ggplot2::element_blank())+#+
     ggplot2::theme(plot.title = ggplot2::element_text(face= "bold", vjust=1))+
     #plot.subtitle = ggplot2::element_text(face ="bold")+
-    #plot.caption = ggplot2::element_text(color="#2171b5", face = "italic")) # caption color
+    #plot.caption = ggplot2::element_text(color=my_color, face = "italic")) # caption color
     ggplot2::theme(plot.subtitle = ggplot2::element_text(hjust=0.5, vjust=-2))
   #coord_flip()
 

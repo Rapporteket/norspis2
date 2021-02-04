@@ -43,47 +43,7 @@ So far the package contains functions to prepare:
 * The figures have functions for tables belonging to them (figTable), which must be run first and used as input to the figure functions. 
 
 
-Preliminary example that works (but only locally at NLSH)
-
-```{r, eval=FALSE}
-library(dplyr)
-
-
-RegData <- norspis2::fun1_1_import_data_FEA(path_data="F:/2020-28-12_data-til-utvikling/", #disk and folder of data to import
-                                            date_data="2020-12-28")
-
-RegDataBeh <- norspis2::fun1_2_import_data_B(path_data="F:/2020-28-12_data-til-utvikling/", #disk and folder of data to import
-                                               date_data="2020-12-28")
-
-#Five datasets (outputted in a list):
-DL <- norspis2::fun2_dataList(myInData1 = RegData, myInData2 = RegDataBeh)
-
-# RegDataNatVal2_filtered <- fun3_1_filter_RegData(RegData = RegDataNatVal2,
-#                                     regStatus = c(1),#c(0,1,-1),
-#                                     regType = c(0,1,2,3,4,5,6,98,99),
-#                                     dateFrom = "2012-01-01",
-#                                     dateTo = "2100-12-31",
-#                                     ageFrom = 0,
-#                                     ageTo = 200)
-
-# RegDataStartEnd <- fun3_2_filter_RegDataStartEnd(RegDataStartEnd = myInData,
-#                                                 BasisRegStatus.x = c(0,1,-1),
-#                                                 RegRegType.x = c(0,1,2,3,4,5,6,98,99),
-#                                                 RegRegType.y = c(5,6,98,99,NA),
-#                                                 dateFrom.x = "2012-01-01",
-#                                                 dateTo.x = "2100-12-31",
-#                                                 dateFrom.y = "2012-01-01",
-#                                                 dateTo.y = "2100-12-31",
-#                                                 ageFrom.x = 0,
-#                                                 ageTo.x = 200,
-#                                                 ageFrom.y = 0,
-#                                                 ageTo.y = 200)
-
-tab <- norspis2::make_figTable_unitCompar(DL$RegDataNatVal2, rlang::quo(PROP_PO10Pasientsikkerhet))
-fig <- norspis2::make_figFig_unitCompar(tab)
-fig
-
-```
+A function for making parameterized reports for each hospital unit, norspis2::make_report(), in connection to a a .Rmd document, inst/norspis-periodisk-rapport.Rmd, has also been made. 
 
 
 You can install the released version/development version of norspis2 from [GitHub](https://github.com/) with:
@@ -94,25 +54,25 @@ devtools::install_github("Rapporteket/norspis2")
 ```
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+<!-- This is a basic example which shows you how to solve a common problem: -->
 
-```{r example}
-library(norspis2)
-## basic example code
-```
+<!-- ```{r example} -->
+<!-- library(norspis2) -->
+<!-- ## basic example code -->
+<!-- ``` -->
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+<!-- What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so: -->
 
-```{r cars}
-summary(cars)
-```
+<!-- ```{r cars} -->
+<!-- summary(cars) -->
+<!-- ``` -->
 
-You may render `README.Rmd` manually, to keep `README.md` up-to-date. However, you may also leave this to the ci process at GitHub.
+<!-- You may render `README.Rmd` manually, to keep `README.md` up-to-date. However, you may also leave this to the ci process at GitHub. -->
 
-You can also embed plots, for example:
+<!-- You can also embed plots, for example: -->
 
-```{r pressure, echo = FALSE}
-plot(pressure)
-```
+<!-- ```{r pressure, echo = FALSE} -->
+<!-- plot(pressure) -->
+<!-- ``` -->
 
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub!
+<!-- In that case, don't forget to commit and push the resulting figure files, so they display on GitHub! -->

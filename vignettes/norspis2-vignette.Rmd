@@ -1,0 +1,30 @@
+---
+title: "NorSpis 2 notes"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{norspis2-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+# colors
+Some of the standard colors other national medical quality registries use are, given by their HEX codes, as follows:
+
+#084594 
+#2171b5 
+#6baed6
+#c6dbef
+
+You can also retrieve these colors from the rapFigurer package that many national registries use and norspis2 also use, but plan to phase out.  
+```{r}
+rapFigurer::figtype()$farger
+
+```

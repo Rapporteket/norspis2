@@ -2,7 +2,7 @@
 % Please edit documentation in R/fun2_1_2_RegData_newVarFrmt.R
 \name{fun2_1_2_RegData_newVarFrmt}
 \alias{fun2_1_2_RegData_newVarFrmt}
-\title{Make variables with new formats from old variables (Frmt refers to formatted)}
+\title{Make variables with new formats from old variables}
 \usage{
 fun2_1_2_RegData_newVarFrmt(myInData)
 }
@@ -13,8 +13,12 @@ fun2_1_2_RegData_newVarFrmt(myInData)
 RegData (invisible)
 }
 \description{
-Output is data, with new var. which is similar to old, but with new format and "FRMT" suffix.
+Frmt refers to formatted.
 }
 \details{
-Note: This function's name when writing aarsrapport 2019 (in 2020) was: make22_data_newVarFrmt
+Output is data, with new var. which is similar to old,
+but with new format and "FRMT" suffix.
+
+Note: This function's name when writing aarsrapport 2019 (in 2020)
+was: make22_data_newVarFrmt
 }

@@ -1,0 +1,109 @@
+---
+title: "Rapport fra NorSpis"
+author: 'For enhet med resh-ID: `r paste(params$reshID)`'
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    number_sections: 2
+  html_document:
+    df_print: paged
+params: 
+  reshID: 700821
+  dateFrom: !r format(Sys.Date(), "%Y")
+  dateTo: "`r Sys.Date()`"
+---
+
+[//]: # Just a list of usefull rmarkdown formatting commands:
+[//]: # \pagebreak
+
+
+[//]: # just setting things up
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  echo = params$reshID,
+  warning=FALSE,
+  comment = "#>",
+  cache.path = 'F:/'
+)
+```
+
+```{r loadPackages, include=FALSE}
+#rm(list=ls()) WARNING: Do not use this line in parameterized .Rmd-documents, or else the parameters will not be found 
+library(rapbase)
+library(tidyverse)
+library(norspis2)
+```
+
+[//]: # remember to load data - use "script-to-load-data-locally-norspis (...)"
+
+```{r}
+library(dplyr)
+#------DATA norspis2
+RegData2 <- norspis2::fun1_1_import_data_FEA(path_data="F:/2020-28-12_data-til-utvikling/", #disk and folder of data to import
+                                             date_data="2020-12-28")
+
+RegDataBeh2 <- norspis2::fun1_2_import_data_B(path_data="F:/2020-28-12_data-til-utvikling/", #disk and folder of data to import
+                                              date_data="2020-12-28")
+#Five datasets (and outputted in a list):
+DL <- norspis2::fun2_dataList(myInData1 = RegData2, myInData2 = RegDataBeh2)
+#---DATA norspis2 (END)
+#-----DATA  for norspis functions
+#When we use norspis functions we use the call "RegData" (while we in norspis2 use DL$RegData12345)
+RegData <- RegData2
+#---DATA norspis2 (END)
+```
+
+
+[//]: # paramemters 
+
+<!-- ```{r} -->
+<!-- reshID = '700821' #TESTNO" , Oslo: 109979, Bodø: 700821 -->
+<!-- userRole <-'SC' #'CC' , 'LC', 'LU' -->
+<!-- ``` -->
+
+\pagebreak
+
+# Bakgrunn
+
+\pagebreak
+
+# Innledning
+
+```{r}
+
+```
+
+\pagebreak
+
+# Pasientrapporterte effekt- og utfallsmål
+
+\pagebreak
+
+## Skjemaet Pasienttilfredshet 
+
+Under følger svar på de fire ja/nei-spørsmålene i skjemaet pasienttilfredshet, som pasientene spørres ved slutten av behandlingen. Det femte spørsmålet om vurdering av utfall av mottatt behandling er ikke med her, nå. 
+
+```{r fig.width=9, fig.height=9, fig.align='center'}
+variable <- c('PT03Utfallsvurd', 'PT01OnsketInvolv', 'PT02BleInvolv', 'PT04KontaktBrukerorg') #'PT05OrientertBrukerorg')
+regType <- ''
+
+for (valgtVar in variable) {
+      outfile <- ''
+      norspis2::NorSpis1FigAndeler(RegData=DL$RegData2, 
+                        datoFra = "2019-01-01", 
+                        valgtVar = valgtVar, 
+                        datoTil = "2019-12-31",
+                        reshID = params$reshID, 
+                        enhetsUtvalg = 1,
+                        outfile = outfile, 
+                        minald = 0, 
+                        maxald = 150)
+                        #minbmistart = "",
+                        #maxbmistart = "", 
+                        #regType = regType #filterargumenter bmi og regtype ikke lagt inn.
+}
+```
+

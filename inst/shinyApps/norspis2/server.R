@@ -196,9 +196,7 @@ server <- function(input, output, session) {
                      quo(B06Hovedaktivitet_MISSING_NAMES),
                      quo(B07Hovedinntekt_MISSING_NAMES))
 
-
     popCharTab <- norspis2::make_table_patChar(RegData = dat2, varsInTab = myvarString)
-
 
     #changing the names:
     popCharTab[,1] <- dplyr::recode(popCharTab[,1][[1]],
@@ -209,8 +207,8 @@ server <- function(input, output, session) {
                                     "B04PabegyntUtd_MISSING_NAMES" = "P?begynt utdanning",
                                     "B05FullfortUtd_MISSING_NAMES" = "Fullf?rt utdanning",
                                     "B06Hovedaktivitet_MISSING_NAMES"="Hovedaktivitet",
-                                    "B07Hovedinntekt_MISSING_NAMES" = "Hovedinntekt"
-    )
+                                    "B07Hovedinntekt_MISSING_NAMES" = "Hovedinntekt")
+
     #uniting first two columns
     popCharTab <- popCharTab %>%
       tidyr::unite("  ", 1:2, sep =" ")

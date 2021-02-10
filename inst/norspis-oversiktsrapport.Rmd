@@ -1,0 +1,183 @@
+---
+title: "Rapport - NorSpis"
+author: 'Nasjonal oversikt'
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    number_sections: 2
+  html_document:
+    df_print: paged
+params: 
+  reshID: 700821
+  dateFrom: !r format(Sys.Date(), "%Y")
+  dateTo: "`r Sys.Date()`" 
+---
+
+[//]: # Just a list of usefull rmarkdown formatting commands:
+[//]: # \pagebreak
+
+
+[//]: # just setting things up
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  echo = params$reshID,
+  warning=FALSE,
+  comment = "#>",
+  cache.path = 'F:/'
+)
+```
+
+```{r loadPackages, include=FALSE}
+#rm(list=ls()) WARNING: Do not use this line in parameterized .Rmd-documents, or else the parameters will not be found 
+library(rapbase)
+library(tidyverse)
+library(norspis2)
+```
+
+[//]: # remember to load data - use "script-to-load-data-locally-norspis (...)"
+
+```{r}
+library(dplyr)
+#------DATA norspis2
+RegData2 <- norspis2::fun1_1_import_data_FEA(path_data="F:/2020-28-12_data-til-utvikling/", #disk and folder of data to import
+                                             date_data="2020-12-28")
+
+RegDataBeh2 <- norspis2::fun1_2_import_data_B(path_data="F:/2020-28-12_data-til-utvikling/", #disk and folder of data to import
+                                              date_data="2020-12-28")
+#Five datasets (and outputted in a list):
+DL <- norspis2::fun2_dataList(myInData1 = RegData2, myInData2 = RegDataBeh2)
+#---DATA norspis2 (END)
+#-----DATA  for norspis functions
+#When we use norspis functions we use the call "RegData" (while we in norspis2 use DL$RegData12345)
+RegData <- RegData2
+#---DATA norspis2 (END)
+```
+
+
+[//]: # paramemters 
+
+<!-- ```{r} -->
+<!-- reshID = '700821' #TESTNO" , Oslo: 109979, Bodø: 700821 -->
+<!-- userRole <-'SC' #'CC' , 'LC', 'LU' -->
+<!-- ``` -->
+
+\pagebreak
+
+# Antall pasienter
+
+* Totalt
+* Over tid
+* Per enhet
+
+\pagebreak
+
+# Antall registreringer
+
+* Totalt
+* Over tid
+* Per enhet
+
+
+## Antall registreringer per enhet
+```{r}
+myInData <- DL$RegData2
+RegDataNatVal_filtered2019 <- norspis2::fun3_1_filter_RegData(RegData = myInData,
+                                                              regStatus = c(1),
+                                                              regType = c(1,2,3,4,5,6,98,99),
+                                                              dateFrom = "2019-01-01",
+                                                              dateTo = "2019-12-31",
+                                                              ageFrom = 0,
+                                                              ageTo = 200)
+
+tab <- norspis2::make_table_DQ_regCount(RegDataNatVal_filtered2019)
+
+ft <- norspis2::make_table_DQ_regCount_asFt(tab)
+
+ft
+
+```
+
+\pagebreak
+
+## Antall registreringer per avdeling per år
+
+Startregistreringer
+
+```{r}
+  #START
+  #filter data for e.g. 2012-2019
+  RegDataNatValFiltered <- fun3_1_filter_RegData(RegData = DL$RegDataNatVal2 ,
+                                                 regStatus = c(1),
+                                                 regType = c(1,2,3,4),#START
+                                                 dateFrom = "2012-01-01",
+                                                 dateTo = "2019-12-31",
+                                                 ageFrom = 0,
+                                                 ageTo = 200)
+
+  norspis2::make_table_DQ_regCountYearly(RegDataNatValFiltered = RegDataNatValFiltered)
+  
+  
+
+```
+
+\pagebreak
+
+Sluttregistreringer
+
+```{r}
+#END
+  #filter data for e.g. 2012-2019
+  RegDataNatValFiltered <- fun3_1_filter_RegData(RegData = DL$RegDataNatVal2 ,
+                                                 regStatus = c(1),
+                                                 regType = c(5,6,98,99),#END
+                                                 dateFrom = "2012-01-01",
+                                                 dateTo = "2019-12-31",
+                                                 ageFrom = 0,
+                                                 ageTo = 200)
+
+  norspis2::make_table_DQ_regCountYearly(RegDataNatValFiltered = RegDataNatValFiltered)
+```
+
+
+# Datakvalitetsmål
+
+* Totalt
+* Over tid
+* Per enhet
+
+\pagebreak
+
+# Resultater
+
+## Pasientrapporterte effekt- og utfallsmål
+
+\pagebreak
+
+### Skjemaet Pasienttilfredshet 
+
+Under følger svar på de fire ja/nei-spørsmålene i skjemaet pasienttilfredshet, som pasientene spørres ved slutten av behandlingen. Det femte spørsmålet om vurdering av utfall av mottatt behandling er ikke med her, nå. 
+
+```{r fig.width=9, fig.height=9, fig.align='center'}
+variable <- c('PT03Utfallsvurd', 'PT01OnsketInvolv', 'PT02BleInvolv', 'PT04KontaktBrukerorg') #'PT05OrientertBrukerorg')
+regType <- ''
+
+for (valgtVar in variable) {
+      outfile <- ''
+      norspis2::NorSpis1FigAndeler(RegData=DL$RegData2, 
+                        datoFra = "2019-01-01", 
+                        valgtVar = valgtVar, 
+                        datoTil = "2019-12-31",
+                        reshID = params$reshID, 
+                        enhetsUtvalg = 0, #0 nasjonal?
+                        outfile = outfile, 
+                        minald = 0, 
+                        maxald = 150)
+                        #minbmistart = "",
+                        #maxbmistart = "", 
+                        #regType = regType #filterargumenter bmi og regtype ikke lagt inn.
+}
+```
+

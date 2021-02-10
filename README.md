@@ -1,28 +1,49 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
 # norspis2
 
 <!-- badges: start -->
-[![Version](https://img.shields.io/github/v/release/rapporteket/norspis2?sort=semver)](https://github.com/rapporteket/norspis2/releases) [![R build status](https://github.com/Rapporteket/norspis2/workflows/R-CMD-check/badge.svg)](https://github.com/Rapporteket/norspis2/actions) [![codecov.io](https://codecov.io/github/Rapporteket/norspis2/norspis2.svg?branch=main)](https://codecov.io/github/Rapporteket/norspis2?branch=main) [![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing) [![Doc](https://img.shields.io/badge/Doc--grey.svg)](https://rapporteket.github.io/norspis2/) <!-- badges: end -->
 
-The goal of norspis2 is to make standardized plots, tables and documents, that fits the norms of Norwegian medical quality registries.
+[![Version](https://img.shields.io/github/v/release/rapporteket/norspis2?sort=semver)](https://github.com/rapporteket/norspis2/releases)
+[![R build
+status](https://github.com/Rapporteket/norspis2/workflows/R-CMD-check/badge.svg)](https://github.com/Rapporteket/norspis2/actions)
+[![codecov.io](https://codecov.io/github/Rapporteket/norspis2/norspis2.svg?branch=main)](https://codecov.io/github/Rapporteket/norspis2?branch=main)
+[![Lifecycle:
+maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+[![Doc](https://img.shields.io/badge/Doc--grey.svg)](https://rapporteket.github.io/norspis2/)
+<!-- badges: end -->
+
+The goal of norspis2 is to make standardized plots, tables and
+documents, that fits the norms of Norwegian medical quality registries.
 
 ## Installation
 
 Test comment.
 
-This package is made for use in Norwegian Quality Registry for Eating Disorders (NorSpis), and has little utility outside the ecosystem of Norwegian medical quality registries. Still we aim to make the functions so that is should be possible for anyone to input standardized anonymous/summary data frames to the plot and table functions, and get plots and tables on our standardized format.
+This package is made for use in Norwegian Quality Registry for Eating
+Disorders (NorSpis), and has little utility outside the ecosystem of
+Norwegian medical quality registries. Still we aim to make the functions
+so that is should be possible for anyone to input standardized
+anonymous/summary data frames to the plot and table functions, and get
+plots and tables on our standardized format.
 
 So far the package contains functions to prepare:
 
--   five differently structured datasets (RegData, RegDataBeh, RegDataNatVal, RegDataStartEnd, RegDataStartEndNatVal)
--   three tables (DQ\_missing ,DQ\_regCount, and patChar)
--   two figures (one simple distribution figure and one to compare proportions at different hospital units).
--   The figures have functions for tables belonging to them (figTable), which must be run first and used as input to the figure functions.
+  - five differently structured datasets (RegData, RegDataBeh,
+    RegDataNatVal, RegDataStartEnd, RegDataStartEndNatVal)
+  - three tables (DQ\_missing ,DQ\_regCount, and patChar)
+  - two figures (one simple distribution figure and one to compare
+    proportions at different hospital units).
+  - The figures have functions for tables belonging to them (figTable),
+    which must be run first and used as input to the figure functions.
 
-A function for making parameterized reports for each hospital unit, norspis2::make\_report(), in connection to a a .Rmd document, inst/norspis-periodisk-rapport.Rmd, has also been made.
+A function for making parameterized reports for each hospital unit,
+norspis2::make\_report(), in connection to a a .Rmd document,
+inst/norspis-periodisk-rapport.Rmd, has also been made.
 
-You can install the released version/development version of norspis2 from [GitHub](https://github.com/) with:
+You can install the released version/development version of norspis2
+from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
@@ -32,17 +53,31 @@ devtools::install_github("Rapporteket/norspis2")
 ## Example
 
 <!-- This is a basic example which shows you how to solve a common problem: -->
+
 <!-- ```{r example} -->
+
 <!-- library(norspis2) -->
+
 <!-- ## basic example code -->
+
 <!-- ``` -->
+
 <!-- What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so: -->
+
 <!-- ```{r cars} -->
+
 <!-- summary(cars) -->
+
 <!-- ``` -->
+
 <!-- You may render `README.Rmd` manually, to keep `README.md` up-to-date. However, you may also leave this to the ci process at GitHub. -->
+
 <!-- You can also embed plots, for example: -->
+
 <!-- ```{r pressure, echo = FALSE} -->
+
 <!-- plot(pressure) -->
+
 <!-- ``` -->
+
 <!-- In that case, don't forget to commit and push the resulting figure files, so they display on GitHub! -->

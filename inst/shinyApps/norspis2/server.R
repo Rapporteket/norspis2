@@ -62,21 +62,13 @@ server <- function(input, output, session) {
 
 
     # Get data
-    #Message to Are: Beneath each four imports you see two lines that
-    #changes some values/names. This is at least necessary locally,
-    #but maybe not on when the data is imported directrly from database, and
-    #if so you must delete those eight lines of code.
     alle_scorer <-
       norspis2::query_alle_scorer(registryName, reshID)
-    # why set NA values to character string 'null'?
-    #alle_scorer[is.na(alle_scorer)] <- 'null'
 
     enkelt_ledd_num <-
       norspis2::query_enkelt_ledd_num(registryName, reshID)
     # strange type of ID in db...
     enkelt_ledd_num$ForlopsID <- as.integer(enkelt_ledd_num$ForlopsID)
-    # why set NA values to character string 'null'?
-    #enkelt_ledd_num[is.na(enkelt_ledd_num)] <- 'null'
 
     forlops_oversikt <-
       norspis2::query_forlops_oversikt(registryName, reshID)
@@ -85,20 +77,20 @@ server <- function(input, output, session) {
     # for now, just remove unused OppflgSekNr containing binary values
     forlops_oversikt <- forlops_oversikt %>%
       dplyr::select(-OppflgSekNr)
-    # why set NA values to character string 'null'?
-    #forlops_oversikt[is.na(forlops_oversikt)] <- 'null' #necessary
 
     behandling_num <-
       norspis2::query_behandling_num(registryName, reshID)
-    # why set NA values to character string 'null'?
-    #behandling_num[is.na(query_behandling_num)] <- 'null'
 
 
-    #Message to Are: The following mirrors what I do loacally (first I merge
-    #the four datasets into two datasets, then I change them to tibbles and
-    # finally run the two datasets in the fun2_dataList() function.
-    # (changing to tibbles may not neccessary, but convinient for
-    # me when I work loacally)
+
+    # The following mirrors we do loacally
+    # - First merge three of the datasets,
+    # - then change it plus the RegDataBeh dataset into tibbles and finally
+    # - run the two datasets in the fun2_dataList() function.
+    #
+    # (changing to tibbles may not neccessary, but convinient when working
+    # locally)
+
     #Merge data
     ForlAlleSc <- merge(forlops_oversikt, alle_scorer, suffixes = c('','y'),
                         by = "ForlopsID", all = FALSE)
@@ -109,7 +101,6 @@ server <- function(input, output, session) {
     RegDataBeh <- tibble::as_tibble(behandling_num)
 
     DL <- norspis2::fun2_dataList(myInData1 = RegData, myInData2 = RegDataBeh)
-    #END - message/code to Are.
 
   } else {
     print("Make sure that all necessary data are loaded locally - the script to

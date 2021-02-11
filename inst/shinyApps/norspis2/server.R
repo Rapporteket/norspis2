@@ -67,19 +67,19 @@ server <- function(input, output, session) {
     #but maybe not on when the data is imported directrly from database, and
     #if so you must delete those eight lines of code.
     alle_scorer <-
-      norspis2::query_alle_scorer(registryName, reshID)
+      norspis2::query_alle_scorer(registryName, reshID, session = session)
     # why set NA values to character string 'null'?
     #alle_scorer[is.na(alle_scorer)] <- 'null'
 
     enkelt_ledd_num <-
-      norspis2::query_enkelt_ledd_num(registryName, reshID)
+      norspis2::query_enkelt_ledd_num(registryName, reshID, session = session)
     # strange type of ID in db...
     enkelt_ledd_num$ForlopsID <- as.integer(enkelt_ledd_num$ForlopsID)
     # why set NA values to character string 'null'?
     #enkelt_ledd_num[is.na(enkelt_ledd_num)] <- 'null'
 
     forlops_oversikt <-
-      norspis2::query_forlops_oversikt(registryName, reshID)
+      norspis2::query_forlops_oversikt(registryName, reshID, session = session)
     # strange type of ID in db...
     forlops_oversikt$ForlopsID <- as.integer(forlops_oversikt$ForlopsID)
     # for now, just remove unused OppflgSekNr containing binary values
@@ -89,7 +89,7 @@ server <- function(input, output, session) {
     #forlops_oversikt[is.na(forlops_oversikt)] <- 'null' #necessary
 
     behandling_num <-
-      norspis2::query_behandling_num(registryName, reshID)
+      norspis2::query_behandling_num(registryName, reshID, session = session)
     # why set NA values to character string 'null'?
     #behandling_num[is.na(query_behandling_num)] <- 'null'
 

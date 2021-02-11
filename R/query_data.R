@@ -26,8 +26,8 @@ query_alle_scorer <- function(registry_name, resh_id, ...) {
   query <- "SELECT * FROM AlleScorer;"
 
   if ("session" %in% names(list(...))) {
-    msg = paste("Load AlleScorer data from", registry_name, ": ", query)
-    .log_query(session = list(...)[["session"]], msg)
+    msg = paste0("Load AlleScorer data from ", registry_name, ": ", query)
+    raplog::repLogger(session = list(...)[["session"]], msg)
   }
 
   rapbase::loadRegData(registry_name, query)
@@ -41,8 +41,8 @@ query_behandling <- function(registry_name, resh_id, ...) {
   query <- "SELECT * FROM Behandling;"
 
   if ("session" %in% names(list(...))) {
-    msg = paste("Load Behandling data from", registry_name, ": ", query)
-    .log_query(session = list(...)[["session"]], msg)
+    msg = paste0("Load Behandling data from ", registry_name, ": ", query)
+    raplog::repLogger(session = list(...)[["session"]], msg)
   }
 
   rapbase::loadRegData(registry_name, query)
@@ -56,8 +56,8 @@ query_behandling_num <- function(registry_name, resh_id, ...) {
   query <- "SELECT * FROM BehandlingNum;"
 
   if ("session" %in% names(list(...))) {
-    msg = paste("Load BehandlingNum data from", registry_name, ": ", query)
-    .log_query(session = list(...)[["session"]], msg)
+    msg = paste0("Load BehandlingNum data from ", registry_name, ": ", query)
+    raplog::repLogger(session = list(...)[["session"]], msg)
   }
 
   rapbase::loadRegData(registry_name, query)
@@ -71,8 +71,8 @@ query_enkelt_ledd <- function(registry_name, resh_id, ...) {
   query <- "SELECT * FROM EnkeltLedd;"
 
   if ("session" %in% names(list(...))) {
-    msg = paste("Load EnkeltLedd data from", registry_name, ": ", query)
-    .log_query(session = list(...)[["session"]], msg)
+    msg = paste0("Load EnkeltLedd data from ", registry_name, ": ", query)
+    raplog::repLogger(session = list(...)[["session"]], msg)
   }
 
   rapbase::loadRegData(registry_name, query)
@@ -86,8 +86,8 @@ query_enkelt_ledd_num <- function(registry_name, resh_id, ...) {
   query <- "SELECT * FROM EnkeltLeddNum;"
 
   if ("session" %in% names(list(...))) {
-    msg = paste("Load EnkeltLeddNum data from", registry_name, ": ", query)
-    .log_query(session = list(...)[["session"]], msg)
+    msg = paste0("Load EnkeltLeddNum data from ", registry_name, ": ", query)
+    raplog::repLogger(session = list(...)[["session"]], msg)
   }
 
   rapbase::loadRegData(registry_name, query)
@@ -101,16 +101,9 @@ query_forlops_oversikt <- function(registry_name, resh_id, ...) {
   query <- "SELECT * FROM ForlopsOversikt;"
 
   if ("session" %in% names(list(...))) {
-    msg = paste("Load ForlopsOversikt data from", registry_name, ": ", query)
-    .log_query(session = list(...)[["session"]], msg)
+    msg = paste0("Load ForlopsOversikt data from ", registry_name, ": ", query)
+    raplog::repLogger(session = list(...)[["session"]], msg)
   }
 
   rapbase::loadRegData(registry_name, query)
-}
-
-
-#' @noRd
-.log_query <- function(session, msg) {
-
-  raplog::repLogger(session, msg)
 }

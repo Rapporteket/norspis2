@@ -4,12 +4,27 @@
 \alias{NorSpis1FigPrePost}
 \title{Title}
 \usage{
-NorSpis1FigPrePost(RegData, reshID, outfile = "", hentData = 0,
-  preprosess = 1, enhetsUtvalg = 1, valgtMaal = "Gjsn", valgtVar,
-  datoFra = "2012-04-01", datoTil = "2050-12-31",
-  datoFraSluttreg = "", datoTilSluttreg = "", minbmistart = 0,
-  maxbmistart = 200, minald = 0, maxald = 130, erMann = "",
-  regType = "", diagnose = "")
+NorSpis1FigPrePost(
+  RegData,
+  reshID,
+  outfile = "",
+  hentData = 0,
+  preprosess = 1,
+  enhetsUtvalg = 1,
+  valgtMaal = "Gjsn",
+  valgtVar,
+  datoFra = "2012-04-01",
+  datoTil = "2050-12-31",
+  datoFraSluttreg = "",
+  datoTilSluttreg = "",
+  minbmistart = 0,
+  maxbmistart = 200,
+  minald = 0,
+  maxald = 130,
+  erMann = "",
+  regType = "",
+  diagnose = ""
+)
 }
 \arguments{
 \item{diagnose}{}

@@ -9,6 +9,9 @@ render_report(reshID = 700821)
 \arguments{
 \item{reshID}{}
 }
+\value{
+
+}
 \description{
 This function allows you to render a parameterized report in norspis2, as
 described in R Markdown: The Definive Guide by Yihui Xie.

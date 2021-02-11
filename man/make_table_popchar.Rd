@@ -9,6 +9,9 @@ make_table_popchar(RegData = myFilteredData, varsInTab = myvarString)
 \arguments{
 \item{varsInTab}{}
 }
+\value{
+
+}
 \description{
 Function for table with overview of patient characteristics.
 }

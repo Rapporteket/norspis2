@@ -7,4 +7,6 @@
 *.xlsx
 *.csv
 *.txt
+*.tex
+*.log
 inst/doc

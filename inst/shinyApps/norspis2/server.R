@@ -117,15 +117,15 @@ server <- function(input, output, session) {
 
   }
 
-  # Hide/show tabs
+  # Hide/show tabs (visually)
   #hideTab(inputId = "tabs", target = "Sykehussammenligninger")
   #hideTab(inputId = "tabs", target = "Datakvalitet")
   if(!userRole %in% c('CC','SC')){
     hideTab(inputId = "tabs", target = "Administrasjon")
-    hideTab(inputId = "tabsets", target = "Sykehussammenligninger")
+    hideTab(inputId = "tabsets", target = "Sykehussammenligninger (slutt)")
+    hideTab(inputId = "tabsets", target = "Sykehussammenligninger (start/slutt)")
+    hideTab(inputId = "tabsets2", target = "Oppsummeringstabeller")
   }
-
-
 
   # ----The different outputs----
   # Administrasjons/Nøkkeltall

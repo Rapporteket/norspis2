@@ -52,6 +52,7 @@ ui <- tagList(
       "Pasientkarakteristika",
       tabsetPanel(
         type="tabs",
+        id = "tabsets2",
         tabPanel(
           "Demografiske karakterstika",
           sidebarPanel(
@@ -363,7 +364,7 @@ ui <- tagList(
           )
         ),
         tabPanel(
-          "Sykehussammenligninger (slutt)",
+          "Sykehussammenligninger (slutt)", #change?Update hideTab, server
           sidebarPanel(
             width = 3,
             wellPanel(
@@ -398,16 +399,19 @@ ui <- tagList(
 
         ),
         tabPanel(
-          "Sykehussammenligninger (start/slutt)",
+          "Sykehussammenligninger (start/slutt)",#change? Update hideTab,server
           sidebarPanel(
             width = 3,
             wellPanel(
               selectInput(
                  inputId = "valgtVarSykehusSammenlign2",
                  label="Variabel",
-                 choices = c("KI 1: Endring SF symptomer" = "EDEQ60GlobalScore_CHANGE_PROP",
-                             "KI 2: Endring i funksjon" = "CIA30GlobalScore_RCI_01",
-                             "KI 3: Bortfall undervekt" = "MedBMI_start18.5_slutt18.5"
+                 choices = c("KI 1: Endring SF symptomer" =
+                               "EDEQ60GlobalScore_CHANGE_PROP",
+                             "KI 2: Endring i funksjon" =
+                               "CIA30GlobalScore_RCI_01",
+                             "KI 3: Bortfall undervekt" =
+                               "MedBMI_start18.5_slutt18.5"
                              )
               ),
               dateRangeInput(
@@ -458,7 +462,7 @@ ui <- tagList(
     # ),#tab Datakvalitet
 
     tabPanel(
-      "Administrasjon",
+      "Administrasjon", #change?Update hideTab, server
       tabsetPanel(
         type="tabs",
         tabPanel(

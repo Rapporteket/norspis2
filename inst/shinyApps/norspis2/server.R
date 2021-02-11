@@ -114,7 +114,8 @@ server <- function(input, output, session) {
   if(!userRole %in% c('CC','SC')){
     hideTab(inputId = "tabs", target = "Administrasjon")
     hideTab(inputId = "tabsets", target = "Sykehussammenligninger (slutt)")
-    hideTab(inputId = "tabsets", target = "Sykehussammenligninger (start/slutt)")
+    hideTab(inputId = "tabsets",
+            target = "Sykehussammenligninger (start/slutt)")
     hideTab(inputId = "tabsets2", target = "Oppsummeringstabeller")
   }
 
@@ -233,6 +234,26 @@ server <- function(input, output, session) {
     )
   })
 
+  output$PrePost <- renderPlot({
+    norspis2::NorSpis1FigPrePost(
+      RegData=RegData,
+      valgtVar=input$valgtVarPrePost,
+      datoFra='2012-01-01',
+      datoTil='2050-12-31',
+      datoFraSluttreg = input$datovalgPrePost[1],
+      datoTilSluttreg = input$datovalgPrePost[2],
+      valgtMaal='Gjsn',
+      minbmistart = as.numeric(input$bmistartPrePost[1]),
+      maxbmistart = as.numeric(input$bmistartPrePost[2]),
+      outfile='',
+      hentData=0,
+      preprosess=1,
+      regType='',
+      enhetsUtvalg=as.numeric(input$enhetsUtvalgPrePost),
+      reshID=reshID,
+      diagnose = as.character(input$diagnosePrePost))
+  })
+
   output$fordelingerPas <- renderPlot({
     norspis2::NorSpis1FigAndeler(
       reshID=reshID,
@@ -284,25 +305,6 @@ server <- function(input, output, session) {
 
   })
 
-  output$PrePost <- renderPlot({
-    norspis2::NorSpis1FigPrePost(
-      RegData=RegData,
-      valgtVar=input$valgtVarPrePost,
-      datoFra='2012-01-01',
-      datoTil='2050-12-31',
-      datoFraSluttreg = input$datovalgPrePost[1],
-      datoTilSluttreg = input$datovalgPrePost[2],
-      valgtMaal='Gjsn',
-      minbmistart = as.numeric(input$bmistartPrePost[1]),
-      maxbmistart = as.numeric(input$bmistartPrePost[2]),
-      outfile='',
-      hentData=0,
-      preprosess=1,
-      regType='',
-      enhetsUtvalg=as.numeric(input$enhetsUtvalgPrePost),
-      reshID=reshID,
-      diagnose = as.character(input$diagnosePrePost))
-  })
 
 
   output$tableOvers <- DT::renderDataTable({

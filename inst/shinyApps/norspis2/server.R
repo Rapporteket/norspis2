@@ -310,7 +310,7 @@ server <- function(input, output, session) {
 
   output$tableOvers <- DT::renderDataTable({
     norspis2::NorSpis1TabRegStatus(
-      RegData = RegData,
+      RegData = DL$RegData2,
       userRole = userRole,
       reshID = reshID,
       datoFra=input$datovalgRegOvers[1],

@@ -20,7 +20,8 @@ NorSpis1TabRegStatusUtvidet <- function(RegData = RegData,
                                         datoFra,
                                         datoTil) {
 
-  RegData <- DL$RegData2
+  # DL is not available in function environment. Remove for now (Mads?)
+  #RegData <- DL$RegData2
   #Lage kolonne 1:
   kolonne1_UnikePasienter <-
     RegData %>%

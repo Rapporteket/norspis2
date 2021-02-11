@@ -9,6 +9,9 @@ make_table_DQ_regCount_asFt(tab)
 \arguments{
 \item{tab}{this is the table made with the function make_table_DQ_regCount}
 }
+\value{
+
+}
 \description{
 This functionality did not have its own function in aarsrapport 2019
 (in 2020) but the code was included in the .Rmd file for the

@@ -23,5 +23,6 @@ Data quality variables or the quality indicators
 *...
 * MedBMI_missEnd_whenU185Start
 
+
 Note: This function's name when writing aarsrapport 2019 (in 2020) was: make27_dataStartEnd_NewVar
 }

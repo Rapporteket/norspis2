@@ -4,11 +4,26 @@
 \alias{NorSpis1_3_Utvalg}
 \title{Funksjon som gjør utvalg av dataene, returnerer det filtrerte datasettet og utvalgsteksten.}
 \usage{
-NorSpis1_3_Utvalg(RegData, fargepalett = "BlaaOff", aar = 0, datoFra,
-  datoTil, datoFraSluttreg = "", datoTilSluttreg = "", minald = 0,
-  maxald = 130, minbmistart = 0, maxbmistart = 99999, regType = "",
-  enhetstypeDogn = "", enhetstypeRegional = "", erMann = "",
-  enhetsUtvalg = 0, reshID = 0, diagnose = "")
+NorSpis1_3_Utvalg(
+  RegData,
+  fargepalett = "BlaaOff",
+  aar = 0,
+  datoFra,
+  datoTil,
+  datoFraSluttreg = "",
+  datoTilSluttreg = "",
+  minald = 0,
+  maxald = 130,
+  minbmistart = 0,
+  maxbmistart = 99999,
+  regType = "",
+  enhetstypeDogn = "",
+  enhetstypeRegional = "",
+  erMann = "",
+  enhetsUtvalg = 0,
+  reshID = 0,
+  diagnose = ""
+)
 }
 \arguments{
 \item{diagnose}{}

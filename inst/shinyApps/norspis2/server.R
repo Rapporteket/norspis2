@@ -63,15 +63,16 @@ server <- function(input, output, session) {
 
     # Get data
     alle_scorer <-
-      norspis2::query_alle_scorer(registryName, reshID)
+      norspis2::query_alle_scorer(registryName, reshID, session = session)
+
 
     enkelt_ledd_num <-
-      norspis2::query_enkelt_ledd_num(registryName, reshID)
+      norspis2::query_enkelt_ledd_num(registryName, reshID, session = session)
     # strange type of ID in db...
     enkelt_ledd_num$ForlopsID <- as.integer(enkelt_ledd_num$ForlopsID)
 
     forlops_oversikt <-
-      norspis2::query_forlops_oversikt(registryName, reshID)
+      norspis2::query_forlops_oversikt(registryName, reshID, session = session)
     # strange type of ID in db...
     forlops_oversikt$ForlopsID <- as.integer(forlops_oversikt$ForlopsID)
     # for now, just remove unused OppflgSekNr containing binary values
@@ -79,7 +80,7 @@ server <- function(input, output, session) {
       dplyr::select(-OppflgSekNr)
 
     behandling_num <-
-      norspis2::query_behandling_num(registryName, reshID)
+      norspis2::query_behandling_num(registryName, reshID, session = session)
 
 
 

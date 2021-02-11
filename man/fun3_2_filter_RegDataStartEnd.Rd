@@ -4,12 +4,21 @@
 \alias{fun3_2_filter_RegDataStartEnd}
 \title{Filter function for start-end registrations (RegDataStartEnd):}
 \usage{
-fun3_2_filter_RegDataStartEnd(RegDataStartEnd = myInData,
-  BasisRegStatus.x = c(0, 1, -1), BasisRegStatus.y = c(0, 1, -1, NA),
-  RegRegType.x = c(0, 1, 2, 3, 4, 5, 6, 98, 99), RegRegType.y = c(5, 6,
-  98, 99, NA), dateFrom.x = "2012-01-01", dateTo.x = "2100-12-31",
-  dateFrom.y = "2012-01-01", dateTo.y = "2100-12-31", ageFrom.x = 0,
-  ageTo.x = 200, ageFrom.y = 0, ageTo.y = 200)
+fun3_2_filter_RegDataStartEnd(
+  RegDataStartEnd = myInData,
+  BasisRegStatus.x = c(0, 1, -1),
+  BasisRegStatus.y = c(0, 1, -1, NA),
+  RegRegType.x = c(0, 1, 2, 3, 4, 5, 6, 98, 99),
+  RegRegType.y = c(5, 6, 98, 99, NA),
+  dateFrom.x = "2012-01-01",
+  dateTo.x = "2100-12-31",
+  dateFrom.y = "2012-01-01",
+  dateTo.y = "2100-12-31",
+  ageFrom.x = 0,
+  ageTo.x = 200,
+  ageFrom.y = 0,
+  ageTo.y = 200
+)
 }
 \arguments{
 \item{RegDataStartEnd}{myInData}

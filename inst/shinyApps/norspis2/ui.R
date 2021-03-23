@@ -34,17 +34,21 @@ ui <- tagList(
     tabPanel(
       "HJEM",
       mainPanel(
-        h2("Informasjon", align='center'),
+        h2(" ", align='center'),#you can add a title on this line
         h3("Velkommen til Rapporteket", align='left'),
-        h5("Bruk fanene  helt i toppen til å navigere til ulike typer
-             rapporter.", align='left'),
-        h5("Rapporteket skal inneholde rapporter som behandlingsenhetene kan
+        br(),
+        h4("Bruk"),
+        h5("Rapporteket skal inneholde rapporter som sykehusavdelingene kan
              benytte i sitt kontinuerlige forbedringsarbeid."),
-        h5("Det innebærer at innholdet vil måtte utvikles til å bli stadig
+        h5("Bruk fanene i toppen til å navigere til ulike typer
+             rapporter.", align='left'),
+        br(),
+        h4("Videre utvikling av Rapportekets innhold"),
+        h5("Innholdet vil måtte utvikles til å bli stadig
              mer relevant for behandslingsenhetene."),
-        h5("Tilbakemeldinger og samarbeid med behandlingsenhetene vil i så
-             måte være viktig."),
-        h5("Skriftlige tilbakemeldinger kan sendes til norspis@nlsh.no.")
+        h5("Førsteutgaven(e) av Rapporteket vil gi brukerne et utgangspunkt for å kunne gi tilbakemeldinger med"),
+        h5("endringsforslag og ønsker om nye rapporter. Skriftlige tilbakemeldinger kan sendes til norspis@nlsh.no."),
+        h5("")
       )
     ),#tab HJEM
 
@@ -54,11 +58,11 @@ ui <- tagList(
         type="tabs",
         id = "tabsets2",
         tabPanel(
-          "Demografiske karakterstika",
+          "Demografiske karakteristika",
           sidebarPanel(
             width = 3,
             wellPanel(
-              #h3("Hovedvalg"),
+              h3(""),
               selectInput(
                 inputId = "valgtVar", label="Variabel",
                 choices = c('Alder' = 'Alder',
@@ -78,19 +82,22 @@ ui <- tagList(
                              separator="t.o.m.",
                              language="nb"
               ),
-
-              checkboxGroupInput(
-                inputId = 'regType',
-                label='Registreringstype',
-                choices = c("Start: Kun utredning, voksne"=1,
-                            "Start: Kun utredning, barn og unge"=2,
-                            "Start: Startregistrering, voksne"=3,
-                            "Start Startregistrering, barn og unge"=4),
-                selected = c("Start: Kun utredning, voksne"=1,
-                             "Start: Kun utredning, barn og unge"=2,
-                             "Start: Startregistrering, voksne"=3,
-                             "Start: Startregistrering, barn og unge"=4)
-              )
+              br(),
+              h5("Figurene her gjelder kun startregistreringer.")
+              #Registration type. Now excluded. Instead hardcoded in server
+              #to only show start registrations.
+              # checkboxGroupInput(
+              #   inputId = 'regType',
+              #   label='Registreringstype',
+              #   choices = c("Start: Kun utredning, voksne"=1,
+              #               "Start: Kun utredning, barn og unge"=2,
+              #               "Start: Startregistrering, voksne"=3,
+              #               "Start Startregistrering, barn og unge"=4),
+              #   selected = c("Start: Kun utredning, voksne"=1,
+              #                "Start: Kun utredning, barn og unge"=2,
+              #                "Start: Startregistrering, voksne"=3,
+              #                "Start: Startregistrering, barn og unge"=4)
+              # )
             ),
 
             h5("Bygget med",
@@ -152,7 +159,7 @@ ui <- tagList(
                   og bli misvisende."),
               checkboxGroupInput(
                 inputId = 'regTypeMed',
-                label='Registreringstype',
+                label ='Registreringstype',
                 choices = c(
                   "Start: Kun utredning, voksne"=1,
                   "Start: Kun utredning, barn og unge"=2,
@@ -163,6 +170,20 @@ ui <- tagList(
                   "Slutt: Avbruddsregistrering, voksne"=98,
                   "Slutt: Avbruddsregistrering, barn og unge"=99),
                 selected = c(1,2,3,4)
+              ),
+              selectInput(
+                inputId = 'regTypeStartEndMed',
+                label = "Registreringstype (start/slutt)",
+                choices = c(" " = "",
+                            "Start" = "start",
+                            "Slutt" = "end")
+              ),
+              selectizeInput(
+                inputId = 'regTypeChildAdultMed',
+                label = "Registreringstype (barn/voksne)",
+                choices = c("Barn/unge og voksne" = "both",
+                            "Barn/unge" = "child",
+                            "Voksen" = "adult")
               )
             )
           ),
@@ -298,6 +319,11 @@ ui <- tagList(
                 max = 100,
                 value = c(0, 100),
                 step = 0.5
+              ),
+              checkboxInput(
+                inputId = "addCIPrePost",
+                label = "Konfidensinterval",
+                value = FALSE
               )
             ),
             h5("Bygget med",

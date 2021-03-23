@@ -143,15 +143,16 @@ server <- function(input, output, session) {
   })
 
   #End tab Administrasjon/Nøkkeltall
+
   output$fordelinger <- renderPlot({
     norspis2::NorSpis1FigAndeler(
       reshID=reshID,
       RegData=RegData,
-      valgtVar=input$valgtVar,
+      valgtVar= input$valgtVar,
       datoFra=input$datovalg[1],
       datoTil=input$datovalg[2],
       enhetsUtvalg=as.numeric(input$enhetsUtvalg),
-      regType=as.numeric(input$regType),
+      regType= c(1,2,3,4),#as.numeric(input$regType).Hard coded, only start.
       outfile=''
     )
   })
@@ -165,6 +166,8 @@ server <- function(input, output, session) {
       datoTil=input$datovalgMed[2],
       enhetsUtvalg=as.numeric(input$enhetsUtvalgMed),
       regType=as.numeric(input$regTypeMed),
+      regTypeStartEnd = input$regTypeStartEndMed,
+      regTypeChildAdult = input$regTypeChildAdultMed,
       outfile=''
     )
   })
@@ -252,7 +255,8 @@ server <- function(input, output, session) {
       regType='',
       enhetsUtvalg=as.numeric(input$enhetsUtvalgPrePost),
       reshID=reshID,
-      diagnose = as.character(input$diagnosePrePost))
+      diagnose = as.character(input$diagnosePrePost),
+      addCI = input$addCIPrePost)
   })
 
   output$fordelingerPas <- renderPlot({
@@ -305,8 +309,6 @@ server <- function(input, output, session) {
                                      GreenGoal = "")
 
   })
-
-
 
   output$tableOvers <- DT::renderDataTable({
     norspis2::NorSpis1TabRegStatus(

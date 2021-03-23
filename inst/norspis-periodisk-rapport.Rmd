@@ -1,6 +1,8 @@
 ---
 title: "Rapport fra NorSpis"
-author: 'For enhet med resh-ID: `r paste(params$reshID)`'
+abstract: 
+author: | 
+        | For enhet: `r paste(params$reshID)`
 date: "`r Sys.Date()`"
 output:
   pdf_document:
@@ -63,6 +65,24 @@ RegData <- RegData2
 <!-- reshID = '700821' #TESTNO" , Oslo: 109979, Bodø: 700821 -->
 <!-- userRole <-'SC' #'CC' , 'LC', 'LU' -->
 <!-- ``` -->
+
+\pagebreak
+
+# Rapportdata
+
+**Sykehus:** `r unique(DL$RegData2$SykehusNavn[DL$RegData2$AvdRESH == params$reshID])` \
+**Avdeling:** `r unique(DL$RegData2$AvdNavn[DL$RegData2$AvdRESH == params$reshID])`\
+**Data registrert fra:** \
+**Data registrert til:** \
+**Dato for utskrift av rapport:** `r Sys.Date()` \
+
+
+```{r}
+sykehusnavn <- paste(unique(DL$RegData2$SykehusNavn[DL$RegData2$AvdRESH == params$reshID]))
+
+```
+
+
 
 \pagebreak
 

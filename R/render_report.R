@@ -12,20 +12,22 @@
 #'
 #'
 #' @param reshID
+#' @param output_dir
 #'
 #' @return
 #' @export
 #'
 #' @examples
 
-render_report = function(reshID = 700821 ){
+render_report = function(reshID = 700821,
+                         output_dir = "F:/output_rendered-docs-to-share"){
 
     #random file name suffix to make sure saving the file is possible (make
     #sure that the file name do not already exist):
     random_suffix <- paste0(sample(c(0:9, LETTERS[1:6]), 6, T), collapse = '')
 
   rmarkdown::render(
-    "inst/norspis-periodisk-rapport.Rmd",
+    "norspis-periodisk-rapport.Rmd", #"inst/norspis-periodisk-rapport.Rmd",
     params = list(
       reshID = reshID
     ),
@@ -35,7 +37,8 @@ render_report = function(reshID = 700821 ){
                          "DATO",
                          "-",
                          random_suffix,
-                         ".pdf")
+                         ".pdf"),
+    output_dir = output_dir
   )
 
 }

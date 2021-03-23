@@ -1,0 +1,46 @@
+---
+title: "norspis-create-reports"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{norspis-create-reports}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+# Purpose of document
+
+This file shows how to make printable report in PDF-formats. We currently have two options:
+
+* Making a report for each hospital department (norspis-periodisk-rapport.Rmd)
+* Making a report for use in NorSpis (norspis-oversiktsrapport.Rmd)
+
+The .Rmd documents above that we use here are saved in the inst folder of norspis2. And we use the render_report.R function in norspis2, which is made for the purpose of running the .Rmd-documents. 
+
+
+# How to use this .Rmd-document
+
+Just run the relevant code snippet below. You do not need to knit this entire .Rmd-document. 
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(norspis2)
+```
+
+
+Make report for all RESH-id's
+```{r}
+#getwd()
+
+for(reshID in unique(DL$RegData2$AvdRESH)){
+  
+  norspis2::render_report(reshID = reshID)
+}
+
+```
+

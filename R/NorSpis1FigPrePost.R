@@ -19,6 +19,7 @@
 #' @param erMann
 #' @param regType
 #' @param diagnose
+#' @param addCI Boolean (TRUE/FALSE): Add conficence interval
 #'
 #' @return Figure
 #' @export
@@ -42,7 +43,8 @@ NorSpis1FigPrePost <- function(RegData,
                                maxald=130,
                                erMann='',
                                regType='',
-                               diagnose ='')
+                               diagnose ='',
+                               addCI=F)
 #OBS datoFraSluttreg og datoTilSluttreg må sendes inn tomme,
 #ellers så vil filteret kjøres i utvalgsfila slik at kun sluttreg
 #(med tilhørende startreg kommer med) Parametrene (datoFraSluttreg og
@@ -254,6 +256,9 @@ NorSpis1FigPrePost <- function(RegData,
     #
     # indGrUtPlot <- antGr+(1:length(indGrUt))
 
+    #Confidence interval
+
+    if(addCI==T){
     # #upper confidence limit (CL)
     arrows(x0=posKI, y0=Gjsn, x1=posKI, y1=KIopp, #x0=Midt[-indGrUtPlot]*0.999,
                                                   #x1=KIopp[-indGrUtPlot]
@@ -262,6 +267,7 @@ NorSpis1FigPrePost <- function(RegData,
     arrows(x0=posKI, y0=Gjsn, x1=posKI, y1=KIned, #y0=Midt[-indGrUtPlot]*1.001,
                                              #x1=posKI, y1=KIned[-indGrUtPlot]
       length=0.5/max(pos), code=2, angle=90, lwd=1, col='black')#col=farger[1]
+    }
 
     par('fig'=c(0, 1, 0, 1))
     if ( outfile != '') {dev.off()}

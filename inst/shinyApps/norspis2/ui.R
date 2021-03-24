@@ -38,17 +38,41 @@ ui <- tagList(
         h3("Velkommen til Rapporteket", align='left'),
         br(),
         h4("Bruk"),
+        strong("Formål"),
         h5("Rapporteket skal inneholde rapporter som sykehusavdelingene kan
              benytte i sitt kontinuerlige forbedringsarbeid."),
+        br(),
+        strong("Navigering"),
         h5("Bruk fanene i toppen til å navigere til ulike typer
              rapporter.", align='left'),
         br(),
+        strong("Retningslinjer for bruk"),
+        h5("– Bruk rapportene internt"),
+        h5("– Avklar ekstern bruk med NorSpis (for eksempel ved ønske om bruk
+           overfor media)"),
+        br(),
+        strong("Utvis forsiktighet ved tolking"),
+        h5("– Det er den enkelte avdeling som best forstår sine tall"),
+        h5("– Nasjonale tall er kun representative for pasientgruppen ved de enhetene som har registrert i NorSpis i den aktuelle tidsperioden"),
+        h5("– Dekningsgrad, ved de enkelte enhetene og nasjonalt, vil kunne påvirke hvor representative dataene er"),
+        h5("– Forløpskompletthet (andel registreringer med levert
+           sluttregistrering) vil også påvirke representativiteten på rapporter
+           som bruker data fra sluttregistreringene"),
+        br(),
         h4("Videre utvikling av Rapportekets innhold"),
-        h5("Innholdet vil måtte utvikles til å bli stadig
-             mer relevant for behandslingsenhetene."),
-        h5("Førsteutgaven(e) av Rapporteket vil gi brukerne et utgangspunkt for å kunne gi tilbakemeldinger med"),
-        h5("endringsforslag og ønsker om nye rapporter. Skriftlige tilbakemeldinger kan sendes til norspis@nlsh.no."),
-        h5("")
+        h5("Innholdet vil måtte utvikles til å bli stadig mer relevant for
+           behandlingsenhetene."),
+        h5("Førsteutgaven(e) av Rapporteket gir dere som brukere et
+            utgangspunkt, fra hvor dere kan være med å utforme innholdet."),
+        h5("Endringsforslag og ønsker om nye rapporter, kan sendes til norspis@nlsh.no."),
+        h5(""),
+        br(),
+        h4("Datakvalitet"),
+        h5("Dette er en tidlig utgave av Rapporteket. Ved spørsmål til figurene
+           eller mistanke om at figurene eller datagrunnlaget"),
+        h5(" kan inneholde feil, rapporteres det tilbake
+           til registeret."),
+        br()
       )
     ),#tab HJEM
 
@@ -130,11 +154,9 @@ ui <- tagList(
               #h3("Hovedvalg"),
               selectInput(
                 inputId = "valgtVarMed", label="Variabel",
-                choices = c('Diagnoser (ICD-10)' = 'DiagVSF',
-                            'BMI' = 'MedBMI',
+                choices = c('BMI' = 'MedBMI',
                             'CIA' = 'CIA30GlobalScore',
                             'EDE-Q' = 'EDEQ60GlobalScore',
-                            'Diagnoser (DSM-5)' = 'DiagVDSM5Hoved',
                             'SCL-90-R'='SCL90GSI',
                             'SDQ (global skår)' = 'SDQGlobalScore'
                 )
@@ -154,27 +176,27 @@ ui <- tagList(
                              language="nb"
               ),
 
-              h5("Viktig om registreringstype under: Velger du ingen kan
-                  figurene vise en blanding av start- og slutt-registreringer,
-                  og bli misvisende."),
-              checkboxGroupInput(
-                inputId = 'regTypeMed',
-                label ='Registreringstype',
-                choices = c(
-                  "Start: Kun utredning, voksne"=1,
-                  "Start: Kun utredning, barn og unge"=2,
-                  "Start: Startregistrering, voksne"=3,
-                  "Start Startregistrering, barn og unge"=4,
-                  "Slutt: Sluttregistrering, voksne"=5,
-                  "Slutt: Sluttregistrering, barn og unge"=6,
-                  "Slutt: Avbruddsregistrering, voksne"=98,
-                  "Slutt: Avbruddsregistrering, barn og unge"=99),
-                selected = c(1,2,3,4)
-              ),
+              # h5("Viktig om registreringstype under: Velger du ingen kan
+              #     figurene vise en blanding av start- og slutt-registreringer,
+              #     og bli misvisende."),
+              # checkboxGroupInput(
+              #   inputId = 'regTypeMed',
+              #   label ='Registreringstype',
+              #   choices = c(
+              #     "Start: Kun utredning, voksne"=1,
+              #     "Start: Kun utredning, barn og unge"=2,
+              #     "Start: Startregistrering, voksne"=3,
+              #     "Start Startregistrering, barn og unge"=4,
+              #     "Slutt: Sluttregistrering, voksne"=5,
+              #     "Slutt: Sluttregistrering, barn og unge"=6,
+              #     "Slutt: Avbruddsregistrering, voksne"=98,
+              #     "Slutt: Avbruddsregistrering, barn og unge"=99),
+              #   selected = c(1,2,3,4)
+              # ),
               selectInput(
                 inputId = 'regTypeStartEndMed',
                 label = "Registreringstype (start/slutt)",
-                choices = c(" " = "",
+                choices = c(#" " = "",
                             "Start" = "start",
                             "Slutt" = "end")
               ),
@@ -194,6 +216,55 @@ ui <- tagList(
           )
         ),
         tabPanel(
+          "Diagnoser",
+          sidebarPanel(
+            width = 3,
+            wellPanel(
+              #h3("Hovedvalg"),
+              selectInput(
+                inputId = "valgtVarDiag", label="Variabel",
+                choices = c('Diagnoser (ICD-10)' = 'DiagVSF',
+                            'Diagnoser (DSM-5)' = 'DiagVDSM5Hoved'
+                )
+              ),
+              selectInput(inputId = 'enhetsUtvalgDiag',
+                          label='Egen enhet/landet',
+                          choices = c("Egen mot resten av landet"=1,
+                                      "Hele landet"=0,
+                                      "Egen enhet"=2),
+                          selected = 0
+              ),
+              dateRangeInput(inputId = 'datovalgDiag',
+                             start = "2018-01-01",
+                             end = "2021-12-31", #Sys.Date()
+                             label = "Tidsperiode",
+                             separator="t.o.m.",
+                             language="nb"
+              ),
+              # selectInput(
+              #   inputId = 'regTypeStartEndDiag',
+              #   label = "Registreringstype (start/slutt)",
+              #   choices = c(" " = "",
+              #               "Start" = "start",
+              #               "Slutt" = "end")
+              # ),
+              selectizeInput(
+                inputId = 'regTypeChildAdultDiag',
+                label = "Registreringstype (barn/voksne)",
+                choices = c("Barn/unge og voksne" = "both",
+                            "Barn/unge" = "child",
+                            "Voksen" = "adult")
+              )
+            )
+          ),
+          mainPanel(
+            plotOutput(outputId = 'fordelingerDiag',
+                       width="800px",
+                       height = "800px")
+          )
+        ),
+
+        tabPanel(
           "Oppsummeringstabeller",
           sidebarPanel(),
           mainPanel(
@@ -208,7 +279,7 @@ ui <- tagList(
         type="tabs",
         id = "tabsets",
         tabPanel(
-          "Indikatorer",
+          "Kvalitetsindikatorer",
           sidebarPanel(
             width = 3,
             wellPanel(
@@ -242,26 +313,40 @@ ui <- tagList(
                 language="nb"
               ),
 
-              h5("Viktig om registreringstype under: Velger du ingen kan
-                 figurene vise en blanding av start- og slutt-registreringer,
-                 og bli misvisende."),
-              checkboxGroupInput(
-                inputId = 'regTypeInd',
-                label='Registreringstype',
-                choices = c(
-                  "Start: Kun utredning, voksne"=1,
-                  "Start: Kun utredning, barn og unge"=2,
-                  "Start: Startregistrering, voksne"=3,
-                  "Start Startregistrering, barn og unge"=4,
-                  "Slutt: Sluttregistrering, voksne"=5,
-                  "Slutt: Sluttregistrering, barn og unge"=6,
-                  "Slutt: Avbruddsregistrering, voksne"=98,
-                  "Slutt: Avbruddsregistrering, barn og unge"=99),
-                selected = c(
-                  "Start: Kun utredning, voksne"=1,
-                  "Start: Kun utredning, barn og unge"=2,
-                  "Start: Startregistrering, voksne"=3,
-                  "Start Startregistrering, barn og unge"=4)
+              # h5("Viktig om registreringstype under: Velger du ingen kan
+              #    figurene vise en blanding av start- og slutt-registreringer,
+              #    og bli misvisende."),
+              # checkboxGroupInput(
+              #   inputId = 'regTypeInd',
+              #   label='Registreringstype',
+              #   choices = c(
+              #     "Start: Kun utredning, voksne"=1,
+              #     "Start: Kun utredning, barn og unge"=2,
+              #     "Start: Startregistrering, voksne"=3,
+              #     "Start Startregistrering, barn og unge"=4,
+              #     "Slutt: Sluttregistrering, voksne"=5,
+              #     "Slutt: Sluttregistrering, barn og unge"=6,
+              #     "Slutt: Avbruddsregistrering, voksne"=98,
+              #     "Slutt: Avbruddsregistrering, barn og unge"=99),
+              #   selected = c(
+              #     "Start: Kun utredning, voksne"=1,
+              #     "Start: Kun utredning, barn og unge"=2,
+              #     "Start: Startregistrering, voksne"=3,
+              #     "Start Startregistrering, barn og unge"=4)
+              #),
+              # selectInput(
+              #   inputId = 'regTypeStartEndInd',
+              #   label = "Registreringstype (start/slutt)",
+              #   choices = c(" " = "",
+              #               "Start" = "start",
+              #               "Slutt" = "end")
+              # ),
+              selectizeInput(
+                inputId = 'regTypeChildAdultInd',
+                label = "Registreringstype (barn/voksne)",
+                choices = c("Barn/unge og voksne" = "both",
+                            "Barn/unge" = "child",
+                            "Voksen" = "adult")
               )
             )
           ),
@@ -274,7 +359,7 @@ ui <- tagList(
           )
         ),
         tabPanel(
-          "Endring (start-slutt)",
+          "Gjennomsnittlig endring (start/slutt)",
           sidebarPanel(
             width = 3,
             wellPanel(
@@ -312,12 +397,21 @@ ui <- tagList(
                 separator="t.o.m.",
                 language="nb"
               ),
-              sliderInput(
-                inputId='bmistartPrePost',
-                label = "BMI ved start",
+              strong("BMI ved start:"),
+              numericInput(
+                inputId='bmistartPrePost1',
+                label = "Fra:",
                 min = 0,
                 max = 100,
-                value = c(0, 100),
+                value = 0,
+                step = 0.5
+              ),
+              numericInput(
+                inputId='bmistartPrePost2',
+                label = "Til:",
+                min = 0,
+                max = 100,
+                value = 100,
                 step = 0.5
               ),
               checkboxInput(
@@ -364,19 +458,26 @@ ui <- tagList(
                 inputId = 'datovalgPas',
                 start = "2018-01-01",
                 end = "2021-12-31", #start = "2012-01-01", end = Sys.Date()
-                label = "Tidsperiode",
+                label = "Tidsperiode (datoene gjelder sluttregistreringen)",
                 separator="t.o.m.",
                 language="nb"
               ),
 
-              h5("Viktig om registreringstype under: Velger du ingen kan
-                 figurene vise en blanding av start- og slutt-registreringer,
-                 og bli misvisende."),
-              checkboxGroupInput(
-                inputId = 'regTypePas',
-                label='Registreringstype',
-                choices = c("Voksen - slutt"=5,"Barn og unge - slutt"=6),
-                selected = c(5,6)
+              # h5("Viktig om registreringstype under: Velger du ingen kan
+              #    figurene vise en blanding av start- og slutt-registreringer,
+              #    og bli misvisende."),
+              # checkboxGroupInput(
+              #   inputId = 'regTypePas',
+              #   label='Registreringstype',
+              #   choices = c("Voksen - slutt"=5,"Barn og unge - slutt"=6),
+              #   selected = c(5,6)
+              # ),
+              selectizeInput(
+                inputId = 'regTypeChildAdultPas',
+                label = "Registreringstype (barn/voksne)",
+                choices = c("Barn/unge og voksne" = "both",
+                            "Barn/unge" = "child",
+                            "Voksen" = "adult")
               )
 
             )

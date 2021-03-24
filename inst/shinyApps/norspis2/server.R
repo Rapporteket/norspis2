@@ -157,6 +157,27 @@ server <- function(input, output, session) {
     )
   })
 
+  #For fordelingerMed (under) we update some inputs (reg. type) dependend on
+  #other inputs (valgtVarMed), using "observe" (more spec:
+  #inspired by https://shiny.rstudio.com/reference/shiny/1.2.0/updateSelectInput.html
+  observe({
+    x <- input$valgtVarMed
+
+    if(x == "SDQGlobalScore"){
+      updateSelectInput(session, "regTypeChildAdultMed",
+                        selected = "child"
+                      )
+    }else if(x == "SCL90GSI"){
+      updateSelectInput(session, "regTypeChildAdultMed",
+                        selected  = "adult")
+
+    }else{
+      updateSelectInput(session, "regTypeChildAdultMed",
+                        selected  = "both")
+      }
+
+  })
+
   output$fordelingerMed <- renderPlot({
     norspis2::NorSpis1FigAndeler(
       reshID=reshID,
@@ -168,6 +189,21 @@ server <- function(input, output, session) {
       regType=as.numeric(input$regTypeMed),
       regTypeStartEnd = input$regTypeStartEndMed,
       regTypeChildAdult = input$regTypeChildAdultMed,
+      outfile=''
+    )
+  })
+
+  output$fordelingerDiag <- renderPlot({
+    norspis2::NorSpis1FigAndeler(
+      reshID=reshID,
+      RegData=RegData,
+      valgtVar=input$valgtVarDiag,
+      datoFra=input$datovalgDiag[1],
+      datoTil=input$datovalgDiag[2],
+      enhetsUtvalg=as.numeric(input$enhetsUtvalgDiag),
+      #regType=as.numeric(input$regTypeDiag),
+      #regTypeStartEnd = input$regTypeStartEndDiag,
+      regTypeChildAdult = input$regTypeChildAdultDiag,
       outfile=''
     )
   })
@@ -233,7 +269,10 @@ server <- function(input, output, session) {
       enhetsUtvalg=as.numeric(input$enhetsUtvalgInd),
       datoFra=input$datovalgInd[1],
       datoTil=input$datovalgInd[2],
-      regType=as.numeric(input$regTypeInd),
+      #hard code regType to make the utilized regType (ChildAdult) work here:
+      regType=c(3,4,5,6), #as.numeric(input$regTypeInd),
+      #regTypeStartEnd = input$regTypeStartEndInd,
+      regTypeChildAdult = input$regTypeChildAdultInd,
       outfile=''
     )
   })
@@ -247,8 +286,8 @@ server <- function(input, output, session) {
       datoFraSluttreg = input$datovalgPrePost[1],
       datoTilSluttreg = input$datovalgPrePost[2],
       valgtMaal='Gjsn',
-      minbmistart = as.numeric(input$bmistartPrePost[1]),
-      maxbmistart = as.numeric(input$bmistartPrePost[2]),
+      minbmistart = input$bmistartPrePost1,#as.numeric(input$bmistartPrePost[1]),
+      maxbmistart = input$bmistartPrePost2,#as.numeric(input$bmistartPrePost[2]),
       outfile='',
       hentData=0,
       preprosess=1,
@@ -268,6 +307,8 @@ server <- function(input, output, session) {
       datoFra=input$datovalgPas[1],
       datoTil=input$datovalgPas[2],
       regType=as.numeric(input$regTypePas),
+      regTypeStartEnd = "end",
+      regTypeChildAdult = input$regTypeChildAdultPas,
       outfile=''
     )
   })

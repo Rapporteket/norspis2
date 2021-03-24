@@ -35,7 +35,7 @@ NorSpis1FigAndeler  <- function(RegData, valgtVar,
                                minbmistart=0,
                                maxbmistart=200,
                                regType='',
-                               regTypeStartEnd = 'empty',
+                               regTypeStartEnd = '',
                                regTypeChildAdult = 'both',
                                enhetstypeDogn = '',
                                enhetstypeRegional = '',
@@ -49,12 +49,12 @@ NorSpis1FigAndeler  <- function(RegData, valgtVar,
 
   #Utilize the new filter regTypeChild and regTypeStartEnd so that regType
   #is coded accordingly
-  if(regTypeStartEnd != 'empty' | regTypeChildAdult != 'both'){
+  if(regTypeStartEnd != '' | regTypeChildAdult != 'both'){
     if(regTypeStartEnd == "start"){
       x <- c(1,2,3,4)
     }else if(regTypeStartEnd == "end"){
       x <- c(5,6,98,99)
-    }else if(regTypeStartEnd == "empty"){
+    }else if(regTypeStartEnd == ""){
       x <- c(1,2,3,4,5,6,98,99)
     }
 

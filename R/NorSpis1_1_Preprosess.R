@@ -124,59 +124,6 @@ NorSpis1_1_Preprosess <- function(RegData=RegData)	#, reshID=reshID)
   # #FIKS senere: Tar p.t. mars 2019, ikke hensyn til hvilken av flere registreringer som skal beholdes (første eller siste), om en pasient
   # #har flere registreringer på en enhet.
 
-
-  #Variabelen DiagBUAkse1 - er en listevariabel: (OBS, nødløsning FIKS senere, er nå kun en midlertidig løsning til årsrapporteen 2018 (levert i 2019), ikke generisk (tar ikke hensyn til nye verdier) )
-
-
-
-
-  #1. Omkoder DiagBUAkse1
-  # For å inspisere hvilke verdier som må omkodes:
-  #RegData$DiagBUAkse1 <- as.factor(as.character(RegData$DiagBUAkse1))
-  #levelsDiagBUAkse1 <- levels(RegData$DiagBUAkse1)
-
-  #omkodingen:
-  RegData$DiagBUAkse1[grepl("F500", RegData$DiagBUAkse1, fixed = T)] <- 'F500'
-  RegData$DiagBUAkse1[grepl("F501", RegData$DiagBUAkse1, fixed = T)] <- 'F501'
-  RegData$DiagBUAkse1[grepl("F502", RegData$DiagBUAkse1, fixed = T)] <- 'F502'
-  RegData$DiagBUAkse1[grepl("F503", RegData$DiagBUAkse1, fixed = T)] <- 'F503'
-  #RegData$DiagBUAkse1[grepl("F504", RegData$DiagBUAkse1, fixed = T)] <- 'F504' #kommentert ut fordi finne ikke registrert enda
-  #RegData$DiagBUAkse1[grepl("F505", RegData$DiagBUAkse1, fixed = T)] <- 'F505' #kommentert ut fordi finne ikke registrert enda
-  #RegData$DiagBUAkse1[grepl("F508", RegData$DiagBUAkse1, fixed = T)] <- 'F508' #kommentert ut fordi finne ikke registrert enda
-  RegData$DiagBUAkse1[grepl("F509", RegData$DiagBUAkse1, fixed = T)] <- 'F509'
-  #RegData$DiagBUAkse1[grepl("F982", RegData$DiagBUAkse1, fixed = T)] <- 'F982' #kommentert ut fordi finne ikke registrert enda
-  #RegData$DiagBUAkse1[grepl("F983", RegData$DiagBUAkse1, fixed = T)] <- 'F983'#kommentert ut fordi finne ikke registrert enda
-
-  #Gjør om tll factor:
-  RegData$DiagBUAkse1 <- as.factor(as.character(RegData$DiagBUAkse1))
-
-  #GAMMELT:
-  # RegData$DiagBUAkse1[RegData$DiagBUAkse1=="F321,F401,F431,F500,F940"] <- as.factor("F500")
-  # RegData$DiagBUAkse1[RegData$DiagBUAkse1=="F321,F500"] <- as.factor("F500")
-  # RegData$DiagBUAkse1[RegData$DiagBUAkse1=="F419,F500"] <- as.factor("F500")
-  # RegData$DiagBUAkse1[RegData$DiagBUAkse1=="F500,F900"] <- as.factor("F500")
-  # RegData$DiagBUAkse1[RegData$DiagBUAkse1=="F500,F940"] <- as.factor("F500")
-  # RegData$DiagBUAkse1[RegData$DiagBUAkse1=="F500,F952"] <- as.factor("F500")
-  #levels(RegData$DiagBUAkse1) <- c(levels(RegData$DiagBUAkse1), "F503")
-  #RegData$DiagBUAkse1[RegData$DiagBUAkse1=="F503,F900"] <- as.factor("F503")
-
-  RegData$DiagBUAkse1[RegData$DiagBUAkse1=="R458,Z032"] <- as.factor("")#kodes her som missing fordi den ikke skal med i rapport (års 2018)
-  RegData$DiagBUAkse1[RegData$DiagBUAkse1=="F900"] <- as.factor("") #kodes her som missing fordi den ikke skal med i rapport (års 2018)
-  RegData$DiagBUAkse1  <- droplevels(RegData$DiagBUAkse1)
-  #2. Legger DiagBUAkse1 inn i DiagVSF
-  #jamfoer oppskrift for hvordan gi en variabel verdien av en annen variabel:
-  RegData$DiagBUAkse1[RegData$DiagBUAkse1==""]=NA
-  RegData$DiagBUAkse1 = droplevels(RegData$DiagBUAkse1)
-  levelsDiagBUAkse1 <- levels(RegData$DiagBUAkse1)
-  indDum<- which(RegData$DiagBUAkse1 %in% levelsDiagBUAkse1)
-
-  RegData$DiagVSF <- as.factor(RegData$DiagVSF)
-  RegData$DiagVSF[indDum] 	<-  RegData$DiagBUAkse1[indDum]
-  RegData$DiagVSF <- as.character(RegData$DiagVSF) #fordi resten figAndeler tar utgangspunkt i at DiagVSF er character
-  #OBS, FIKS: Husk at alt dette om DiagBUAkse1 og DiagVSF må fikses permanent etter års2018
-  #               den 17.06.2019 ble barndediag(SF) lagt til. Må fikses generisk senere, se PreProsesser.R
-
-
   #Avdelingsnavn (legge til flere etterhvert som de kommer til):
   RegData$SykehusAvdNavn <- RegData$AvdRESH
   RegData$SykehusAvdNavn[RegData$SykehusAvdNavn==105806] <- 'RKSF, Levanger, Helse Nord-Trøndelag HF'

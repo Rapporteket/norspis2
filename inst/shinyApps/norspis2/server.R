@@ -157,26 +157,27 @@ server <- function(input, output, session) {
     )
   })
 
-  #For fordelingerMed (under) we update some inputs (reg. type) dependend on
-  #other inputs (valgtVarMed), using "observe" (more spec:
-  #inspired by https://shiny.rstudio.com/reference/shiny/1.2.0/updateSelectInput.html
-  observe({
-    x <- input$valgtVarMed
+  #Introduce reactivity - update some inputs (reg. type) dependend on
+  #other inputs (valgtVarMed), using "observe" (this is utilized in
+  #the tab showing fordelingerMed (under))
+  #Recipe: https://shiny.rstudio.com/reference/shiny/1.2.0/updateSelectInput.html
+    observe({
+      x <- input$valgtVarMed
 
-    if(x == "SDQGlobalScore"){
-      updateSelectInput(session, "regTypeChildAdultMed",
-                        selected = "child"
-                      )
-    }else if(x == "SCL90GSI"){
-      updateSelectInput(session, "regTypeChildAdultMed",
-                        selected  = "adult")
+      if(x == "SDQGlobalScore"){
+        updateSelectInput(session, "regTypeChildAdultMed",
+                          selected = "child"
+                        )
+      }else if(x == "SCL90GSI"){
+        updateSelectInput(session, "regTypeChildAdultMed",
+                          selected  = "adult")
 
-    }else{
-      updateSelectInput(session, "regTypeChildAdultMed",
-                        selected  = "both")
-      }
+      }else{
+        updateSelectInput(session, "regTypeChildAdultMed",
+                          selected  = "both")
+        }
 
-  })
+    })
 
   output$fordelingerMed <- renderPlot({
     norspis2::NorSpis1FigAndeler(

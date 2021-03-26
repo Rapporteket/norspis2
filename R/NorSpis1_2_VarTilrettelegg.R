@@ -526,8 +526,73 @@ NorSpis1_2_VarTilrettelegg  <- function(RegData, valgtVar, grVar='SykehusNavn', 
   }
 
 
-  if (valgtVar=='DiagVSF') {    #OBS Navnet er misvisende - ikke lenger bare voksene. 17.06.2019 ble barndediag(SF) lagt til, men det er kodet i preprosesser-fila. Må fikses generisk senere, se PreProsesser.R       #BRUKES I: Andeler
-    #FIKS: Sy inn DiagBUAkse1 når det har tilkommet noen barn (det vil egentlig si: når HN-IKT har fikset variabel som bestilt vår 2018)
+  if (valgtVar=='DiagVSF') {  #OBS Navnet er misvisende - ikke lenger bare
+                              #voksene. 17.06.2019 ble barndediag(SF) lagt til,
+                              #men det er kodet i preprosesser-fila. Må fikses
+                              #generisk senere, se PreProsesser.R
+    #BRUKES I: Andeler
+
+      #### Syr inn DiagBUAkse1
+      #Variabelen DiagBUAkse1 - er en listevariabel.
+      #TODO:Nødløsning - ikke generisk enda (tar ikke hensyn til nye verdier).
+
+      #1. Omkoder DiagBUAkse1
+        # Hvis man trenger å inspisere hvilke verdier som må omkodes, bruk:
+        #RegData$DiagBUAkse1 <- as.factor(as.character(RegData$DiagBUAkse1))
+        #levelsDiagBUAkse1 <- levels(RegData$DiagBUAkse1)
+      RegData$DiagBUAkse1[grepl("F500", RegData$DiagBUAkse1, fixed = T)] <- 'F500'
+      RegData$DiagBUAkse1[grepl("F501", RegData$DiagBUAkse1, fixed = T)] <- 'F501'
+      RegData$DiagBUAkse1[grepl("F502", RegData$DiagBUAkse1, fixed = T)] <- 'F502'
+      RegData$DiagBUAkse1[grepl("F503", RegData$DiagBUAkse1, fixed = T)] <- 'F503'
+      #RegData$DiagBUAkse1[grepl("F504", RegData$DiagBUAkse1, fixed = T)] <- 'F504' #kommentert ut fordi finne ikke registrert enda
+      #RegData$DiagBUAkse1[grepl("F505", RegData$DiagBUAkse1, fixed = T)] <- 'F505' #kommentert ut fordi finne ikke registrert enda
+      #RegData$DiagBUAkse1[grepl("F508", RegData$DiagBUAkse1, fixed = T)] <- 'F508' #kommentert ut fordi finne ikke registrert enda
+      RegData$DiagBUAkse1[grepl("F509", RegData$DiagBUAkse1, fixed = T)] <- 'F509'
+      #RegData$DiagBUAkse1[grepl("F982", RegData$DiagBUAkse1, fixed = T)] <- 'F982' #kommentert ut fordi finne ikke registrert enda
+      #RegData$DiagBUAkse1[grepl("F983", RegData$DiagBUAkse1, fixed = T)] <- 'F983'#kommentert ut fordi finne ikke registrert enda
+
+      #Gjør om tll factor:
+      RegData$DiagBUAkse1 <- as.factor(as.character(RegData$DiagBUAkse1))
+
+      RegData$DiagBUAkse1[RegData$DiagBUAkse1=="R458,Z032"] <- as.factor("")#kodes her som missing fordi den ikke skal med i rapport (års 2018)
+      RegData$DiagBUAkse1[RegData$DiagBUAkse1=="F900"] <- as.factor("") #kodes her som missing fordi den ikke skal med i rapport (års 2018)
+      RegData$DiagBUAkse1  <- droplevels(RegData$DiagBUAkse1)
+      #2. Legger DiagBUAkse1 inn i DiagVSF
+      #jf. oppskrift for hvordan gi en variabel verdien av en annen variabel:
+      RegData$DiagBUAkse1[RegData$DiagBUAkse1==""]=NA
+      RegData$DiagBUAkse1 = droplevels(RegData$DiagBUAkse1)
+      levelsDiagBUAkse1 <- levels(RegData$DiagBUAkse1)
+      indDum1<- which(RegData$DiagBUAkse1 %in% levelsDiagBUAkse1)
+
+      RegData$DiagVSF <- as.factor(RegData$DiagVSF)
+      RegData$DiagVSF[indDum1] 	<-  RegData$DiagBUAkse1[indDum1]
+      RegData$DiagVSF <- as.character(RegData$DiagVSF) #fordi resten figAndeler tar utgangspunkt i at DiagVSF er character
+      ####END (sy inn DiagBU)
+
+      ####DATO: Ordner slik at riktig dato brukes for diagnose
+      #Siden diagnose registreres ved slutt, men gjelder
+      #starttidspunktet.
+      #For reg.typen "utredning" er datoen imidlertid riktig
+      #ettersom diagnosen registreres i der og den reg.typen
+      #ikke har noen sluttregistrering tilknyttet seg. Men for
+      #sluttregistreringene må vi hente dataoen fra startreg.
+      #1.Henter dato fra startregistrering
+      #index for startreg (som har en sluttreg):
+      indum2 <- which(RegData$ForlopsID %in% RegData$RegTilhorendeStartReg)
+      #index for sluttreg:
+      indum3 <- which(RegData$RegTilhorendeStartReg %in% RegData$ForlopsID)
+        #1.1.Identify and remove duplicated values on var. RegTilhorendeStartReg
+        #(for all values expect NAs since they will be duplicated)
+        #If we don't length of the indexes will be different.
+        #These are reg's with two end registrations connected to one startreg.
+        #We keep the duplacated values which was last registered, i.e. highest
+        #index value (just a choice we make).
+        indexDup <- which(duplicated(RegData$RegTilhorendeStartReg, fromLast = F, incomparables = NA))
+      indum3 <- indum3[indum3 != indexDup]
+      #Gir sluttreg ny dato fra startreg:
+      RegData$HovedDato[indum3] <- RegData$HovedDato[indum2]
+
+
     retn <- 'V'
 
     #Velge bortugyldige rader tomme celler. Hvis ikke legger blir den en egen "level"/kategori.
@@ -560,14 +625,14 @@ NorSpis1_2_VarTilrettelegg  <- function(RegData, valgtVar, grVar='SykehusNavn', 
     RegData <- RegData[indDum, ] #  RegData <- RegData[!(RegData$DiagVSF==""),]   #Veldig bra
 
     #FJERNET
-    ##velge unike pasienter (OBS: Hold et øye med. Slår antaelig ikke ut før om en stund (først når en pasient har levert sin andre sluttregistrering)). Dvs at filteret er betydningsløst inntil da.
+    ##velge unike pasienter (OBS: Hold et øye med. Slår antaelig ikke ut før om
+    ##en stund (først når en pasient har levert sin andre sluttregistrering)).
+    ##Dvs at filteret er betydningsløst inntil da.
     #indDum2 <- which(unique(RegData$PasientID, incomparables = FALSE) > 0)
     #RegData <- RegData[indDum2, ]
     #FIKS: legge til generisk unique-filter i applikasjonen etter hvert.
 
     RegData$DiagVSF <- as.character(RegData$DiagVSF)
-
-
 
     RegData$VariabelGr <-RegData$DiagVSF
     RegData$VariabelGr <- factor(RegData$VariabelGr, levels = koderA) #endring 27.11.19: Endret fra "koder"(uten A, kun "koder") til koderA, jmf. 2 andre endringer 27.11.18
@@ -579,14 +644,28 @@ NorSpis1_2_VarTilrettelegg  <- function(RegData, valgtVar, grVar='SykehusNavn', 
     #ikke i bruk enda...
     #laget etter endring 27.11.18.
 
-    kommentar<- 'Registrerte pasienter som er kodet på annen måte enn med en spiseforstyrrelsesdiagnose, er ikke med i figuren.
+    kommentar<- '1. Registrerte pasienter som er kodet på annen måte enn med en spiseforstyrrelsesdiagnose, er ikke med i figuren.
     F.eks. kan dette gjelde pasienter som ble utredet for spiseforstyrrelser, men ikke endte opp med en SF-diagnose.
-    I slike tilfeller er andre koder, som z-diagnoser benyttet, men de er altså ikke med her. '
+    I slike tilfeller er andre koder, som z-diagnoser benyttet, men de er altså ikke med her.
+    2. Dato er her dato for startregistreringen, selv om diagnose registreres ved slutt. Dette siden man skal registrere
+    diagnosen slik den var ved oppstart i behandling'
     kommentar <- ''
   }
 
   if (valgtVar=='DiagVDSM5Hoved') {                                                                       #BRUKES I: Andeler
     #FIKS: Sy inn DiagBUDSM5Hoved
+
+      ####DATO: Ordner slik at riktig dato brukes for diagnose
+      #Siden diagnose registreres ved slutt, men gjelder
+      #starttidspunktet. Se nærmere forklaring på koden over under
+      #valgtvar == DiagVSF. Dette er den samme koden som der:
+      indum2 <- which(RegData$ForlopsID %in% RegData$RegTilhorendeStartReg)
+      indum3 <- which(RegData$RegTilhorendeStartReg %in% RegData$ForlopsID)
+      indexDup <- which(duplicated(RegData$RegTilhorendeStartReg, fromLast = F, incomparables = NA))
+      indum3 <- indum3[indum3 != indexDup]
+      RegData$HovedDato[indum3] <- RegData$HovedDato[indum2]
+
+
     retn <- 'V'
     #sortere bort ugyldige rader
     koder <- c(0:7)
@@ -600,7 +679,8 @@ NorSpis1_2_VarTilrettelegg  <- function(RegData, valgtVar, grVar='SykehusNavn', 
     RegData$VariabelGr <- factor(RegData$VariabelGr, levels = koder)
     tittel <- 'Spiseforstyrrelsesdiagnose DSM-5 (voksne)'
     xAkseTxt <- 'Diagnoser (DSM-5)'
-    kommentar <- ''
+    kommentar <- 'Dato er her dato for startregistreringen, selv om diagnose registreres ved slutt. Dette siden man skal registrere
+    diagnosen slik den var ved oppstart i behandling'
   }
 
 

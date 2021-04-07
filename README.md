@@ -15,7 +15,7 @@ maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www
 <!-- badges: end -->
 
 The goal of norspis2 is to make standardized plots, tables and
-documents, that fits the norms of Norwegian medical quality registries.
+documents, that fit the norms of Norwegian medical quality registries.
 
 ## Installation
 
@@ -23,19 +23,18 @@ Test comment.
 
 This package is made for use in Norwegian Quality Registry for Eating
 Disorders (NorSpis), and has little utility outside the ecosystem of
-Norwegian medical quality registries. Still we aim to make the functions
-so that is should be possible for anyone to input standardized
-anonymous/summary data frames to the plot and table functions, and get
-plots and tables on our standardized format.
+Norwegian medical quality registries. Still, in the future, when the
+situation allows we will aim to make functions that can have utilty for
+others, in particular other medical quality regitries.
 
 So far the package contains functions to prepare:
 
-  - five differently structured datasets (RegData, RegDataBeh,
+-   five differently structured datasets (RegData, RegDataBeh,
     RegDataNatVal, RegDataStartEnd, RegDataStartEndNatVal)
-  - three tables (DQ\_missing ,DQ\_regCount, and patChar)
-  - two figures (one simple distribution figure and one to compare
+-   three tables (DQ\_missing ,DQ\_regCount, and patChar)
+-   two figures (one simple distribution figure and one to compare
     proportions at different hospital units).
-  - The figures have functions for tables belonging to them (figTable),
+-   The figures have functions for tables belonging to them (figTable),
     which must be run first and used as input to the figure functions.
 
 A function for making parameterized reports for each hospital unit,
@@ -53,31 +52,17 @@ devtools::install_github("Rapporteket/norspis2")
 ## Example
 
 <!-- This is a basic example which shows you how to solve a common problem: -->
-
 <!-- ```{r example} -->
-
 <!-- library(norspis2) -->
-
 <!-- ## basic example code -->
-
 <!-- ``` -->
-
 <!-- What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so: -->
-
 <!-- ```{r cars} -->
-
 <!-- summary(cars) -->
-
 <!-- ``` -->
-
 <!-- You may render `README.Rmd` manually, to keep `README.md` up-to-date. However, you may also leave this to the ci process at GitHub. -->
-
 <!-- You can also embed plots, for example: -->
-
 <!-- ```{r pressure, echo = FALSE} -->
-
 <!-- plot(pressure) -->
-
 <!-- ``` -->
-
 <!-- In that case, don't forget to commit and push the resulting figure files, so they display on GitHub! -->

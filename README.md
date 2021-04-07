@@ -23,9 +23,9 @@ Test comment.
 
 This package is made for use in Norwegian Quality Registry for Eating
 Disorders (NorSpis), and has little utility outside the ecosystem of
-Norwegian medical quality registries. Still, in the future, when the
-situation allows we will aim to make functions that can have utilty for
-others, in particular other medical quality regitries.
+Norwegian medical quality registries. The functions may be made to have
+utilty for others in the future, in particular other medical quality
+registries.
 
 So far the package contains functions to prepare:
 

@@ -37,42 +37,77 @@ ui <- tagList(
         h2(" ", align='center'),#you can add a title on this line
         h3("Velkommen til Rapporteket", align='left'),
         br(),
-        h4("Bruk"),
-        strong("Formål"),
-        h5("Rapporteket skal inneholde rapporter som sykehusavdelingene kan
-             benytte i sitt kontinuerlige forbedringsarbeid."),
-        br(),
-        strong("Navigering"),
+        h4("Navigering"),
         h5("Bruk fanene i toppen til å navigere til ulike typer
              rapporter.", align='left'),
         br(),
-        strong("Retningslinjer for bruk"),
+        h4("Retningslinjer for bruk"),
+        strong("Hvem, hva, hvor?"),
+        h5("Formålet med Rapporteket er å gi sykehusavdelingene statistikk og
+        resultater som kan benyttes i det kontinuerlige forbedringsarbeidet.
+        Rapportene er ment for intern bruk ved de registrerende
+        behandlingsenhetene."),
+        h5("Rapportene inneholder anonymiserte data.
+        I tilfeller der man foretar utvalg som gir rapporter med få pasienter og
+        hvor man kombinerer flere ulike utvalg og rapporter kan det ikke
+        utelukkes med absolutt sikkerhet at rapporter kan tilbakeføres til
+        enkeltpersoner."),
+        h5("Husk:"),
         h5("– Bruk rapportene internt"),
         h5("– Avklar ekstern bruk med NorSpis (for eksempel ved ønske om bruk
            overfor media)"),
         br(),
-        strong("Utvis forsiktighet ved tolking"),
-        h5("– Det er den enkelte avdeling som best forstår sine tall"),
-        h5("– Nasjonale tall er kun representative for pasientgruppen ved de enhetene som har registrert i NorSpis i den aktuelle tidsperioden"),
-        h5("– Dekningsgrad, ved de enkelte enhetene og nasjonalt, vil kunne påvirke hvor representative dataene er"),
-        h5("– Forløpskompletthet (andel registreringer med levert
-           sluttregistrering) vil også påvirke representativiteten på rapporter
-           som bruker data fra sluttregistreringene"),
+        strong("Tolkning"),
+        h5("Det er den enkelte avdeling som best forstår sine resultater.
+        Samtidig anmoder vi om at rapportene i Rapporteket brukes
+        kritisk. Utvis forsiktighet ved tolking. Ufullstendige datasett gjør at
+        man må vurdere representativiteten. Med representativitet forstår
+        vi hvor godt resultatene speiler pasientgruppens virkelige
+        tilstand eller resultater. Lav dekningsgrad, samt at ikke alle data er
+        ferdigstilt for aktuell tidsperiode, vil kunne bidra til lav
+        representativitet når de man ikke har svar fra skiller seg fra de man
+        har svar fra, noe som ofte er tilfellet. På lignende måte vil
+        forløpskompletthet (andel registreringer med levert sluttregistrering)
+        påvirke representativiteten på rapporter som bruker data fra
+        sluttregistreringene. Dette er systematiske feilkilder.
+        I nasjonale medisinske kvalitetsregistre er det et mål at
+        dekningsgraden ved avdelingene og nasjonalt, er minst over 60 prosent,
+           og helst over 80 prosent."),
+        h5("Husk:"),
+        h5("– Dekningsgrad, aktualitet og forløpskompletthet
+           ved de enkelte enhetene og nasjonalt,
+           vil kunne påvirke hvor representative dataene er"),
+        h5("– Nasjonale tall vil vanskelig kunne være representative for
+           andre enn pasientgruppen ved de enhetene som faktisk har
+           registrert i NorSpis i den aktuelle tidsperioden"),
         br(),
         h4("Videre utvikling av Rapportekets innhold"),
         h5("Innholdet vil måtte utvikles til å bli stadig mer relevant for
            behandlingsenhetene."),
         h5("Førsteutgaven(e) av Rapporteket gir dere som brukere et
             utgangspunkt, fra hvor dere kan være med å utforme innholdet."),
-        h5("Endringsforslag og ønsker om nye rapporter, kan sendes til norspis@nlsh.no."),
+        h5("Endringsforslag og ønsker eller tips om nye rapporter, kan sendes
+           inn til NorSpis på norspis@nlsh.no."),
         h5(""),
         br(),
         h4("Datakvalitet"),
         h5("Dette er en tidlig utgave av Rapporteket. Ved spørsmål til figurene
-           eller mistanke om at figurene eller datagrunnlaget"),
-        h5(" kan inneholde feil, rapporteres det tilbake
-           til registeret."),
+           eller mistanke om at figurene eller datagrunnlaget kan inneholde feil
+           , rapporteres det tilbake til registeret."),
         br()
+        #Opprinnelig tekst i førsteutgaven:
+        #Vi anmoder om at rapportene i Rapporteket brukes kritisk.
+        #En viktig feilkilde vil trolig være ufullstendige datasett, som gjør
+        #at man særlig må vurdere representativiteten kritisk. Lav dekningsgrad,
+        #samt at ikke alle data er ferdgistilt for aktuell tidsperiode, vil
+        #bidra til dårlig representativitet. Rapportene er ment for intern bruk
+        #ved de registrerende behandlingsenhetene. Rapportene inneholder
+        #anonymiserte data. I tilfeller der man foretar utvalg som gir rapporter
+       #med få pasienter og hvor man kombinerer flere ulike utvalg og rapporter.
+        #kan det ikke utelukkes med absolutt sikkerhet at rapporter data kan
+        #tilbakeføres til enkeltpersoner. Av de ovennevnte grunnene ber NorSpis
+        #om at rapportene dere henter ut fra Rapporteket ikke blir brukt i
+        #offentlige sammenhenger eller offentliggjort på noe vis.
       )
     ),#tab HJEM
 

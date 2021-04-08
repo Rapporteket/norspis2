@@ -27,9 +27,6 @@ knitr::opts_chunk$set(
 The goal of norspis2 is to make standardized plots, tables and documents, that fit the norms of Norwegian medical quality registries.
 
 ## Installation
-
-Test comment.
-
 This package is made for use in Norwegian Quality Registry for Eating Disorders (NorSpis), 
 and has little utility outside the ecosystem of Norwegian medical quality registries. 
 The functions may be made to have greater utility for others in the future, in particular 

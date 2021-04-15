@@ -34,6 +34,9 @@ So far the package contains functions to prepare:
     proportions at different hospital units).
 -   The figures have functions for tables belonging to them (figTable),
     which must be run first and used as input to the figure functions.
+-   Figures made with functions from the old norspis package:
+    -   Proportions, with both own and national values
+    -   Comparison of averages at start and en of treatment
 
 A function for making parameterized reports for each hospital unit,
 norspis2::make\_report(), in connection to a a .Rmd document,

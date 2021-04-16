@@ -20,16 +20,18 @@ fun2_1_1_RegData_newVarGlobal <- function(myInData){
   myInData$AvdNavn[myInData$AvdNavn==109979] <- 'Oslo (regional)'
   myInData$AvdNavn[myInData$AvdNavn==110361] <- 'Oslo, Gaustad (spes.pol.)'
   myInData$AvdNavn[myInData$AvdNavn==700698] <- 'Tromsø (regional, BU)'
-  myInData$AvdNavn[myInData$AvdNavn==700821] <- 'Bod? (regional, V)'
+  myInData$AvdNavn[myInData$AvdNavn==700821] <- 'Bodø (regional, V)'
   myInData$AvdNavn[myInData$AvdNavn==707383] <- 'Ski (DPS, pol.)'
-  myInData$AvdNavn[myInData$AvdNavn==4204191] <-'Fredrikstad (Capio, d?gn)'
-  myInData$AvdNavn[myInData$AvdNavn==4207041] <- 'Ski (DPS, d?gn)'
-  myInData$AvdNavn[myInData$AvdNavn==4209009] <- 'T?nsberg (BUP, s.team)'
-  myInData$AvdNavn[myInData$AvdNavn==4210562] <- 'Bod? (BUP, s.team)'
-  myInData$AvdNavn[myInData$AvdNavn==4210626] <- 'Mosj?en (BUP)'
-  myInData$AvdNavn[myInData$AvdNavn==4210825] <-  'Mosj?en (DPS)'
+  myInData$AvdNavn[myInData$AvdNavn==4204191] <-'Fredrikstad (Capio, døgn)'
+  myInData$AvdNavn[myInData$AvdNavn==4207041] <- 'Ski (DPS, døgn)'
+  myInData$AvdNavn[myInData$AvdNavn==4209009] <- 'Tønsberg (BUP, s.team)'
+  myInData$AvdNavn[myInData$AvdNavn==4210562] <- 'Bodø (BUP, s.team)'
+  myInData$AvdNavn[myInData$AvdNavn==4210626] <- 'Mosjøen (BUP)'
+  myInData$AvdNavn[myInData$AvdNavn==4210825] <-  'Mosjøen (DPS)'
   myInData$AvdNavn[myInData$AvdNavn==107026] <- 'Bergen (regional)'
   myInData$AvdNavn[myInData$AvdNavn==4210303] <- 'Tr.heim (spes.pol.)'
+  myInData$AvdNavn[myInData$AvdNavn==4207697] <- 'Stjørdal (DPS)'
+
 
   myInData
 }

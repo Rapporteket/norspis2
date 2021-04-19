@@ -13,7 +13,7 @@
 
 fun2_1_1_RegData_newVarGlobal <- function(myInData){
 
-  # Hospital department names
+  # Hospital department NAMES
   myInData$AvdNavn <- myInData$AvdRESH
 
   myInData$AvdNavn[myInData$AvdNavn==105806] <- 'Levanger (regional)'
@@ -31,6 +31,44 @@ fun2_1_1_RegData_newVarGlobal <- function(myInData){
   myInData$AvdNavn[myInData$AvdNavn==107026] <- 'Bergen (regional)'
   myInData$AvdNavn[myInData$AvdNavn==4210303] <- 'Tr.heim (spes.pol.)'
   myInData$AvdNavn[myInData$AvdNavn==4207697] <- 'Stjørdal (DPS)'
+
+  # Hospital department CATEGORY
+  myInData$AvdKategori <- myInData$AvdRESH
+
+  myInData$AvdKategori[myInData$AvdKategori==105806] <- 'regional'
+  myInData$AvdKategori[myInData$AvdKategori==109979] <- 'regional'
+  myInData$AvdKategori[myInData$AvdKategori==110361] <- 'special_outpatient'
+  myInData$AvdKategori[myInData$AvdKategori==700698] <- 'regional'
+  myInData$AvdKategori[myInData$AvdKategori==700821] <- 'regional'
+  myInData$AvdKategori[myInData$AvdKategori==707383] <- 'outpatient'
+  myInData$AvdKategori[myInData$AvdKategori==4204191] <-'inpatient'
+  myInData$AvdKategori[myInData$AvdKategori==4207041] <- 'inpatient'
+  myInData$AvdKategori[myInData$AvdKategori==4209009] <- 'outpatient'
+  myInData$AvdKategori[myInData$AvdKategori==4210562] <- 'outpatient'
+  myInData$AvdKategori[myInData$AvdKategori==4210626] <- 'outpatient'
+  myInData$AvdKategori[myInData$AvdKategori==4210825] <-  'outpatient'
+  myInData$AvdKategori[myInData$AvdKategori==107026] <- 'regional'
+  myInData$AvdKategori[myInData$AvdKategori==4210303] <- 'spec_outpaitent'
+  myInData$AvdKategori[myInData$AvdKategori==4207697] <- 'outpatient'
+
+  # Hospital department AGE CATEGORY
+  myInData$AvdAlder <- myInData$AvdRESH
+
+  myInData$AvdAlder[myInData$AvdAlder==105806] <- 'adult'
+  myInData$AvdAlder[myInData$AvdAlder==109979] <- 'adult'
+  myInData$AvdAlder[myInData$AvdAlder==110361] <- 'adult'
+  myInData$AvdAlder[myInData$AvdAlder==700698] <- 'children'
+  myInData$AvdAlder[myInData$AvdAlder==700821] <- 'adult'
+  myInData$AvdAlder[myInData$AvdAlder==707383] <- 'adult'
+  myInData$AvdAlder[myInData$AvdAlder==4204191] <-'children'
+  myInData$AvdAlder[myInData$AvdAlder==4207041] <- 'adult'
+  myInData$AvdAlder[myInData$AvdAlder==4209009] <- 'children'
+  myInData$AvdAlder[myInData$AvdAlder==4210562] <- 'children'
+  myInData$AvdAlder[myInData$AvdAlder==4210626] <- 'children'
+  myInData$AvdAlder[myInData$AvdAlder==4210825] <-  'adult'
+  myInData$AvdAlder[myInData$AvdAlder==107026] <- 'adult'
+  myInData$AvdAlder[myInData$AvdAlder==4210303] <- 'adult'
+  myInData$AvdAlder[myInData$AvdAlder==4207697] <- 'adult'
 
 
   myInData

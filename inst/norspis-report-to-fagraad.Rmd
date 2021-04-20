@@ -42,17 +42,17 @@ library(norspis2)
 ```{r}
 library(dplyr)
 #------DATA norspis2
-RegData2 <- norspis2::fun1_1_import_data_FEA(path_data="F:/2021-04-12_data-til-aarsresultater/", #disk and folder of data to import
-                                             date_data="2021-04-12")
+RegDataNatVal2 <- norspis2::fun1_1_import_data_FEA(path_data="F:/2021-04-20_data-til-aarsresultater/", #disk and folder of data to import
+                                             date_data="2021-04-20")
 
-RegDataBeh2 <- norspis2::fun1_2_import_data_B(path_data="F:/2021-04-12_data-til-aarsresultater/", #disk and folder of data to import
-                                              date_data="2021-04-12")
+RegDataBeh2 <- norspis2::fun1_2_import_data_B(path_data="F:/2021-04-20_data-til-aarsresultater/", #disk and folder of data to import
+                                              date_data="2021-04-20")
 #Five datasets (outputted in a list):
-DL <- norspis2::fun2_dataList(myInData1 = RegData2, myInData2 = RegDataBeh2)
+DL <- norspis2::fun2_dataList(myInData1 = RegDataNatVal2, myInData2 = RegDataBeh2)
 #---DATA norspis2 (END)
 #-----DATA  for norspis functions
 #When we use norspis functions we use the call "RegData" (while we in norspis2 use DL$RegData12345)
-RegData <- RegData2
+RegData <- RegDataNatVal2
 #---DATA norspis2 (END)
 ```
 
@@ -64,10 +64,6 @@ RegData <- RegData2
 <!-- userRole <-'SC' #'CC' , 'LC', 'LU' -->
 <!-- ``` -->
 
-\pagebreak
-
-# Antall pasienter
-
 
 
 \pagebreak
@@ -76,7 +72,7 @@ RegData <- RegData2
 
 ## Antall registreringer per avdeling per år
 
-Startregistreringer
+Startregistreringer (ferdigstilte registreringer)
 
 ```{r}
   #START
@@ -97,7 +93,7 @@ Startregistreringer
 
 \pagebreak
 
-Sluttregistreringer
+Sluttregistreringer (ferdigstilte registreringer)
 
 ```{r}
 #END
@@ -116,13 +112,17 @@ Sluttregistreringer
 
 \pagebreak
 
-# Resultater
+# Resultater - kvalitetsindikatorene over tid, nasjonalt og per avdeling
 
-## Kvalitetsindikatorene over tid, nasjonalt og per avdeling
+## Kvalitetsindikator 1: Endring i spiseforstyrrelsesymptomer
 
 ```{r, echo=F, warning=F, message=F}
 
-fun_QI_comp_time_2021 <- function(variable01 = "EDEQ60GlobalScore_CHANGE_PROP"){
+fun_QI_comp_time_2021 <- function(variable01 = c(quo(EDEQ60GlobalScore_CHANGE_PROP))){
+  
+
+variable01 <- sym({{noquote(variable01)}})
+variable01 <- quo({{variable01}})
 
 #filter data for e.g. 2012-2019
 RegDataStartEndNatValFiltered <- norspis2::fun3_2_filter_RegDataStartEnd(
@@ -155,17 +155,19 @@ RegDataStartEndNatValFiltered <- RegDataStartEndNatValFiltered%>%
 RegDataStartEndNatValFiltered_summarized <- RegDataStartEndNatValFiltered %>%
   #group_by together with summarize (see Wickham, R for Data Science)
   dplyr::group_by(Year.y,AvdNavn,AvdKategori.x)%>%
-    dplyr::summarize(perc = mean(EDEQ60GlobalScore_CHANGE_PROP, na.rm = T)*100,#mean() of 0-1 gives
+    dplyr::summarize(perc = mean(!!variable01, na.rm = T)*100,#mean() of 0-1 gives
                                                           #proportion
-                     n = sum(!is.na(EDEQ60GlobalScore_CHANGE_PROP)))
+                     n = sum(!is.na(!!variable01)))%>%
+  #removes hospitals w n<20 (choose 0.00000123 as easy identifiable value
+    dplyr::mutate(perc = ifelse(n<5, NA, perc)) #%>%
 
 #as above, but for all years (per department)
 RegDataStartEndNatValFiltered_summarized2 <- RegDataStartEndNatValFiltered %>%
   #group_by together with summarize (see Wickham, R for Data Science)
   dplyr::group_by(AvdNavn,AvdKategori.x)%>%
-    dplyr::summarize(perc = mean(EDEQ60GlobalScore_CHANGE_PROP, na.rm = T)*100,#mean() of 0-1 gives
+    dplyr::summarize(perc = mean(!!variable01, na.rm = T)*100,#mean() of 0-1 gives
                                                           #proportion
-                     n = sum(!is.na(EDEQ60GlobalScore_CHANGE_PROP)))
+                     n = sum(!is.na(!!variable01)))
 # %>%
 #   mutate(Year.y= 2021)
 
@@ -174,9 +176,9 @@ RegDataStartEndNatValFiltered_summarized2 <- RegDataStartEndNatValFiltered %>%
 #as above but only for all years in total:
 RegDataStartEndNatValFiltered_summarized3 <- RegDataStartEndNatValFiltered %>%
   #group_by together with summarize (see Wickham, R for Data Science)
-  dplyr::summarize(perc = mean(EDEQ60GlobalScore_CHANGE_PROP, na.rm = T)*100,#mean() of 0-1 gives
+  dplyr::summarize(perc = mean(!!variable01, na.rm = T)*100,#mean() of 0-1 gives
                                                           #proportion
-                     n = sum(!is.na(EDEQ60GlobalScore_CHANGE_PROP))) 
+                     n = sum(!is.na(!!variable01))) 
 # %>%
 #     mutate(Year.y= 2021,#proxy, not real value, just because need a number here
 #            AvdNavn = "Alle avdelinger, alle år",
@@ -225,6 +227,7 @@ plot1 <-
        mapping = aes(x = Year.y, y = perc, color = AvdNavn, fill=AvdNavn)
        ) +
   scale_x_continuous(expand = expansion(mult = c(0, .25))) +
+  scale_y_continuous(limits = c(0,100))+
   geom_area(aes(fill = AvdNavn, group = AvdNavn),
             alpha = 0.25, position = 'identity',
             show.legend = F)+
@@ -298,9 +301,8 @@ output_list <- fun_QI_comp_time_2021(variable01 = "EDEQ60GlobalScore_CHANGE_PROP
 
 ```
 
-\pagebreak
 
-### Kvalitetsindikator 1: Endring i spsiseforstyrrelsesymptomer (EDE-Q):
+### Kvalitetsindikator 1: Endring i spsiseforstyrrelsesymptomer (EDE-Q)
 
 Figur - kvalitetsindikator 1: Andelen som ved behandlingsslutt sammenlignet med behandlingsstart, er klassifisert med bedring i spiseforstyrrelsessymptomer. 
 ```{r, echo=F, fig.align='center'}
@@ -311,7 +313,7 @@ output_list[3][[1]]
 
 \pagebreak
 
-Figur - kvalitetsindikator 1: Gjennomsnitt alle år per avdeling 
+Støttefigur - kvalitetsindikator 1: Gjennomsnitt alle år per avdeling 
 ```{r, echo=F, fig.align='center'}
 output_list[4][[1]]
 
@@ -330,6 +332,286 @@ Tabell med antall registreringer (her antall "forløp" med start- og sluttregreg
 output_list[2][[1]]
 ```
 
+\pagebreak
 
+## Kvalitetsindikator 2: Endring i funksjon i dagliglivet
+
+Figur - kvalitetsindikator 2: Andelen som ved behandlingsslutt sammenlignet med behandlingsstart,er klassifisert med bedring i funksjon)
+
+```{r, echo=F, warning=F, message=F}
+output_list2 <- fun_QI_comp_time_2021(variable01 = "CIA30GlobalScore_RCI_01")
+```
+
+```{r, echo=F, fig.align='center'}
+
+output_list2[3][[1]]
+
+```
+\pagebreak
+
+Støttefigur - kvalitetsindikator 2: Gjennomsnitt alle år per avdeling 
+```{r, echo=F, fig.align='center'}
+output_list2[4][[1]]
+
+```
+
+\pagebreak
+
+Tabell med andelene som gjelder for plottet over:
+```{r}
+output_list2[1][[1]]
+
+```
+
+Tabell med antall registreringer (her antall "forløp" med start- og sluttregregistrering) som inngår for plottet over:  
+```{r}
+output_list2[2][[1]]
+```
+
+\pagebreak
+
+## Kvalitetsindikator 3: Endret undervekts-status
+
+```{r, echo=F, warning=F, message=F}
+output_list3 <- fun_QI_comp_time_2021(variable01 = "MedBMI_start18.5_slutt18.5")
+```
+
+
+Figur - kvalitetsindikator 3: Andelen pasienter med undervekt ved behandlingsstart (BMI<18,5) som ved behandlingsslutt ikke langer var undervektige (BMI $\geqslant$ 18,5)
+
+```{r, echo=F, fig.align='center'}
+output_list3[3][[1]]
+
+```
+
+\pagebreak
+
+Støttefigur - kvalitetsindikator 3: Gjennomsnitt alle år per avdeling 
+```{r, echo=F, fig.align='center'}
+output_list3[4][[1]]
+
+```
+
+\pagebreak
+
+Tabell med andelene som gjelder for plottet over:
+```{r}
+output_list3[1][[1]]
+
+```
+
+Tabell med antall registreringer (her antall "forløp" med start- og sluttregregistrering) som inngår for plottet over:  
+```{r}
+output_list3[2][[1]]
+```
+
+\pagebreak
+
+## Kvalitetsindikator 4: Pasientvurdert "utbytte" av behandlingen
+
+```{r, echo=F, warning=F, message=F}
+fun_QI_comp_time_2021_2 <- function(variable01 = "PROP_PO09Utbytte"){
+  
+
+variable01 <- sym({{noquote(variable01)}})
+variable01 <- quo({{variable01}})
+
+#filter data for e.g. 2012-2019
+RegDataFiltered <- norspis2::fun3_1_filter_RegData(
+                                  RegData = DL$RegDataNatVal2,
+                                  regStatus = c(1),#c(0,1,-1),
+                                  regType = c(0,1,2,3,4,5,6,98,99),
+                                  dateFrom = "2012-01-01",
+                                  dateTo = "2020-12-31",
+                                  ageFrom = 0,
+                                  ageTo = 200)
+                                  
+ # tableToFig <- make_figTable_unitCompar(myIndata_NatVal = RegDataStartEndNatValFiltered,
+ #                                        myInvar01 = "EDEQ60GlobalScore_CHANGE_PROP")
+
+RegDataFiltered <- RegDataFiltered%>%
+                                      dplyr::mutate(AvdKategori = dplyr::case_when(AvdNavn == "Nasjonal" ~ "nasjonal",
+                                                                                     !(AvdKategori %in% c("regional","nasjonal")) ~ "annen",
+                                                                                     TRUE ~ AvdKategori)) %>%
+                                      dplyr::mutate(AvdNavn = dplyr::case_when(AvdKategori == "annen" ~ "Andre",
+                                                                               TRUE ~ AvdNavn))
+
+ library(directlabels)
+  
+RegDataFiltered_summarized <- RegDataFiltered %>%
+  #group_by together with summarize (see Wickham, R for Data Science)
+  dplyr::group_by(Year,AvdNavn,AvdKategori)%>%
+    dplyr::summarize(perc = mean(!!variable01, na.rm = T)*100,#mean() of 0-1 gives
+                                                          #proportion
+                     n = sum(!is.na(!!variable01))) %>%
+    #removes hospitals w n<20 (choose 0.00000123 as easy identifiable value
+    dplyr::mutate(perc = ifelse(n<5, NA, perc)) #%>%
+    #recode nan - choose 0.00000123 (as above for units with N<5):
+    # dplyr::mutate(perc = dplyr::case_when(is.nan(perc) ~ 0.00000123,
+    #                         TRUE ~ perc))
+
+
+#as above, but for all years (per department)
+RegDataFiltered_summarized2 <- RegDataFiltered %>%
+  #group_by together with summarize (see Wickham, R for Data Science)
+  dplyr::group_by(AvdNavn,AvdKategori)%>%
+    dplyr::summarize(perc = mean(!!variable01, na.rm = T)*100,#mean() of 0-1 gives
+                                                          #proportion
+                     n = sum(!is.na(!!variable01)))
+# %>%
+#   mutate(Year.y= 2021)
+
+
+
+#as above but only for all years in total:
+RegDataFiltered_summarized3 <- RegDataFiltered %>%
+  #group_by together with summarize (see Wickham, R for Data Science)
+  dplyr::summarize(perc = mean(!!variable01, na.rm = T)*100,#mean() of 0-1 gives
+                                                          #proportion
+                     n = sum(!is.na(!!variable01))) 
+# %>%
+#     mutate(Year.y= 2021,#proxy, not real value, just because need a number here
+#            AvdNavn = "Alle avdelinger, alle år",
+#            AvdKategori.x = "Alle")
+
+
+RegDataFiltered_summarized4 <-
+  bind_rows(RegDataFiltered_summarized,
+            RegDataFiltered_summarized2)
+
+
+plot1 <-
+ ggplot2::ggplot(data = RegDataFiltered_summarized4,
+       mapping = aes(x = Year, y = perc, color = AvdNavn, fill=AvdNavn)
+       ) +
+  scale_x_continuous(expand = expansion(mult = c(0, .25))) +
+  scale_y_continuous(limits = c(0,100))+
+  geom_area(aes(fill = AvdNavn, group = AvdNavn),
+            alpha = 0.25, position = 'identity',
+            show.legend = F)+
+  geom_line(show.legend = F)+
+  geom_point(show.legend = F)+
+  geom_dl(aes(label = AvdNavn), method = list("last.bumpup", cex = 0.7))+
+  theme_bw()+
+  ylab("Andel (prosent)")+
+  xlab("År")+ 
+  geom_hline(yintercept = RegDataFiltered_summarized3$perc, color = "grey", linetype= "dashed", size=1)
+
+#a "spread" table of the data we use in the plot
+perc <- RegDataFiltered_summarized4 %>%
+          select(-n)%>%
+          tidyr::spread(key=Year, value = perc)%>%
+          rename('Alle år' =  `<NA>` )%>%
+          select(-'AvdKategori')%>%
+          mutate_if(is.numeric, round, 1)
+
+
+
+
+n <- RegDataFiltered_summarized4 %>%
+          select(-perc)%>%
+          tidyr::spread(key=Year, value = n)%>%
+          rename('Alle år' =  `<NA>` )%>%
+          select(-'AvdKategori')
+
+
+
+
+table1 <- flextable::flextable(perc)
+table2 <- flextable::flextable(n)
+
+
+RegDataFiltered_summarized5 <- RegDataFiltered_summarized4 %>%
+  filter(is.na(Year))
+
+plot2<-
+ ggplot2::ggplot(RegDataFiltered_summarized5) +
+  geom_hline(#yintercept = RegDataStartEndNatValFiltered_summarized5$perc,
+             mapping = aes(yintercept = perc, color = AvdNavn),
+             show.legend = F)+
+    scale_y_continuous(limits = c(0,100))+
+  geom_dl(aes(y= perc, x= "", label = AvdNavn), method = list("last.bumpup", cex = 0.7))+
+  theme_bw()+
+  ylab("Andel (prosent)")+
+  xlab(" ")+ 
+  geom_hline(yintercept = RegDataFiltered_summarized3$perc, color = "grey", linetype= "dashed", size=1)
+
+return(list(table1,
+            table2,
+            plot1,
+            plot2))
+}
+```
+
+Figur: Kvalitetsindikator 4: Andelen pasienter som oppgir en viss grad av utbytte av behandlingen ("en del utbytte", "stort utbytte" og "svært stort utbytte"). 
+```{r, echo=F, warning=F, message=F}
+output_list4 <- fun_QI_comp_time_2021_2("PROP_PO09Utbytte")
+```
+
+```{r, echo=F, fig.align='center'}
+output_list4[3][[1]]
+
+```
+
+\pagebreak
+
+Støttefigur - kvalitetsindikator 4: Gjennomsnitt alle år per avdeling 
+```{r, echo=F, fig.align='center'}
+output_list4[4][[1]]
+
+```
+
+\pagebreak
+
+Tabell med andelene som gjelder for plottet over:
+```{r}
+output_list4[1][[1]]
+
+```
+
+Tabell med antall registreringer (her sluttregregistrering) som inngår for plottet over:  
+```{r}
+output_list4[2][[1]]
+```
+
+\pagebreak
+
+
+## Kvalitetsindikator 5: Pasientvurdert bedring ("utfall") av behandlingen
+
+
+```{r, echo=F, warning=F, message=F}
+output_list5 <- fun_QI_comp_time_2021_2("PROP_PT03Utfallsvurd")
+```
+
+
+Figur - kvalitetsindikator 5: Andelen pasienter som ved behandlingsslutt angir noen form for bedring ("ikke noe problem lenger", "klar bedring" eller "noe bedring")
+
+```{r, echo=F, fig.align='center'}
+output_list5[3][[1]]
+
+```
+
+\pagebreak
+Støttefigur - kvalitetsindikator 5: Gjennomsnitt alle år per avdeling 
+```{r, echo=F, fig.align='center'}
+output_list5[4][[1]]
+
+```
+
+\pagebreak
+
+Tabell med andelene som gjelder for plottet over:
+```{r}
+output_list5[1][[1]]
+
+```
+
+Tabell med antall registreringer (her sluttregregistrering) som inngår for plottet over:  
+```{r}
+output_list5[2][[1]]
+```
+
+\pagebreak
 
 

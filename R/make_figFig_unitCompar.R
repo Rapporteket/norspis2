@@ -16,6 +16,7 @@
 
 make_figFig_unitCompar <- function(
   my_proptable_hospitals,
+  #my_proptable_hospitals_year_x,
   my_y_lab = "Andel (%)", #default "Andel (%), unless you change it
   my_title = '',#default empty (""), unless you change it
   YellowGoal = 'mean',  #1)'' 2)'mean' or 3) for instance '60'
@@ -48,6 +49,24 @@ make_figFig_unitCompar <- function(
 
   my_color = "#084594"
 
+  #Confidence intervals added to table (formula for proportions used)
+  my_proptable_hospitals <- my_proptable_hospitals %>%
+    mutate(CILower = ((my_proptable_hospitals$perc/100)- 1.96*sqrt(( (my_proptable_hospitals$perc/100) * (1-(my_proptable_hospitals$perc/100)))/n)) *100,
+           CIUpper = ((my_proptable_hospitals$perc/100)+ 1.96*sqrt(( (my_proptable_hospitals$perc/100) * (1-(my_proptable_hospitals$perc/100)))/n))*100)%>%
+    #mutate so that if upper CI is above 100 make it 100 (else will be outside
+    #plot and errorbar will not show):
+    mutate(CIUpper = case_when(CIUpper>100 ~ 100,
+                               TRUE ~ CIUpper),
+           CILower = case_when(CILower<0 ~0,
+                               TRUE ~ CILower))%>%
+    mutate(CIUpper = case_when(n<5 ~ NaN,
+                               TRUE ~ CIUpper),
+           CILower = case_when(n<5 ~ NaN,
+                               TRUE ~ CILower))
+
+  #make additon proptable for specified year to visualise as point
+  #my_proptable_hospitals_year_x <- my_proptable_hospitals_year_x
+
   fig <-
     ggplot2::ggplot(my_proptable_hospitals)+
     #The bars:
@@ -62,15 +81,17 @@ make_figFig_unitCompar <- function(
          title = my_title)+#colnames(my_proptable_hospitals[,4]))+
                            #my_figText$title)+
     ggplot2::scale_y_continuous(
-      limits = c(0,max(my_proptable_hospitals$perc)), #c(0,105)
+      limits = c(min(my_proptable_hospitals$CILower),max(my_proptable_hospitals$CIUpper)), #c(0,105)
       expand = ggplot2::expansion(mult=c(0,0.1)),breaks = seq(0,100,10))+
       #above, in "expansion use "add" instead of "mult" to make expansion
       #absolute rather than relative(mult for multiplication)
     ggplot2::xlab(NULL)+
-    # geom_errorbar(aes(x=my_proptable_hospitals$AvdNavn,
-    # ymin=my_proptable_hospitals$perc-sd(my_proptable_hospitals$perc),
-    # ymax=my_proptable_hospitals$perc+sd(my_proptable_hospitals$perc))
-    #               , colour= 'orange',alpha=0.5, size=1, width=0.2)+
+     ggplot2::geom_errorbar(
+       ggplot2::aes(x=AvdNavn,
+           ymin=CILower,  #sd(my_proptable_hospitals$perc),
+           ymax=CIUpper)
+           #sd(my_proptable_hospitals$perc))
+       ,colour= 'orange',alpha=0.5, size=1, width=0.2)+
     ggplot2::geom_text(
       ggplot2::aes(x = AvdNavn, y= 1,
           label= factor(ifelse(perc == 0.00000123,'',paste0(round(perc,1)))),
@@ -86,6 +107,10 @@ make_figFig_unitCompar <- function(
                                                 #text saying n is lower than 5
           hjust='left'),
       alpha=0.5)+
+    #points for chosen comparison year:
+    ggplot2::geom_point(
+      ggplot2::aes(x = AvdNavn, y=perc.compare
+                   ))+
 
     # geom_text(
     #   aes(x = AvdNavn, y= 100,

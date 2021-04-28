@@ -49,8 +49,9 @@ make_figTable_unitCompar <- function(myIndata_NatVal,
     dplyr::mutate(perc = dplyr::case_when(perc >= 0 &
                                             perc <= 1 ~ perc*100,
                                           TRUE ~perc)) %>%
-    #makes hospital names include "n":
-    dplyr::mutate(AvdNavn = paste0(AvdNavn, ' (', n,')' )) %>%
+    #make extra hospital name that include "n":
+    dplyr::mutate(AvdNavnNavn = AvdNavn,#first,keep variable with just name
+                  AvdNavn = paste0(AvdNavn, ' (', n,')' )) %>%
     #removes hospitals w n<20 (choose 0.00000123 as easy identifiable value
     dplyr::mutate(perc = ifelse(n<5, 0.00000123, perc)) %>%
     dplyr::mutate(!!myInvar01 := 0)%>%

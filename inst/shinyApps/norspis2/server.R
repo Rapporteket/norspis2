@@ -316,18 +316,37 @@ server <- function(input, output, session) {
 
   output$sykehusSammenlign <- renderPlot({
         #filter
-        dat <- norspis2::fun3_1_filter_RegData(RegData = DL$RegDataNatVal2,
+        dat1 <- norspis2::fun3_1_filter_RegData(RegData = DL$RegDataNatVal2,
                                                dateFrom =
                                                  input$datovalgSykehusSammenlign[1],
                                                dateTo =
                                                  input$datovalgSykehusSammenlign[2],
                                                regStatus = 1)#only complete reg
+        #filter data for comparison point
+        dat2 <- norspis2::fun3_1_filter_RegData(RegData = DL$RegDataNatVal2,
+                                                dateFrom  =
+                                                  input$datovalgSykehusSammenlign_sammenlign[1],
+                                                dateTo =
+                                                  input$datovalgSykehusSammenlign_sammenlign[2],
+                                                regStatus = 1)
+
       #table to plot
-      tab <- norspis2::make_figTable_unitCompar(
-        myIndata_NatVal =  dat,
+      tab1 <- norspis2::make_figTable_unitCompar(
+        myIndata_NatVal =  dat1,
         myInvar01 = input$valgtVarSykehusSammenlign)#rlang::quo(PROP_PO10Pasientsikkerhet))#input$valgtVarSykehusSammenlign)#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(!!input$valgtVarSykehusSammenlign))
+      #table for comparison point
+      tab2 <- norspis2::make_figTable_unitCompar(
+        myIndata_NatVal =  dat2,
+        myInvar01 = input$valgtVarSykehusSammenlign)
+
+      #merge columns for perc into tab1
+      #(only keeping rows from 1 by left_join):
+      tab3 <- left_join(tab1,tab2, by="AvdNavnNavn",
+                        #add sufix only to merged data
+                        suffix = c("",".compare"))
+
     #plot
-    norspis2::make_figFig_unitCompar(tab,
+    norspis2::make_figFig_unitCompar(tab3,
                                      YellowGoal = "",
                                      GreenGoal = "")
 
@@ -335,18 +354,39 @@ server <- function(input, output, session) {
 
   output$sykehusSammenlign2 <- renderPlot({
         #filter
-        dat <- norspis2::fun3_2_filter_RegDataStartEnd(RegData = DL$RegDataStartEndNatVal2,
+        dat1 <- norspis2::fun3_2_filter_RegDataStartEnd(RegData = DL$RegDataStartEndNatVal2,
                                                        dateFrom.y  =
                                                          input$datovalgSykehusSammenlign2[1],
                                                        dateTo.y =
                                                          input$datovalgSykehusSammenlign2[2],
                                                        BasisRegStatus.y = 1)#only complete reg
+        #filter data for comparison point
+        dat2 <- norspis2::fun3_2_filter_RegDataStartEnd(RegData = DL$RegDataStartEndNatVal2,
+                                                        dateFrom.y  =
+                                                          input$datovalgSykehusSammenlign2_sammenlign[1],
+                                                        dateTo.y =
+                                                          input$datovalgSykehusSammenlign2_sammenlign[2],
+                                                        BasisRegStatus.y = 1)
+
       #table to plot
-      tab <- norspis2::make_figTable_unitCompar(
-        myIndata_NatVal =  dat,
+      tab1 <- norspis2::make_figTable_unitCompar(
+        myIndata_NatVal =  dat1,
         myInvar01 = input$valgtVarSykehusSammenlign2)#rlang::quo(PROP_PO10Pasientsikkerhet))#input$valgtVarSykehusSammenlign)#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(!!input$valgtVarSykehusSammenlign))
+
+      #table for comparison point
+      tab2 <- norspis2::make_figTable_unitCompar(
+        myIndata_NatVal =  dat2,
+        myInvar01 = input$valgtVarSykehusSammenlign2)
+
+      #merge columns for perc into tab1
+      #(only keeping rows from 1 by left_join):
+      tab3 <- left_join(tab1,tab2, by="AvdNavnNavn",
+                        #add sufix only to merged data
+                        suffix = c("",".compare"))
+
     #plot
-    norspis2::make_figFig_unitCompar(tab,
+    norspis2::make_figFig_unitCompar(tab3,
+                                     # tab2,
                                      YellowGoal = "",
                                      GreenGoal = "")
 

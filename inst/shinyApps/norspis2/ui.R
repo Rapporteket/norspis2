@@ -547,6 +547,14 @@ ui <- tagList(
                 label = "Tidsperiode (datoene gjelder sluttregistreringen)",
                 separator="t.o.m.",
                 language="nb"
+              ),
+              dateRangeInput(
+                inputId = 'datovalgSykehusSammenlign_sammenlign',
+                start = "2018-01-01",
+                end = "2021-12-31",# Sys.Date(),
+                label = "Tidsperiode (datoene gjelder sluttregistreringen)",
+                separator="t.o.m.",
+                language="nb"
               )
             )
           ),
@@ -583,7 +591,16 @@ ui <- tagList(
                  label = "Tidsperiode (datoene gjelder sluttregistreringen)",
                  separator="t.o.m.",
                  language="nb"
+              ),
+              dateRangeInput(
+                inputId = 'datovalgSykehusSammenlign2_sammenlign',
+                start = "2018-01-01",
+                end = "2021-12-31",# Sys.Date(),
+                label = "Tidsperiode (datoene gjelder sluttregistreringen)",
+                separator="t.o.m.",
+                language="nb"
               )
+
             )
           ),
 

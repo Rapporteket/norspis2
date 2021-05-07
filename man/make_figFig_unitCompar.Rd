@@ -6,6 +6,9 @@
 \usage{
 make_figFig_unitCompar(
   my_proptable_hospitals,
+  showErrorBar = FALSE,
+  showErrorBar2 = FALSE,
+  showComparisonPoints = FALSE,
   my_y_lab = "Andel (\%)",
   my_title = "",
   YellowGoal = "mean",
@@ -14,6 +17,10 @@ make_figFig_unitCompar(
 }
 \arguments{
 \item{my_proptable_hospitals}{my_proptable_hospitals <- RegData_NatVal_summarized #with NATIONA vulues!}
+
+\item{showErrorBar}{95% CI around each bar (my_proptable_hospitals will then need additional perc and n columns)}
+
+\item{showComparisonPoints}{visualise point for comparison period (my_proptable_hospitals will then need additional perc and n columns)}
 
 \item{my_y_lab}{"Andel", unless you change it}
 

@@ -23,11 +23,12 @@ NorSpis1FigPrePost(
   maxald = 130,
   erMann = "",
   regType = "",
-  diagnose = ""
+  diagnose = "",
+  addCI = F
 )
 }
 \arguments{
-\item{diagnose}{}
+\item{addCI}{Boolean (TRUE/FALSE): Add conficence interval}
 }
 \value{
 Figure

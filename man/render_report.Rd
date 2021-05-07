@@ -4,10 +4,10 @@
 \alias{render_report}
 \title{render_report in norspis2}
 \usage{
-render_report(reshID = 700821)
+render_report(reshID = 700821, output_dir = "F:/output_rendered-docs-to-share")
 }
 \arguments{
-\item{reshID}{}
+\item{output_dir}{}
 }
 \value{
 

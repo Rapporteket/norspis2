@@ -8,6 +8,8 @@
 #' @param my_title '' - empty, unless you change it
 #' @param YellowGoal can be give the values 1)'' 2)'mean' or 3) A character value which will be converted to na , for instance '60' if the goal value is 60 percent
 #' @param GreenGoal can be give the values 1)'' 2)'mean' or 3) A character value which will be converted to na , for instance '60' if the goal value is 60 percent
+#' @param showErrorBar 95% CI around each bar (my_proptable_hospitals will then need additional perc and n columns)
+#' @param showComparisonPoints visualise point for comparison period (my_proptable_hospitals will then need additional perc and n columns)
 #'
 #' @return figure
 #' @export
@@ -16,6 +18,9 @@
 
 make_figFig_unitCompar <- function(
   my_proptable_hospitals,
+  showErrorBar = FALSE,
+  showErrorBar2 = FALSE,
+  showComparisonPoints = FALSE,
   #my_proptable_hospitals_year_x,
   my_y_lab = "Andel (%)", #default "Andel (%), unless you change it
   my_title = '',#default empty (""), unless you change it
@@ -25,7 +30,7 @@ make_figFig_unitCompar <- function(
   #Theme:
   if(!exists("skriftstorleik")) # Skriftstørrelse bør være definert
                                 #i kvarrtalsrapportfil
-    skriftstorleik = 13
+    skriftstorleik = 17
   tema = ggplot2::theme_light(base_size=skriftstorleik)
   tema$panel.grid.minor$colour="white"
   tema$strip.background$fill="#f3f1ee"
@@ -47,9 +52,9 @@ make_figFig_unitCompar <- function(
   fjern_y = ggplot2::theme(panel.grid.major.y = ggplot2::element_blank(),
                   panel.grid.minor.y = ggplot2::element_blank())
 
-  my_color = "#084594"
+  my_color = "lightblue"
 
-  #Confidence intervals added to table (formula for proportions used)
+  #Add confidence intervals to table (formula for proportions used)
   my_proptable_hospitals <- my_proptable_hospitals %>%
     mutate(CILower = ((my_proptable_hospitals$perc/100)- 1.96*sqrt(( (my_proptable_hospitals$perc/100) * (1-(my_proptable_hospitals$perc/100)))/n)) *100,
            CIUpper = ((my_proptable_hospitals$perc/100)+ 1.96*sqrt(( (my_proptable_hospitals$perc/100) * (1-(my_proptable_hospitals$perc/100)))/n))*100)%>%
@@ -64,6 +69,21 @@ make_figFig_unitCompar <- function(
            CILower = case_when(n<5 ~ NaN,
                                TRUE ~ CILower))
 
+  #Add confidence intervals for comparison to table (proportions formula used)
+  my_proptable_hospitals <- my_proptable_hospitals %>%
+    mutate(CILower2 = ((my_proptable_hospitals$perc.compare/100)- 1.96*sqrt(( (my_proptable_hospitals$perc.compare/100) * (1-(my_proptable_hospitals$perc.compare/100)))/n.compare)) *100,
+           CIUpper2 = ((my_proptable_hospitals$perc.compare/100)+ 1.96*sqrt(( (my_proptable_hospitals$perc.compare/100) * (1-(my_proptable_hospitals$perc.compare/100)))/n.compare))*100)%>%
+    #mutate so that if upper CI is above 100 make it 100 (else will be outside
+    #plot and errorbar will not show):
+    mutate(CIUpper2 = case_when(CIUpper2>100 ~ 100,
+                               TRUE ~ CIUpper2),
+           CILower2 = case_when(CILower2<0 ~0,
+                               TRUE ~ CILower2))%>%
+    mutate(CIUpper2 = case_when(n.compare<5 ~ NaN,
+                               TRUE ~ CIUpper2),
+           CILower2 = case_when(n.compare<5 ~ NaN,
+                               TRUE ~ CILower2))
+
   #make additon proptable for specified year to visualise as point
   #my_proptable_hospitals_year_x <- my_proptable_hospitals_year_x
 
@@ -74,7 +94,7 @@ make_figFig_unitCompar <- function(
              fill=factor(ifelse(stringr::str_detect(
                my_proptable_hospitals$AvdNavn,
                "Nasjonal"),
-               "grey",
+               "lightgrey",
                my_color))) +
 
     ggplot2::labs(y=my_y_lab, #my_proptable_hospitals$my_y_lab,#
@@ -86,12 +106,22 @@ make_figFig_unitCompar <- function(
       #above, in "expansion use "add" instead of "mult" to make expansion
       #absolute rather than relative(mult for multiplication)
     ggplot2::xlab(NULL)+
-     ggplot2::geom_errorbar(
+
+    {if(showErrorBar == TRUE)
+    ggplot2::geom_errorbar(
        ggplot2::aes(x=AvdNavn,
            ymin=CILower,  #sd(my_proptable_hospitals$perc),
            ymax=CIUpper)
            #sd(my_proptable_hospitals$perc))
-       ,colour= 'orange',alpha=0.5, size=1, width=0.2)+
+       ,colour= 'black',alpha=0.6, size=0.3, width=0.2)}+
+    {if(showErrorBar2 == TRUE)
+      ggplot2::geom_errorbar(
+        ggplot2::aes(x=AvdNavn,
+                     ymin=CILower2,  #sd(my_proptable_hospitals$perc),
+                     ymax=CIUpper2)
+        #sd(my_proptable_hospitals$perc))
+        ,colour= 'black',alpha=0.6, size=0.3, width=0.2)}+
+
     ggplot2::geom_text(
       ggplot2::aes(x = AvdNavn, y= 1,
           label= factor(ifelse(perc == 0.00000123,'',paste0(round(perc,1)))),
@@ -107,10 +137,28 @@ make_figFig_unitCompar <- function(
                                                 #text saying n is lower than 5
           hjust='left'),
       alpha=0.5)+
+
+    {if(showComparisonPoints == TRUE)
+    #show n for comparison period:
+    ggplot2::geom_text(
+      ggplot2::aes(x = AvdNavn, y= 110,
+                   label= paste0( "(",
+                                  (ifelse(is.na(n.compare), 0,n.compare))
+                                  , ")"),
+                   hjust='right'),
+      alpha=0.5)}+
+
+    {if(showComparisonPoints == TRUE)
     #points for chosen comparison year:
     ggplot2::geom_point(
-      ggplot2::aes(x = AvdNavn, y=perc.compare
-                   ))+
+      ggplot2::aes(x = AvdNavn,
+                   y=ifelse(n.compare < 5,
+                            NA,
+                            perc.compare) #ifelse to remove
+                                                          #point when n<5
+                   ),
+      size = 5,
+      color= "#084594")}+
 
     # geom_text(
     #   aes(x = AvdNavn, y= 100,
@@ -134,6 +182,8 @@ make_figFig_unitCompar <- function(
     fjern_y +
     ggplot2::theme(axis.ticks.y = ggplot2::element_blank())+
     ggplot2::coord_flip()
+
+
 
   # green goal line:
   if (GreenGoal!=''){

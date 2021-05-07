@@ -16,6 +16,8 @@ NorSpis1FigAndeler(
   minbmistart = 0,
   maxbmistart = 200,
   regType = "",
+  regTypeStartEnd = "",
+  regTypeChildAdult = "both",
   enhetstypeDogn = "",
   enhetstypeRegional = "",
   erMann = "",
@@ -27,7 +29,9 @@ NorSpis1FigAndeler(
 )
 }
 \arguments{
-\item{enhetsUtvalg}{}
+\item{regTypeStartEnd}{end, start, empty}
+
+\item{regTypeChildAdult}{child, adult, empty}
 }
 \value{
 Figure

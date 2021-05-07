@@ -348,7 +348,11 @@ server <- function(input, output, session) {
     #plot
     norspis2::make_figFig_unitCompar(tab3,
                                      YellowGoal = "",
-                                     GreenGoal = "")
+                                     GreenGoal = "",
+                                     showErrorBar = input$IDshowErrorBar,
+                                     showErrorBar2 = input$IDshowErrorBar2,
+                                     showComparisonPoints = input$showComparisonPeriod
+                                     )
 
   })
 
@@ -388,7 +392,11 @@ server <- function(input, output, session) {
     norspis2::make_figFig_unitCompar(tab3,
                                      # tab2,
                                      YellowGoal = "",
-                                     GreenGoal = "")
+                                     GreenGoal = "",
+                                     showErrorBar = input$IDshowErrorBar_2,
+                                     showErrorBar2 = input$IDshowErrorBar2_2,
+                                     showComparisonPoints = input$showComparisonPeriod_2
+                                     )
 
   })
 

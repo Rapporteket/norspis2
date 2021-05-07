@@ -529,7 +529,7 @@ ui <- tagList(
           "Sykehussammenligninger (slutt)", #change?Update hideTab, server
           sidebarPanel(
             width = 3,
-            wellPanel(
+            wellPanel(h4("Søyler"),
               selectInput(
                 inputId = "valgtVarSykehusSammenlign",
                 label="Variabel",
@@ -542,20 +542,43 @@ ui <- tagList(
               ),
               dateRangeInput(
                 inputId = 'datovalgSykehusSammenlign',
-                start = "2018-01-01",
-                end = "2021-12-31",# Sys.Date(),
+                start = "2012-01-01",
+                end = "2019-12-31",# Sys.Date(),
                 label = "Tidsperiode (datoene gjelder sluttregistreringen)",
                 separator="t.o.m.",
                 language="nb"
               ),
-              dateRangeInput(
-                inputId = 'datovalgSykehusSammenlign_sammenlign',
-                start = "2018-01-01",
-                end = "2021-12-31",# Sys.Date(),
-                label = "Tidsperiode (datoene gjelder sluttregistreringen)",
-                separator="t.o.m.",
-                language="nb"
+              checkboxInput(
+                inputId = "IDshowErrorBar",
+                label = "Vis 95% konfidensintervall",
+                value = FALSE
               )
+            ),
+            wellPanel(h4("Sammenligningsperiode (punkt)"),
+                      selectInput(
+                        inputId = "showComparisonPeriod",
+                        label = "Legg til sammenligningsperiode",
+                        choices = c("Nei" = FALSE,
+                                    "Ja" = TRUE),
+                        selected = FALSE
+                      ),
+                      conditionalPanel(
+                        condition = "input.showComparisonPeriod == 'TRUE'",
+
+                        dateRangeInput(
+                          inputId = 'datovalgSykehusSammenlign_sammenlign',
+                          start = "2020-01-01",
+                          end = "2020-12-31",# Sys.Date(),
+                          label = "Tidsperiode (datoene gjelder sluttregistreringen)",
+                          separator="t.o.m.",
+                          language="nb"
+                        ),
+                        checkboxInput(
+                          inputId = "IDshowErrorBar2",
+                          label = "Vis 95% konfidensintervall",
+                          value = FALSE
+                        )
+                      )
             )
           ),
 
@@ -572,7 +595,7 @@ ui <- tagList(
           "Sykehussammenligninger (start/slutt)",#change? Update hideTab,server
           sidebarPanel(
             width = 3,
-            wellPanel(
+            wellPanel(h4("Søyler"),
               selectInput(
                  inputId = "valgtVarSykehusSammenlign2",
                  label="Variabel",
@@ -586,22 +609,47 @@ ui <- tagList(
               ),
               dateRangeInput(
                  inputId = 'datovalgSykehusSammenlign2',
-                 start = "2018-01-01",
-                 end = "2021-12-31",# Sys.Date(),
+                 start = "2012-01-01",
+                 end = "2019-12-31",# Sys.Date(),
                  label = "Tidsperiode (datoene gjelder sluttregistreringen)",
                  separator="t.o.m.",
                  language="nb"
               ),
-              dateRangeInput(
-                inputId = 'datovalgSykehusSammenlign2_sammenlign',
-                start = "2018-01-01",
-                end = "2021-12-31",# Sys.Date(),
-                label = "Tidsperiode (datoene gjelder sluttregistreringen)",
-                separator="t.o.m.",
-                language="nb"
+              checkboxInput(
+                inputId = "IDshowErrorBar_2",
+                label = "Vis 95% konfidensintervall",
+                value = FALSE
+              )
+            ),
+            wellPanel(h4("Sammenligningsperiode (punkter)"),
+                      selectInput(
+                        inputId = "showComparisonPeriod_2",
+                        label = "Legg til sammenligningsperiode",
+                        choices = c("Nei" = FALSE,
+                                    "Ja" = TRUE),
+                        selected = FALSE
+                      ),
+                      conditionalPanel(
+                        condition = "input.showComparisonPeriod_2 == 'TRUE'",
+
+                        dateRangeInput(
+                          inputId = 'datovalgSykehusSammenlign2_sammenlign',
+                          start = "2020-01-01",
+                          end = "2020-12-31",# Sys.Date(),
+                          label = "Tidsperiode (datoene gjelder sluttregistreringen)",
+                          separator="t.o.m.",
+                          language="nb"
+                        ),
+                        checkboxInput(
+                          inputId = "IDshowErrorBar2_2",
+                          label = "Vis 95% konfidensintervall",
+                          value = FALSE
+                        )
+                      )
+
               )
 
-            )
+
           ),
 
           mainPanel(

@@ -4,10 +4,10 @@
 \alias{make_figFig_timetrend}
 \title{Title}
 \usage{
-make_figFig_timetrend(variable01)
+make_figFig_timetrend(variable01, add_fill = F)
 }
 \arguments{
-\item{variable01}{}
+\item{add_fill}{Add fill under line}
 }
 \value{
 

@@ -63,6 +63,7 @@ make_figTable_unitCompar <- function(myIndata_NatVal,
                             TRUE ~ perc))
 
   #SORT (from smallest to largest proportions)
+  #remember that plot will sort by AvdNavn ,so we must reorder this factor
   ## forcats needed to reorder the levels (as a means to SORT the variable):
   myInData_NatVal_summarized$AvdNavn <-
     myInData_NatVal_summarized$AvdNavn %>%

@@ -10,15 +10,27 @@
 #'
 #' @examples
 
-make_table_DQ_regCountYearly <- function(RegDataNatValFiltered){
+make_table_DQ_regCountYearly <- function(RegDataNatValFiltered,
+                                         saveAsImage=F,
+                                         saveAsDoc=F,
+                                         pathToSaveTableFile = "F:/",
+                                         fileNameSuffix= "_2021" #any text
+                                         ){
 
   #make tab
   RegData_NatVal_overview <- RegDataNatValFiltered %>%
-    group_by(AvdNavn, Year)%>%
+    group_by(AvdNavn, Year) %>% #, RegRegtype)%>%
     summarize(counts = sum(!is.na(PasientID))) %>%
     tidyr::spread(key = Year, value = counts) %>%
+    # pivot_wider(id_cols = AvdNavn,
+    #             names_from = c("RegRegtype", "Year"),
+    #             values_from = c("counts"))
     rowwise() %>%
     mutate("Total" = sum(c_across(), na.rm = T))
+
+
+
+
 
   #Adding "Nasjonal" at bottom
   ##We first remove the row and then bind it back to the table
@@ -47,15 +59,25 @@ make_table_DQ_regCountYearly <- function(RegDataNatValFiltered){
   border <- officer::fp_border()
 
   ft3 <- flextable::flextable(RegData_NatVal_overview) %>%
-    flextable::hline(i=13, part = "body", border=border)%>%
+    flextable::hline(i=nrow(RegData_NatVal_overview)-1, part = "body", border=border)%>%
     flextable::colformat_int(na_str = "-")%>%#remove NA from visual
     flextable::autofit()
-
-  ft3
 
   # Print/save as .png and .docx
   # flextable::save_as_image(ft3, path = "F:/Nreg2012_2019start.png" )
   # flextable::save_as_docx("Nreg2012_2019start" = ft3,
   # path = "F:/Nreg2012_2019start.docx")
+
+  #If save file....as .png and .docx
+  if(saveAsImage==T){
+    flextable::save_as_image(ft3, path = paste0(pathToSaveTableFile,"Nreg",Sys.Date(), fileNameSuffix ,".png" ))
+  }
+
+  if(saveAsDoc==T){
+    flextable::save_as_docx("Nreg2019" = ft3, path = paste0(pathToSaveTableFile,"Nreg",Sys.Date(), fileNameSuffix,".docx" ))
+
+  }
+
+  return(list(RegData_NatVal_overview, ft3))
 
 }

@@ -4,7 +4,12 @@
 \alias{make_table_DQ_regCount}
 \title{Make data table with count (n) of registrations (regCount) at the different hospitals and nationally}
 \usage{
-make_table_DQ_regCount(RegData = myInData)
+make_table_DQ_regCount(
+  RegData = myInData,
+  saveAsImage = F,
+  saveAsDoc = F,
+  pathToSaveTableFile = "F:/"
+)
 }
 \arguments{
 \item{RegData}{myInData. Function works with natval data.}

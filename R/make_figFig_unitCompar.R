@@ -17,6 +17,7 @@
 #' @examples
 
 make_figFig_unitCompar <- function(
+
   my_proptable_hospitals,
   showErrorBar = FALSE,
   showErrorBar2 = FALSE,
@@ -25,7 +26,11 @@ make_figFig_unitCompar <- function(
   my_y_lab = "Andel (%)", #default "Andel (%), unless you change it
   my_title = '',#default empty (""), unless you change it
   YellowGoal = 'mean',  #1)'' 2)'mean' or 3) for instance '60'
-  GreenGoal = 'mean')
+  GreenGoal = 'mean',
+  sort_on_comparison_group_instead = FALSE,
+  fig_type = ''
+  )
+
   {
   #Theme:
   if(!exists("skriftstorleik")) # Skriftstørrelse bør være definert
@@ -53,6 +58,34 @@ make_figFig_unitCompar <- function(
                   panel.grid.minor.y = ggplot2::element_blank())
 
   my_color = "lightblue"
+
+
+  # SORTING... if want change which group is comparison (and sorted on):
+  if(sort_on_comparison_group_instead == TRUE){
+    #SORT:
+    #remember that plot will sort by AvdNavn ,so we must reorder this factor
+    my_proptable_hospitals$AvdNavn <-
+      my_proptable_hospitals$AvdNavn %>%
+      forcats::fct_reorder(my_proptable_hospitals$n.compare,
+                           .desc=F) %>%
+      forcats::fct_reorder(my_proptable_hospitals$perc.compare,
+                           .desc=F)%>%#T for the other order
+      forcats::fct_reorder(!is.na(my_proptable_hospitals$n),
+                           .desc=T)%>%
+      forcats::fct_reorder(!is.na(my_proptable_hospitals$n.compare),
+                           .desc=F)
+
+
+    #also sort table (but I think this is just for visual inspection, since
+    #plot will sort on factor level order of AvdNavn either way)
+    my_proptable_hospitals <- my_proptable_hospitals%>%
+      dplyr::arrange(n.compare) %>%
+      dplyr::arrange(perc.compare)
+
+    # my_proptable_hospitals <- my_proptable_hospitals %>%
+    #    arrange(!is.na(perc.compare), perc.compare, n.compare)
+    #
+   }
 
   #Add confidence intervals to table (formula for proportions used)
   my_proptable_hospitals <- my_proptable_hospitals %>%
@@ -84,9 +117,117 @@ make_figFig_unitCompar <- function(
            CILower2 = case_when(n.compare<5 ~ NaN,
                                TRUE ~ CILower2))
 
-  #make additon proptable for specified year to visualise as point
-  #my_proptable_hospitals_year_x <- my_proptable_hospitals_year_x
+  #make longer proptable to visualize bars side by side:
+  # my_proptable_hospitals_longer <-
+  #   tidyr::pivot_longer(my_proptable_hospitals,
+  #                       cols=c('perc', 'perc.compare','n', 'n.compare'),
+  #                       names_to='variable_perc',
+  #                       values_to="value_perc") %>%
 
+  # my_proptable_hospitals_longe <-
+  #   tidyr::pivot_longer(tab3,
+  #                       cols=c('perc', 'perc.compare','n', 'n.compare'),
+  #                       names_to=c('variable'),
+  #                       values_to="value")
+
+
+
+  if(fig_type == "comparison_with_two_bars"){
+
+  #TABLE FOR FIGTYPE 2:
+  #make a longer table which where perc and perc.compare is gathered in one
+  #variable, SO THAT WE CAN USE THIS TO MAKE A GROUPED BARPLOT with two bars for
+  #each hospital: https://stackoverflow.com/questions/42820677/ggplot-bar-plot-side-by-side-using-two-variables
+  my_proptable_hospitals_longer <-
+    tidyr::pivot_longer(my_proptable_hospitals,#my_proptable_hospitals,
+                        cols=c('perc.compare','perc'),
+                        names_to=c('variable'),
+                        values_to="value")%>%
+    #some mutates to remove duplicate values/values not belonging in variable:
+    dplyr::mutate(n = dplyr::case_when(variable == "perc.compare" ~ NA_integer_,
+                                       TRUE ~ n))%>%
+    dplyr::mutate(n.compare = dplyr::case_when(variable == "perc" ~ NA_integer_,
+                                               TRUE ~ n.compare))%>%
+    #create only one pari of CI variables :
+    dplyr::mutate(CILower_percANDperc.compare =
+                    dplyr::case_when(variable == "perc.compare" ~ CILower2,
+                                     variable == "perc" ~ CILower,
+                                     TRUE ~ NA_real_))%>%
+    dplyr::mutate(CIUpper_percANDperc.compare =
+                    dplyr::case_when(variable == "perc.compare" ~ CIUpper2,
+                                     variable == "perc" ~ CIUpper,
+                                     TRUE ~ NA_real_))%>%
+    #remove old/not used CI variables:
+    select(-c("CILower","CILower2","CIUpper","CIUpper2"))
+
+
+
+  #FIG FOR FIGTYPE 2  (columns with point for comparison)
+  fig <-
+    ggplot2::ggplot(my_proptable_hospitals_longer,
+                    mapping=ggplot2::aes(x = AvdNavn,
+                                         y=value,
+                                         fill= variable))+
+    #The bars:
+    ggplot2::geom_bar(
+                                             #factor(ifelse(stringr::str_detect(
+                                             #my_proptable_hospitals_longer$AvdNavn,
+                                             #"Nasjonal"),
+                                             #c(0,1),#"lightgrey",
+                                             #variable))),
+                                             #variable),#,width=1/3
+                       position = "dodge",
+                       stat =  "identity")+
+    ggplot2::labs(y=my_y_lab, #my_proptable_hospitals$my_y_lab,#
+                  title = my_title, #)+#colnames(my_proptable_hospitals[,4]))+
+                  fill="dsafdasf")+
+    #my_figText$title)+
+    ggplot2::scale_y_continuous(
+      limits = c(min(my_proptable_hospitals_longer$CILower_percANDperc.compare),max(my_proptable_hospitals_longer$CIUpper_percANDperc.compare)), #c(0,105)
+      expand = ggplot2::expansion(mult=c(0,0.1)),breaks = seq(0,100,10))+
+    #above, in "expansion use "add" instead of "mult" to make expansion
+    #absolute rather than relative(mult for multiplication)
+    ggplot2::xlab(NULL)+
+
+    {if(showErrorBar == TRUE)
+      ggplot2::geom_errorbar(
+        ggplot2::aes(#x=AvdNavn,
+                     ymin=CILower_percANDperc.compare,  #sd(my_proptable_hospitals$perc),
+                     ymax=CIUpper_percANDperc.compare)
+        #sd(my_proptable_hospitals$perc))
+        ,colour= 'black',alpha=0.6, size=0.3, width=0.2,
+        position = position_dodge(0.9))
+      }+
+    ggplot2::geom_text(
+      ggplot2::aes(#x = AvdNavn,
+                   y= 1,
+                   label= factor(ifelse(value == 0.00000123,'',paste0(round(value,1)))),
+                   #ifelse statement to remove 0% values (if you want with "%", use:
+                   #paste0(round(perc,1),'%')
+                   #to map percentace label at top of bar use "y= perc"
+                   hjust='left'),
+      alpha=0.5,
+      position = position_dodge(0.9))+
+
+    ggplot2::geom_text(
+      ggplot2::aes(#x = AvdNavn,
+                   y= 1,
+                   label= factor(ifelse(n < 5 |n.compare <5,"N<5",'')), #ifelse statement to add
+                   #text saying n is lower than 5
+                   hjust='left'),
+      alpha=0.5,
+      position = position_dodge(0.9))+
+
+    tema +
+    fjern_y +
+    ggplot2::theme(axis.ticks.y = ggplot2::element_blank(),
+                   legend.position = "top")+
+    ggplot2::coord_flip()
+
+  }
+
+
+  #if figtype is comparison of bar with point:
   fig <-
     ggplot2::ggplot(my_proptable_hospitals)+
     #The bars:
@@ -96,6 +237,13 @@ make_figFig_unitCompar <- function(
                "Nasjonal"),
                "lightgrey",
                my_color))) +
+    #
+    # ggplot2::geom_col(mapping=ggplot2::aes(x = AvdNavn, y=perc.compare),#,width=1/3
+    #                   fill=factor(ifelse(stringr::str_detect(
+    #                     my_proptable_hospitals$AvdNavn,
+    #                     "Nasjonal"),
+    #                     "lightgrey",
+    #                     my_color)))+
 
     ggplot2::labs(y=my_y_lab, #my_proptable_hospitals$my_y_lab,#
          title = my_title)+#colnames(my_proptable_hospitals[,4]))+

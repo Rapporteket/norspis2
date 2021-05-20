@@ -27,15 +27,17 @@ make_figFig_unitCompar <- function(
   my_title = '',#default empty (""), unless you change it
   YellowGoal = 'mean',  #1)'' 2)'mean' or 3) for instance '60'
   GreenGoal = 'mean',
-  sort_on_comparison_group_instead = FALSE,
-  fig_type = ''
+  sort_on_comparison_group_instead = TRUE,
+  letter_size = 12,
+
+  fig_type_comparison = 'two_bars'#'two_bars', 'bar_point'
   )
 
   {
   #Theme:
   if(!exists("skriftstorleik")) # Skriftstørrelse bør være definert
                                 #i kvarrtalsrapportfil
-    skriftstorleik = 17
+    skriftstorleik = letter_size
   tema = ggplot2::theme_light(base_size=skriftstorleik)
   tema$panel.grid.minor$colour="white"
   tema$strip.background$fill="#f3f1ee"
@@ -132,7 +134,7 @@ make_figFig_unitCompar <- function(
 
 
 
-  if(fig_type == "comparison_with_two_bars"){
+  if(fig_type_comparison == "two_bars"){
 
   #TABLE FOR FIGTYPE 2:
   #make a longer table which where perc and perc.compare is gathered in one
@@ -161,7 +163,6 @@ make_figFig_unitCompar <- function(
     select(-c("CILower","CILower2","CIUpper","CIUpper2"))
 
 
-
   #FIG FOR FIGTYPE 2  (columns with point for comparison)
   fig <-
     ggplot2::ggplot(my_proptable_hospitals_longer,
@@ -178,9 +179,13 @@ make_figFig_unitCompar <- function(
                                              #variable),#,width=1/3
                        position = "dodge",
                        stat =  "identity")+
+    ggplot2::scale_fill_manual(values = c(perc="#e4e0da",
+                                          perc.compare = "lightblue"),
+                               labels = c("T.o.m. 2019", "2020"))+ #"#f3f1ee"
+
     ggplot2::labs(y=my_y_lab, #my_proptable_hospitals$my_y_lab,#
                   title = my_title, #)+#colnames(my_proptable_hospitals[,4]))+
-                  fill="dsafdasf")+
+                  fill=" ")+
     #my_figText$title)+
     ggplot2::scale_y_continuous(
       limits = c(min(my_proptable_hospitals_longer$CILower_percANDperc.compare),max(my_proptable_hospitals_longer$CIUpper_percANDperc.compare)), #c(0,105)
@@ -196,7 +201,7 @@ make_figFig_unitCompar <- function(
                      ymax=CIUpper_percANDperc.compare)
         #sd(my_proptable_hospitals$perc))
         ,colour= 'black',alpha=0.6, size=0.3, width=0.2,
-        position = position_dodge(0.9))
+        position = ggplot2::position_dodge(0.9))
       }+
     ggplot2::geom_text(
       ggplot2::aes(#x = AvdNavn,
@@ -207,7 +212,7 @@ make_figFig_unitCompar <- function(
                    #to map percentace label at top of bar use "y= perc"
                    hjust='left'),
       alpha=0.5,
-      position = position_dodge(0.9))+
+      position = ggplot2::position_dodge(0.9))+
 
     ggplot2::geom_text(
       ggplot2::aes(#x = AvdNavn,
@@ -216,7 +221,7 @@ make_figFig_unitCompar <- function(
                    #text saying n is lower than 5
                    hjust='left'),
       alpha=0.5,
-      position = position_dodge(0.9))+
+      position = ggplot2::position_dodge(0.9))+
 
     tema +
     fjern_y +
@@ -224,10 +229,11 @@ make_figFig_unitCompar <- function(
                    legend.position = "top")+
     ggplot2::coord_flip()
 
+
+
   }
 
-
-  #if figtype is comparison of bar with point:
+  if(fig_type_comparison == "bar_point"){ #if figtype is comparison of bar with point:
   fig <-
     ggplot2::ggplot(my_proptable_hospitals)+
     #The bars:
@@ -306,7 +312,7 @@ make_figFig_unitCompar <- function(
                                                           #point when n<5
                    ),
       size = 5,
-      color= "#084594")}+
+      color= "fig.height = 7")}+
 
     # geom_text(
     #   aes(x = AvdNavn, y= 100,
@@ -376,6 +382,7 @@ make_figFig_unitCompar <- function(
           linetype=1) #
     }
 
+  }
   }
 
 

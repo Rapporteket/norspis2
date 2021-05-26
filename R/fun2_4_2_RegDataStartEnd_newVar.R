@@ -151,7 +151,7 @@ fun2_4_2_RegDataStartEnd_newVar <- function(myInData){
   RegDataStartEnd <- RegDataStartEnd %>%
     mutate(MedBMI_start18.5_slutt18.5_miss = case_when(
       !is.na(MedBMI_start18.5_slutt18.5)  ~ "valid",#valid
-      is.na(MedBMI_withIsoBMIBGSvalues.y) & MedBMI_withIsoBMIBGSvalues.x < 18.5  ~ NA_character_,
+      (is.na(MedBMI_withIsoBMIBGSvalues.y) & MedBMI_withIsoBMIBGSvalues.x < 18.5)  ~ NA_character_,
       TRUE ~ "null"))
   # ))
   # MedBMI_ < 18.5 & !is.na(MedBMI.y) & MedBMI.y >=18.5 ~ "teller",

@@ -4,7 +4,13 @@
 \alias{make_table_DQ_regCountYearly}
 \title{Make table with number of registrations per department per year}
 \usage{
-make_table_DQ_regCountYearly(RegDataNatValFiltered)
+make_table_DQ_regCountYearly(
+  RegDataNatValFiltered,
+  saveAsImage = F,
+  saveAsDoc = F,
+  pathToSaveTableFile = "F:/",
+  fileNameSuffix = "_2021"
+)
 }
 \arguments{
 \item{RegDataNatVal}{data with own rows representing national values}

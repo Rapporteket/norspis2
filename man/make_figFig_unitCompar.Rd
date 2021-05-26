@@ -12,7 +12,10 @@ make_figFig_unitCompar(
   my_y_lab = "Andel (\%)",
   my_title = "",
   YellowGoal = "mean",
-  GreenGoal = "mean"
+  GreenGoal = "mean",
+  sort_on_comparison_group_instead = TRUE,
+  letter_size = 12,
+  fig_type_comparison = "two_bars"
 )
 }
 \arguments{

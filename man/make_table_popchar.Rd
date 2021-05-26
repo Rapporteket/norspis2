@@ -4,7 +4,12 @@
 \alias{make_table_popchar}
 \title{make_table_popchar}
 \usage{
-make_table_popchar(RegData = myFilteredData, varsInTab = myvarString)
+make_table_popchar(
+  RegData = myFilteredData,
+  varsInTab = myvarString,
+  comparison = FALSE,
+  RegDataComparison
+)
 }
 \arguments{
 \item{varsInTab}{}

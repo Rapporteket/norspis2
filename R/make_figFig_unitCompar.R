@@ -206,14 +206,23 @@ make_figFig_unitCompar <- function(
     ggplot2::geom_text(
       ggplot2::aes(#x = AvdNavn,
                    y= 1,
-                   label= factor(ifelse(value == 0.00000123,'',paste0(round(value,1)))),
+                   label= factor(ifelse(value == 0.00000123,'',paste0(round(value,1), " (n=", ifelse(!is.na(n),n,n.compare), ")"))),
                    #ifelse statement to remove 0% values (if you want with "%", use:
                    #paste0(round(perc,1),'%')
                    #to map percentace label at top of bar use "y= perc"
                    hjust='left'),
       alpha=0.5,
       position = ggplot2::position_dodge(0.9))+
-
+    # ggplot2::geom_text(
+    #   ggplot2::aes(#x = AvdNavn,
+    #                y= 1,
+    #                label= factor(ifelse(value == 0.00000123,'',n)),
+    #                #ifelse statement to remove 0% values (if you want with "%", use:
+    #                #paste0(round(perc,1),'%')
+    #                #to map percentace label at top of bar use "y= perc"
+    #                hjust='left'),
+    #   alpha=0.5,
+    #   position = ggplot2::position_dodge(0.9))+
     ggplot2::geom_text(
       ggplot2::aes(#x = AvdNavn,
                    y= 1,

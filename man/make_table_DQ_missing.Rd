@@ -5,14 +5,18 @@
 \title{Make data quality table with proportions of missing values for chosen variables.}
 \usage{
 make_table_DQ_missing(
-  RegData = myFilteredData,
-  varsInMissTab = myvarStringMiss
+  RegData,
+  varsInMissTab,
+  comparison = FALSE,
+  RegDataComparison
 )
 }
 \arguments{
 \item{RegData}{myFilteredData}
 
 \item{varsInMissTab}{myvarStringMiss <- myvarStringMiss <- c(quo(variablename_miss), quo(variablename_missStart))}
+
+\item{RegDataComparison}{}
 }
 \value{
 output_missingTibble

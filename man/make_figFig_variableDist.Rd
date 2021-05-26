@@ -4,7 +4,12 @@
 \alias{make_figFig_variableDist}
 \title{Function to make simple figure with distribution of a variable's values (nationally)}
 \usage{
-make_figFig_variableDist(my_proptable, mytitle)
+make_figFig_variableDist(
+  my_proptable,
+  mytitle,
+  comparison = FALSE,
+  my_proptable_compare
+)
 }
 \arguments{
 \item{my_proptable}{table from make_figTable_variableCompar()}

@@ -2,7 +2,8 @@
 % Please edit documentation in R/make_table_DQ_regCount.R
 \name{make_table_DQ_regCount}
 \alias{make_table_DQ_regCount}
-\title{Make data table with count (n) of registrations (regCount) at the different hospitals and nationally}
+\title{Make data table with count (n) of registrations (regCount) at the different hospitals and nationally
+(both start and end registrations is counted)}
 \usage{
 make_table_DQ_regCount(
   RegData = myInData,
@@ -18,5 +19,9 @@ make_table_DQ_regCount(
 output (table)
 }
 \description{
+The output here is a table and a flextable, and in addition you can save the
+flextable as a word-document and or image at to a chosen path.
+}
+\details{
 Note: This function's name when writing aarsrapport 2019 (in 2020) was: make42_nregtab_hospitals
 }

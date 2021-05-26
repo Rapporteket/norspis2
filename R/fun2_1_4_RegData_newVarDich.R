@@ -109,96 +109,112 @@ fun2_1_4_RegData_newVarDich <- function(myInData) {
     TRUE ~ "null"))
 
 
-
-  #### Mads: please check edits below #########################################
-
-  #PT03Utfallsvurd_miss
-  myInData <- myInData %>%
-    dplyr::mutate(PT03Utfallsvurd_miss =
-      dplyr::case_when(
-        #just keeping numeric values as is
-        PT03Utfallsvurd %in% c(1, 2, 3, 4, 5) ~ PT03Utfallsvurd,
-        PasientAlder >= 16 &
-          # 9 missing is coded as missing
-          PT03Utfallsvurd == 9 &
-          RegRegtype %in% c(5, 6) |
-          is.na(PT03Utfallsvurd) ~ NA_integer_,
-        TRUE ~ NA_integer_
-      )
-    )
   #PO09Utbytte_miss
   myInData <- myInData %>%
     dplyr::mutate(PO09Utbytte_miss =
       dplyr::case_when(
-        PO09Utbytte %in% c(0, 1, 2, 3, 4) ~ PO09Utbytte,
-        PO09Utbytte %in% c(9, 99) &
-          is.na(PO09Utbytte) &
-          # 9 and 99 ("ikke aktuelt", "ikke besvart") is also coded as missing
-          RegRegtype %in% c(5, 6)  ~ NA_integer_,
-        TRUE ~ NA_integer_
+        PO09Utbytte %in% c(0, 1, 2, 3, 4) ~ as.character(PO09Utbytte),
+        #9 and 99 ("ikke aktuelt", "ikke besvart") is also coded as missing:
+        (PO09Utbytte %in% c(9, 99) |is.na(PO09Utbytte)) &
+          RegRegtype %in% c(5, 6)  ~ NA_character_,
+        TRUE ~ "null"
       )
     )
   #PasOppTilfredshet_miss
   myInData <- myInData %>%
     dplyr::mutate(PasOppTilfredshet_miss =
       dplyr::case_when(
-        !is.na(PasOppTilfredshet) ~ PasOppTilfredshet,
-        is.na(PasOppTilfredshet) & RegRegtype %in% c(5, 6)  ~ NA_real_,
-        TRUE ~ NA_real_
+        !is.na(PasOppTilfredshet) ~ as.character(PasOppTilfredshet),
+        (is.na(PasOppTilfredshet) & RegRegtype %in% c(5, 6))  ~ NA_character_,
+        TRUE ~ "null"
       )
     )
   #PasOppErfaring_miss
   myInData <- myInData %>%
     dplyr::mutate(PasOppErfaring_miss =
       dplyr::case_when(
-        !is.na(PasOppErfaring) ~ PasOppErfaring,
-        is.na(PasOppErfaring) & RegRegtype %in% c(5, 6)  ~ NA_real_,
-        TRUE ~ NA_real_
+        !is.na(PasOppErfaring) ~ as.character(PasOppErfaring),
+        (is.na(PasOppErfaring) & RegRegtype %in% c(5, 6))  ~ NA_character_,
+        TRUE ~ "null"
       )
     )
   #PasOppTilgjengelighet_miss
   myInData <- myInData %>%
     dplyr::mutate(PasOppTilgjengelighet_miss =
       dplyr::case_when(
-        !is.na(PasOppTilgjengelighet) ~ PasOppTilgjengelighet,
-        is.na(PasOppTilgjengelighet) & RegRegtype %in% c(5, 6)  ~ NA_real_,
-        TRUE ~ NA_real_
+        !is.na(PasOppTilgjengelighet) ~ as.character(PasOppTilgjengelighet),
+        (is.na(PasOppTilgjengelighet) & RegRegtype %in% c(5, 6))  ~ NA_character_,
+        TRUE ~ "null"
       )
     )
   #PasOppSikkerhet_miss
   myInData <- myInData %>%
     dplyr::mutate(PasOppSikkerhet_miss =
       dplyr::case_when(
-        !is.na(PasOppSikkerhet) ~ PasOppSikkerhet,
-        is.na(PasOppSikkerhet) & RegRegtype %in% c(5, 6)  ~ NA_real_,
-        TRUE ~ NA_real_
+        !is.na(PasOppSikkerhet) ~ as.character(PasOppSikkerhet),
+        is.na(PasOppSikkerhet) & RegRegtype %in% c(5, 6)  ~ NA_character_,
+        TRUE ~ "null"
       )
     )
 
-  #### Mads: please check edits abow ##########################################
-
-
 
   #PT01OnsketInvolv_miss
-  myInData <- myInData %>% dplyr::mutate(PT01OnsketInvolv_miss = dplyr::case_when(
-    PT01OnsketInvolv %in% c(0,1) ~ PT01OnsketInvolv, #just keeping numeric values
-    PasientAlder >= 16 & PT01OnsketInvolv == 9 & is.na(PT01OnsketInvolv) & RegRegtype %in% c(5,6)  ~ NA_character_,
-    TRUE ~ "null"))
+  myInData <- myInData %>%
+    dplyr::mutate(PT01OnsketInvolv_miss =
+                    dplyr::case_when(
+                      PT01OnsketInvolv %in% c(0,1) ~ PT01OnsketInvolv,#just keeping numeric values
+                      PasientAlder >= 16 &
+                        (PT01OnsketInvolv == 9 | is.na(PT01OnsketInvolv)) &
+                        RegRegtype %in% c(5,6)  ~ NA_character_,
+                      TRUE ~ "null"))
+
   #PT02BleIvolv_miss
-  myInData <- myInData %>% dplyr::mutate(PT02BleInvolv_miss = dplyr::case_when(
-    PT02BleInvolv %in% c(0,1) ~ PT02BleInvolv, #just keeping numeric values
-    PasientAlder  >= 16 & PT02BleInvolv %in% c(9,"null") & RegRegtype %in% c(5,6)  ~ NA_character_,
-    TRUE ~ "null"))
+  myInData <- myInData %>%
+    dplyr::mutate(PT02BleInvolv_miss =
+                    dplyr::case_when(
+                      PT02BleInvolv %in% c(0,1) ~ PT02BleInvolv, #just keeping numeric values
+                      PasientAlder  >= 16 &
+                        (PT02BleInvolv == 9 | is.na(PT02BleInvolv)) &
+                        RegRegtype %in% c(5,6)  ~ NA_character_,
+                      TRUE ~ "null"))
+
+  #PT03Utfallsvurd_miss
+  myInData <- myInData %>%
+    dplyr::mutate(PT03Utfallsvurd_miss =
+                    dplyr::case_when(
+                      #just keeping numeric values as is
+                      PT03Utfallsvurd %in% c(1, 2, 3, 4, 5) ~ as.character(PT03Utfallsvurd),
+                      PasientAlder >= 16 &
+                        # 9 missing is coded as missing
+                        (PT03Utfallsvurd == 9 | is.na(PT03Utfallsvurd)) &
+                        RegRegtype %in% c(5, 6)  ~ NA_character_,
+                      TRUE ~ "null"  #NA_integer_
+                    )
+  )
+
   #PT04KontaktBrukerorg_miss
-  myInData <- myInData %>% dplyr::mutate(PT04KontaktBrukerorg_miss = dplyr::case_when(
-    PT04KontaktBrukerorg %in% c(0,1) ~ PT04KontaktBrukerorg, #just keeping numeric values
-    PasientAlder  >= 16 & PT04KontaktBrukerorg %in% c(9,"null") & RegRegtype %in% c(5,6)  ~ NA_character_,
-    TRUE ~ "null"))
+  myInData <- myInData %>%
+    dplyr::mutate(PT04KontaktBrukerorg_miss =
+                    dplyr::case_when(
+                      PT04KontaktBrukerorg %in% c(0,1) ~ PT04KontaktBrukerorg, #just keeping numeric values
+                      PasientAlder  >= 16 &
+                        (PT04KontaktBrukerorg == 9 | is.na(PT04KontaktBrukerorg)) &
+                        RegRegtype %in% c(5,6) ~ NA_character_,
+                      TRUE ~ "null"
+                    )
+    )
+
   #PT05OrientertBrukerorg_miss
-  myInData <- myInData %>% dplyr::mutate(PT05OrientertBrukerorg_miss = dplyr::case_when(
-    PT05OrientertBrukerorg %in% c(0,1) ~ PT05OrientertBrukerorg, #just keeping numeric values
-    PasientAlder  >= 16 & PT05OrientertBrukerorg %in% c(9,"null") & RegRegtype %in% c(5,6)  ~ NA_character_,
-    TRUE ~ "null"))
+  myInData <- myInData %>%
+    dplyr::mutate(PT05OrientertBrukerorg_miss =
+                    dplyr::case_when(
+                      PT05OrientertBrukerorg %in% c(0,1) ~ PT05OrientertBrukerorg, #just keeping numeric values
+                      PasientAlder  >= 16 &
+                        (PT05OrientertBrukerorg == 9 | is.na(PT05OrientertBrukerorg)) &
+                        RegRegtype %in% c(5,6) ~ NA_character_,
+                      TRUE ~ "null"
+                    )
+    )
 
   ##Other dicotomous variables
   #PO10Pasientsikkerhet...Values in raw data: (0,1,2,3,4,9,99,'null)

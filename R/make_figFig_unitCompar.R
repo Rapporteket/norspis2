@@ -28,6 +28,7 @@ make_figFig_unitCompar <- function(
   YellowGoal = 'mean',  #1)'' 2)'mean' or 3) for instance '60'
   GreenGoal = 'mean',
   sort_on_comparison_group_instead = TRUE,
+  use_name_without_n = TRUE,
   letter_size = 12,
 
   fig_type_comparison = 'two_bars'#'two_bars', 'bar_point'
@@ -61,6 +62,10 @@ make_figFig_unitCompar <- function(
 
   my_color = "lightblue"
 
+  if(use_name_without_n == TRUE){
+    #(in make_figTable_.. , we made variables both with and without n)
+    my_proptable_hospitals$AvdNavn <- my_proptable_hospitals$AvdNavnNavn
+  }
 
   # SORTING... if want change which group is comparison (and sorted on):
   if(sort_on_comparison_group_instead == TRUE){
@@ -189,7 +194,9 @@ make_figFig_unitCompar <- function(
     #my_figText$title)+
     ggplot2::scale_y_continuous(
       limits = c(min(my_proptable_hospitals_longer$CILower_percANDperc.compare),max(my_proptable_hospitals_longer$CIUpper_percANDperc.compare)), #c(0,105)
-      expand = ggplot2::expansion(mult=c(0,0.1)),breaks = seq(0,100,10))+
+      expand = ggplot2::expansion(mult=c(0,0.1)),breaks = seq(0,100,10)
+      #,labels = function(x) format(x, big.mark = ",", scientific = FALSE)
+      )+
     #above, in "expansion use "add" instead of "mult" to make expansion
     #absolute rather than relative(mult for multiplication)
     ggplot2::xlab(NULL)+
@@ -226,7 +233,7 @@ make_figFig_unitCompar <- function(
     ggplot2::geom_text(
       ggplot2::aes(#x = AvdNavn,
                    y= 1,
-                   label= factor(ifelse(n < 5 |n.compare <5,"N<5",'')), #ifelse statement to add
+                   label= factor(ifelse(n < 5 |n.compare <5,"n<5",'')), #ifelse statement to add
                    #text saying n is lower than 5
                    hjust='left'),
       alpha=0.5,
@@ -265,7 +272,9 @@ make_figFig_unitCompar <- function(
                            #my_figText$title)+
     ggplot2::scale_y_continuous(
       limits = c(min(my_proptable_hospitals$CILower),max(my_proptable_hospitals$CIUpper)), #c(0,105)
-      expand = ggplot2::expansion(mult=c(0,0.1)),breaks = seq(0,100,10))+
+      expand = ggplot2::expansion(mult=c(0,0.1)),breaks = seq(0,100,10)
+      #,labels = function(x) format(x, big.mark = ",", scientific = FALSE)
+      )+
       #above, in "expansion use "add" instead of "mult" to make expansion
       #absolute rather than relative(mult for multiplication)
     ggplot2::xlab(NULL)+
@@ -296,7 +305,7 @@ make_figFig_unitCompar <- function(
 
     ggplot2::geom_text(
       ggplot2::aes(x = AvdNavn, y= 1,
-          label= factor(ifelse(n < 5,"N<5",'')), #ifelse statement to add
+          label= factor(ifelse(n < 5,"n<5",'')), #ifelse statement to add
                                                 #text saying n is lower than 5
           hjust='left'),
       alpha=0.5)+

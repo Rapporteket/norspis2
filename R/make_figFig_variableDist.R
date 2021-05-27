@@ -52,7 +52,7 @@ if(comparison == FALSE){
              fill=my_color) +
     ggplot2::geom_text(
       ggplot2::aes(x = cat, y= perc*100,
-          label=scales::percent(perc), #to map percentace label at top of bar use "y= perc"
+          label=scales::percent(perc, decimal.mark = ",", accuracy = 0.1), #to map percentace label at top of bar use "y= perc"
           vjust=-0.5),
       alpha=0.5) +
     ggplot2::geom_text(#to map percentace label at bar
@@ -67,7 +67,9 @@ if(comparison == FALSE){
 
     ggplot2::scale_y_continuous(
       limits = c(0,max(my_proptable$perc*100)),
-      expand = ggplot2::expansion(mult=c(0,0.1)),breaks = seq(0,100,10))+
+      expand = ggplot2::expansion(mult=c(0,0.1)),breaks = seq(0,100,10)
+      #,labels = function(x) format(x, big.mark = ",", scientific = FALSE)
+      )+
     ggplot2::labs(y="Andel pasienter(%)")+
     ggplot2::xlab(NULL)+
     tema +
@@ -142,14 +144,22 @@ if(comparison == TRUE){
                                labels = c("T.o.m. 2019", "2020"))+ #"#f3f1ee"
     ggplot2::geom_text(
       ggplot2::aes(y= value*100,
-                   label=scales::percent(value), #to map percentace label at top of bar use "y= perc"
+                   label=scales::percent(value,
+                                         decimal.mark = ",",
+                                         accuracy = 0.1), #to map percentace
+                                                          #label at top of bar
+                                                          #use "y= perc"
                    vjust=-0.5),
       alpha=0.5,
-      position = ggplot2::position_dodge(0.9) #to place N text at each bar (not each bar pair)
+      position = ggplot2::position_dodge(0.9) #to place N text at each bar
+                                              #(not each bar pair)
     ) +
-    ggplot2::geom_text(#to map percentace label at bar
-      ggplot2::aes( y= 0, # ta map on TOP of bar - use
-                   label=paste0("(N=",n, ")")),
+    ggplot2::geom_text(#to map n at root of bar
+      ggplot2::aes( y= 0,
+                   label=factor(ifelse(n <= 3,'', #ifelse to prevent overlapping
+                                                  #text with perc text
+                                       paste0("(n=",n, ")")))
+                   ),
       alpha=0.5,
       position = ggplot2::position_dodge(0.9), #to place N text at each bar (not each bar pair)
       vjust=-0.5) +
@@ -170,7 +180,9 @@ if(comparison == TRUE){
 
     ggplot2::scale_y_continuous(
       limits = c(0,max(my_proptable_compare_merged_longer$value*100)),
-      expand = ggplot2::expansion(mult=c(0,0.1)),breaks = seq(0,100,10))+
+      expand = ggplot2::expansion(mult=c(0,0.1)),breaks = seq(0,100,10)
+      #,labels = function(x) format(x, big.mark = ",", scientific = FALSE)
+      )+
     ggplot2::labs(y="Andel pasienter(%)")+
     ggplot2::xlab(NULL)+
     tema +

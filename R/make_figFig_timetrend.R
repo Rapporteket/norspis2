@@ -1,14 +1,26 @@
-#' Title
+#' Plot time trends of quality indicators
 #'
-#' @param variable01
+#' This function outputs figure and table (flextable) of content in figure.
+#' You need the input variable must be a 0-1 variable. If variable is not 0-1,
+#' but ranges from 0 to 100, use the argument variable_type_0_100 = TRUE
+#'
+#'
 #' @param add_fill Add fill under line
+#' @param my_data
+#' @param do_facet_wrap
+#' @param data_type Choices: "start-end" and "regular"
+#' @param variable_type_0_100
+#' @param variable01
 #'
 #' @return
 #' @export
 #'
 #' @examples
 
-make_figFig_timetrend <- function(variable01,
+make_figFig_timetrend <- function(my_data,
+                                  data_type = "start_end",
+                                  variable01,
+                                  variable_type_0_100 = FALSE,
                                   #= c(quo(EDEQ60GlobalScore_CHANGE_PROP))
                                   add_fill = F,
                                   do_facet_wrap = TRUE
@@ -19,8 +31,9 @@ make_figFig_timetrend <- function(variable01,
   variable01 <- quo({{variable01}})
 
   #filter data for e.g. 2012-2019
+  if(data_type == "start-end"){
   RegDataStartEndNatValFiltered <- norspis2::fun3_2_filter_RegDataStartEnd(
-    RegDataStartEnd = DL$RegDataStartEndNatVal2,
+    RegDataStartEnd = my_data,
     BasisRegStatus.x = c(1),#c(0,1,-1),
     BasisRegStatus.y = c(1),#c(0,1,-1,NA)
     RegRegType.x = c(0,1,2,3,4,5,6,98,99),
@@ -33,6 +46,29 @@ make_figFig_timetrend <- function(variable01,
     ageTo.x = 200,
     ageFrom.y = 0,
     ageTo.y = 200)
+  }
+
+  #quick fix: if data is regular data frame we just use the
+  #filter function for such data and call it the same as above
+  if(data_type == "regular"){
+  RegDataStartEndNatValFiltered <- norspis2::fun3_1_filter_RegData(
+    RegData = my_data,
+    regStatus = c(1),#c(0,1,-1),
+    regType = c(5,6,98,99,NA),
+    dateFrom = "2012-01-01",
+    dateTo = "2020-12-31",
+    ageFrom = 0,
+    ageTo = 200)%>%
+    #quick fix - just to make this work for now:
+    rename("AvdKategori.x" = "AvdKategori",
+           "Year.y" = "Year")
+  }
+
+  #quick fix, when variable in is 0-100 instead of 0-1 (we divide by 100)
+  if(variable_type_0_100 == TRUE){
+    RegDataStartEndNatValFiltered <- RegDataStartEndNatValFiltered %>%
+      mutate(!!variable01 := (!!variable01/100))
+  }
 
   # tableToFig <- make_figTable_unitCompar(myIndata_NatVal = RegDataStartEndNatValFiltered,
   #                                        myInvar01 = "EDEQ60GlobalScore_CHANGE_PROP")
@@ -82,6 +118,11 @@ make_figFig_timetrend <- function(variable01,
   RegDataStartEndNatValFiltered_summarized4 <-
     bind_rows(RegDataStartEndNatValFiltered_summarized,
               RegDataStartEndNatValFiltered_summarized2)
+
+  #exclude national from this data
+  RegDataStartEndNatValFiltered_summarized6 <-
+    RegDataStartEndNatValFiltered_summarized4 %>%
+    filter(AvdNavn != "Nasjonal")
 
 
   #Addiditonal data frame that will be used to plot national values over time
@@ -141,14 +182,13 @@ make_figFig_timetrend <- function(variable01,
   #     dplyr::arrange(perc)
 
   plot1 <-
-    ggplot2::ggplot(data = RegDataStartEndNatValFiltered_summarized4,
+    ggplot2::ggplot(data = RegDataStartEndNatValFiltered_summarized6,
                     mapping = aes(x = Year.y,
                                   y = perc,
                                   color = AvdNavn,
-                                  fill = AvdNavn)
-    ) +
+                                  fill = AvdNavn))+
     scale_x_continuous(breaks =
-                         RegDataStartEndNatValFiltered_summarized4$Year.y,
+                         RegDataStartEndNatValFiltered_summarized6$Year.y,
                        #expand = expansion(mult = c(0, .25))
     ) +
     scale_y_continuous(limits = c(0,100),
@@ -208,6 +248,12 @@ make_figFig_timetrend <- function(variable01,
     select(-'AvdKategori.x')%>%
     mutate_if(is.numeric, round, 1)
 
+  #modified
+  perc_mod <-
+    perc %>%
+    mutate_all(as.character)%>%
+    mutate_all(coalesce,"-")#this replaces all NAs with "-"
+
 
 
 
@@ -217,11 +263,53 @@ make_figFig_timetrend <- function(variable01,
     rename('Alle år' =  `<NA>` )%>%
     select(-'AvdKategori.x')
 
+  #modified
+  n_mod <-
+    n %>%
+    #rowwise()%>%
+    #mutate(">=2017" = sum(`2017`, na.rm=TRUE))%>%#sum three first y.
+    #relocate(">=2017",.after="AvdNavn")%>%
+    #select(-c(`2017`))%>%#remove columns
+    mutate_all(as.character)%>%
+    mutate_all(coalesce,"-")%>% #this replaces all NAs with "-"
+    #add brackets:
+    mutate(across(1:(ncol(n)-1), ~ paste0("(",.x ,")")))
 
+
+  #merge perc_mod and n_mod
+  merged <- perc_mod %>%
+    full_join(n_mod, by = intersect(colnames(n_mod), colnames(perc_mod))) %>%
+    #relocate(colnames(end_mod))%>% #correct order of columns
+    group_by(AvdNavn) %>%
+    mutate_all(coalesce,"-")%>% #this replaces all NAs with "-"
+    #summarize_all(na.omit)
+    dplyr::group_by(AvdNavn) %>%
+    #dplyr::mutate(paste(across(), collapse = " "))
+    dplyr::summarise_each(funs(paste(., collapse = " ")))%>%
+    #some - had not been changed to (-) becuase they were created during merging:
+    mutate(across(.fns = ~replace(., . == "-", "(-) -")))%>%
+    mutate(across(.fns = ~replace(., . == "- -", "(-) -")))%>%
+    #To get total last(arrange by an and ordered factor):
+    arrange(factor(AvdNavn, levels = c(unlist(.[.$AvdNavn !="Total",1], use.names=FALSE) , "Total")))#, desc(AvdNavn))
+    #<-gotten to by combining the two following answers:
+    #https://stackoverflow.com/questions/49225596/merge-multiple-rows-into-one-using-r
+    #https://stackoverflow.com/questions/32936226/aggregating-rows-for-multiple-columns-in-r
+
+  #Place national value at bottom...
+    #Without (wo) national values
+    merged_wo_national <- merged %>%
+      subset(AvdNavn !="Nasjonal")
+    #Only national values
+    merged_national <- merged %>%
+      subset(., AvdNavn =="Nasjonal")
+
+  merged_sorted <- rbind(merged_wo_national,merged_national)%>%
+    rename(" " = "AvdNavn")
 
 
   table1 <- flextable::flextable(perc)
   table2 <- flextable::flextable(n)
+  table3 <- flextable::flextable(merged_sorted)
 
 
   RegDataStartEndNatValFiltered_summarized5 <- RegDataStartEndNatValFiltered_summarized4 %>%
@@ -248,6 +336,7 @@ make_figFig_timetrend <- function(variable01,
 
   return(list(table1,
               table2,
+              table3,
               plot1,
               plot2))
 

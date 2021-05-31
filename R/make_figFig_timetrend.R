@@ -186,7 +186,10 @@ make_figFig_timetrend <- function(my_data,
                     mapping = aes(x = Year.y,
                                   y = perc,
                                   color = AvdNavn,
-                                  fill = AvdNavn))+
+                                  fill = AvdNavn)
+                    #,
+                    #show.legend = T
+                    )+
     scale_x_continuous(breaks =
                          RegDataStartEndNatValFiltered_summarized6$Year.y,
                        #expand = expansion(mult = c(0, .25))
@@ -198,15 +201,16 @@ make_figFig_timetrend <- function(my_data,
     scale_color_manual(values = c(Nasjonal="blue",
                                   "lightblue",
                                   "red",
-                                  "darkgrey",
+                                  "brown",
                                   Andre = "gold",
                                   "darkblue",
                                   "black"))+
     {if(add_fill ==T)
       geom_area(aes(fill = AvdNavn, group = AvdNavn),
               alpha = 0.25, position = 'identity',
-              show.legend = T)}+
-    geom_line(aes(linetype = AvdNavn),
+              show.legend = F)}+
+    geom_line(aes(#linetype = AvdNavn
+                  ),
               size = 1,
               show.legend = T)+
     #geom_point(show.legend = T)+
@@ -230,13 +234,16 @@ make_figFig_timetrend <- function(my_data,
     {if(do_facet_wrap == TRUE)
     geom_line(data=RegDataStartEndNatValFiltered_summarized5,
               aes(x = Year.y,
-                  y = perc,
+                  y = perc#,
                   #linetype="dashed"
               ),
               size = 1,
               show.legend = F,
               color = "grey")
-    }
+    }+
+    #https://stackoverflow.com/questions/41225294/avoid-overlapping-x-axis-labels-in-ggplot-facet-grid/53030221:
+    theme(panel.spacing.x = unit(8, "mm"))
+
 
 
 
@@ -310,6 +317,14 @@ make_figFig_timetrend <- function(my_data,
   table1 <- flextable::flextable(perc)
   table2 <- flextable::flextable(n)
   table3 <- flextable::flextable(merged_sorted)
+
+  #fix format on table 3
+  table3 <- flextable::fontsize(table3, size = 8, part ="all")
+  table3 <- flextable::width(table3, j=c(1),width= 2)
+  table3 <- flextable::height_all(table3, height = 0.2, part = "all")
+  table3 <- flextable::hrule(table3, rule = "exact")
+  border_type <- officer::fp_border(color = "black", style = "solid", width = 1.25)
+  table3 <- flextable::hline(table3, i = (nrow(merged_sorted)-1), border = border_type, part = "body")
 
 
   RegDataStartEndNatValFiltered_summarized5 <- RegDataStartEndNatValFiltered_summarized4 %>%

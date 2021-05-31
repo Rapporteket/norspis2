@@ -6,6 +6,13 @@
 #'
 #' @param RegData
 #' @param varsInTab
+#' @param varsNames
+#' @param comparison
+#' @param dont_visualize_nei
+#' @param dont_visualize_mangler
+#' @param mergevalues_2nd_column
+#' @param row_height_ft
+#' @param font_size_ft
 #'
 #' @return
 #' @export
@@ -14,11 +21,22 @@
 
 make_table_popchar <- function(RegData = myFilteredData,
                                varsInTab = myvarString,
+                               varsNames = myvarNames,
                                #comparison:
                                comparison = FALSE,
-                               #RegDataComparison,
+                               #exclude:
                                dont_visualize_nei = FALSE,
-                               dont_visualize_mangler = FALSE
+                               dont_visualize_mangler = FALSE,
+                               mergevalues_2nd_column = TRUE,
+                               #format ft
+                               row_height_ft= 0.25,
+                               font_size_ft=8,
+                               lollipop_max_ft = 10,
+                               lollipop_min_ft = -10
+
+
+
+
                                ) {
 
   output_tibble <- tibble() #just making an empty tibble where output of the "for loop" can go
@@ -81,6 +99,8 @@ make_table_popchar <- function(RegData = myFilteredData,
 
 
   }
+
+
 
   if(comparison == TRUE){
 
@@ -266,7 +286,97 @@ make_table_popchar <- function(RegData = myFilteredData,
       filter(` `!= "Mangler")
   }
 
+
+
+  #CHANGE NAMES OF VARS
+
+  output_tibble_merged_comparison2[,1] <- dplyr::recode(output_tibble_merged_comparison2[,1][[1]],
+                                  !!!varsNames)#"unpacks" vector
+
+
+
+
+  #FORMATTING AS FLEXTABLE
+
+  #uniting first two columns
+  to_ft <- output_tibble_merged_comparison2 %>%
+    tidyr::unite("  ", 1:2, sep =" ") %>%
+    #add empty column for lollipop
+    mutate("    "= "")
+
+  #Just printing a flextable of the output above
+  ft <- flextable::flextable(to_ft)
+  ft <- flextable::autofit(ft)
+  # ft <- flextable::compose(ft, j =5, #minibar
+  #                                  value = flextable::as_paragraph(
+  #                                    flextable::minibar(value = N, max = max(N, na.rm = T),barcol = "grey")
+  #                                  ),
+  #                                  part = "body")
+  ft <- flextable::compose(ft, j =5, #minibar
+                           value = flextable::as_paragraph(
+                             flextable::minibar(value = N, max = max(N, na.rm = T),barcol = "grey")#"lightblue")
+                           ),
+                           part = "body")
+  ft <- flextable::compose(ft, j = 10, #lollipop
+                           value = flextable::as_paragraph(
+                             flextable::lollipop(value = `%.diff`,
+                                                 max = lollipop_max_ft,
+                                                 min = lollipop_min_ft)
+                             #barcol = "lightblue")
+                           ),
+                           part = "body")
+
+
+  ft <- flextable::merge_v(ft, j = 1) #vertical merge of values in first column
+
+  if(mergevalues_2nd_column == TRUE){
+  ft <- flextable::merge_v(ft, j = 2) #vertical merge of values in second column
+  }
+
+  ft <- flextable::valign (ft, j = 1:2, valign = "top") #align the merged values in first and seceond column to the top
+
+  ft <- flextable::width(ft, j=c(3:4, 6:9), width= 0.5)
+  ft <- flextable::width(ft, j=c(1), width= 0.75)
+  ft <- flextable::width(ft, j=c(2), width= 1)
+  ft <- flextable::width(ft, j=c(5), width= 1.1) #bar
+  ft <- flextable::width(ft, j=c(10), width= 1.25)
+  #ft <- flextable::width(ft, j=c(11), width= 2.5)
+  ft <- flextable::height_all(ft, height = row_height_ft, part = "all")
+  ft <- flextable::hrule(ft, rule = "exact")
+  ft <- flextable::fontsize(ft, size = 8)
+
+  # Borders and lines
+  # add extra table header row on top:
+  ft <- flextable::add_header(ft,
+                              N = "Alle år",
+                              `%` = "Alle år",
+                              N.compare1 = "T.o.m. 2019",
+                              `%.compare1` = "T.o.m. 2019",
+                              N.compare2 = "2020",
+                              `%.compare2` = "2020",
+                              top = TRUE )
+  # merge new headers rows horizontally when there are identical values
+  ft <- flextable::merge_h(ft, part = "header")
+  #lines/borders
+  border_type <- officer::fp_border(color = "black", style = "solid", width = 1.25)
+
+  ft <- flextable::border_remove(ft)
+  ft <- flextable::hline_top(ft, j = NULL,
+                             border = border_type,
+                             part = "header")
+  ft <- flextable::hline(ft, i = 2,
+                         border = border_type,
+                         part = "header")
+  ft <- flextable::hline_bottom(ft,
+                                border = border_type,
+                                part = "body")
+
+  ft
+
+
+
+
   #RETURN:
 
-  return(output_tibble_merged_comparison2)
+  return(ft)
 }

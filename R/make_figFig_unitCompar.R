@@ -27,6 +27,7 @@ make_figFig_unitCompar <- function(
   my_title = '',#default empty (""), unless you change it
   YellowGoal = 'mean',  #1)'' 2)'mean' or 3) for instance '60'
   GreenGoal = 'mean',
+  exclude_unit = "Tønsberg (BUP, s.team)",
   sort_on_comparison_group_instead = TRUE,
   use_name_without_n = TRUE,
   letter_size = 12,
@@ -168,7 +169,11 @@ make_figFig_unitCompar <- function(
     select(-c("CILower","CILower2","CIUpper","CIUpper2"))
 
 
-  #FIG FOR FIGTYPE 2  (columns with point for comparison)
+  #exclude some units from visualization:
+  my_proptable_hospitals_longer <-
+    my_proptable_hospitals_longer[my_proptable_hospitals_longer$AvdNavnNavn!=
+                                  exclude_unit,]
+  #FIG FOR FIGTYPE 2
   fig <-
     ggplot2::ggplot(my_proptable_hospitals_longer,
                     mapping=ggplot2::aes(x = AvdNavn,
@@ -186,7 +191,8 @@ make_figFig_unitCompar <- function(
                        stat =  "identity")+
     ggplot2::scale_fill_manual(values = c(perc="#e4e0da",
                                           perc.compare = "lightblue"),
-                               labels = c("T.o.m. 2019", "2020"))+ #"#f3f1ee"
+                               labels = c("T.o.m. 2019",
+                                          "2020"))+ #"#f3f1ee"
 
     ggplot2::labs(y=my_y_lab, #my_proptable_hospitals$my_y_lab,#
                   title = my_title, #)+#colnames(my_proptable_hospitals[,4]))+
@@ -378,6 +384,8 @@ make_figFig_unitCompar <- function(
                             linetype=1)
     }
   }
+
+  }
   # yellow goal line:
   if (YellowGoal!=''){
     if(YellowGoal=='mean'){
@@ -392,7 +400,7 @@ make_figFig_unitCompar <- function(
       #my_proptable_hospitals$AvdNavn, "Nasjonal"),]$perc"
 
     } else {
-    fig <-   fig +
+      fig <-   fig +
         ggplot2::geom_hline(
           yintercept = as.numeric(YellowGoal),
           col='gold',
@@ -401,8 +409,6 @@ make_figFig_unitCompar <- function(
     }
 
   }
-  }
-
 
 
   return(fig)

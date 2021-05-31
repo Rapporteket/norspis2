@@ -135,7 +135,8 @@ if(comparison == TRUE){
                                                fill= variable)) +
     #The bars:
     ggplot2::geom_bar(position = "dodge",
-                      stat = "identity"
+                      stat = "identity",
+                      show.legend = FALSE
                       #mapping=ggplot2::aes(x = cat, y=perc*100),#,width=1/3
                       #fill=my_color
                       ) +

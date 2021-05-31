@@ -50,7 +50,15 @@ You can install the released version/development version of norspis2 from [GitHu
 # install.packages("devtools")
 devtools::install_github("Rapporteket/norspis2")
 ```
+
+## Colors
+
+'#c6dbef',
+'#2171b5'
+'#c6dbef'
+
 ## Example
+
 
 <!-- This is a basic example which shows you how to solve a common problem: -->
 

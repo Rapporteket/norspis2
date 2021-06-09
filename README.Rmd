@@ -79,7 +79,7 @@ devtools::install_github("Rapporteket/norspis2")
 
 
 ## Other useful information
-
+ 
 ### Colors
 
 Three colors?

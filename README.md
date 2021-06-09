@@ -69,7 +69,11 @@ devtools::install_github("Rapporteket/norspis2")
 
 ### Colors
 
-Three colors from? \* ‘\#c6dbef’, \* ‘\#2171b5’ \* ‘\#c6dbef’
+Three colors from?
+
+-   ‘\#c6dbef’,
+-   ‘\#2171b5’
+-   ‘\#c6dbef’
 
 **HEX codes for colors (from the Norwegian national profile handbook for
 the specialist health care service):**
@@ -78,16 +82,27 @@ the specialist health care service):**
 287) \* \#81A9E1 - light blue (PMS 284)
 
 *The following colors have been collected through color sampling from
-the handbook and may be imprecise:* *Brown* \* \#eacbaa - light brown
-(PMS 4665) \* \#b68069 - dark brown (PMS 4715) \* \#dd052b - reddish
-brown (PMS483)
+the handbook and may be imprecise:* *Brown*
 
-*Red* \* \#dd052b - red (PMS1795)
+-   \#eacbaa - light brown (PMS 4665)
+-   \#b68069 - dark brown (PMS 4715)
+-   \#dd052b - reddish brown (PMS483)
 
-*Yellow* \* \#f6e48c - light yellow (PMS 459) \* \#fbba00 - yellow (PMS
-130)
+*Red*
 
-*Grey* \* \#bbc2c6 - grey (PMS 7543)
+-   \#dd052b - red (PMS1795)
 
-*Green* \* \#86b29e - green-grey (PMS 624) \* \#4da32f - green (PMS 362)
-\* \#00684b - dark grey(PMS 342)
+*Yellow*
+
+-   \#f6e48c - light yellow (PMS 459)
+-   \#fbba00 - yellow (PMS 130)
+
+*Grey*
+
+-   \#bbc2c6 - grey (PMS 7543)
+
+*Green*
+
+-   \#86b29e - green-grey (PMS 624)
+-   \#4da32f - green (PMS 362)
+-   \#00684b - dark grey(PMS 342)

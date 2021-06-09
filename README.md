@@ -47,10 +47,6 @@ from [GitHub](https://github.com/) with:
 devtools::install_github("Rapporteket/norspis2")
 ```
 
-## Colors
-
-‘\#c6dbef’, ‘\#2171b5’ ‘\#c6dbef’
-
 ## Example
 
 <!-- This is a basic example which shows you how to solve a common problem: -->
@@ -68,3 +64,28 @@ devtools::install_github("Rapporteket/norspis2")
 <!-- plot(pressure) -->
 <!-- ``` -->
 <!-- In that case, don't forget to commit and push the resulting figure files, so they display on GitHub! -->
+
+## Other useful information
+
+### Colors
+
+Three colors? ‘\#c6dbef’, ‘\#2171b5’ ‘\#c6dbef’
+
+**HEX codes for colors (from the Norwegian national profile handbook for
+the specialist health care service):**
+
+*Codes gotten directly from the handbook:* \#003283 - dark blue (PMS
+287) \#81A9E1 - light blue (PMS 284)
+
+*The following colors have been collected through color sampling from
+the handbook and may be imprecise:* *Brown* \#eacbaa - light brown (PMS
+4665) \#b68069 - dark brown (PMS 4715) \#dd052b - reddish brown (PMS483)
+
+*Red* \#dd052b - red (PMS1795)
+
+*Yellow* \#f6e48c - light yellow (PMS 459) \#fbba00 - yellow (PMS 130)
+
+*Grey* \#bbc2c6 - grey (PMS 7543)
+
+*Green* \#86b29e - green-grey (PMS 624) \#4da32f - green (PMS 362)
+\#00684b - dark grey(PMS 342)

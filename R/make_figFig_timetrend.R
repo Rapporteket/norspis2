@@ -23,7 +23,8 @@ make_figFig_timetrend <- function(my_data,
                                   variable_type_0_100 = FALSE,
                                   #= c(quo(EDEQ60GlobalScore_CHANGE_PROP))
                                   add_fill = F,
-                                  do_facet_wrap = TRUE
+                                  do_facet_wrap = TRUE,
+                                  show_legend = TRUE
                                   ){
 
 
@@ -208,11 +209,11 @@ make_figFig_timetrend <- function(my_data,
     {if(add_fill ==T)
       geom_area(aes(fill = AvdNavn, group = AvdNavn),
               alpha = 0.25, position = 'identity',
-              show.legend = F)}+
+              show.legend = show_legend)}+
     geom_line(aes(#linetype = AvdNavn
                   ),
               size = 1,
-              show.legend = T)+
+              show.legend = show_legend)+
     #geom_point(show.legend = T)+
     #geom_dl(aes(label = AvdNavn), method = list("last.bumpup", cex = 0.7))+
     theme_minimal()+

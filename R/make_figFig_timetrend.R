@@ -24,7 +24,8 @@ make_figFig_timetrend <- function(my_data,
                                   #= c(quo(EDEQ60GlobalScore_CHANGE_PROP))
                                   add_fill = F,
                                   do_facet_wrap = TRUE,
-                                  show_legend = TRUE
+                                  show_legend = TRUE,
+                                  show_national_mean = FALSE
                                   ){
 
 
@@ -191,6 +192,21 @@ make_figFig_timetrend <- function(my_data,
                     #,
                     #show.legend = T
                     )+
+    #Do this first, so that national line get behind other lines:
+    {if(do_facet_wrap == TRUE)
+    facet_wrap(~AvdNavn, ncol = 3)}+
+    #national variation over time for each facet (own data frame made earlier)
+    {if(do_facet_wrap == TRUE)
+    geom_line(data=RegDataStartEndNatValFiltered_summarized5,
+              aes(x = Year.y,
+                  y = perc
+              ),
+              size = 1,
+              show.legend = F,
+              color = "#bbc2c6"#, #"grey")
+              #linetype="dashed"
+              )
+    }+
     scale_x_continuous(breaks =
                          RegDataStartEndNatValFiltered_summarized6$Year.y,
                        #expand = expansion(mult = c(0, .25))
@@ -199,12 +215,12 @@ make_figFig_timetrend <- function(my_data,
                        breaks = seq(0,100,10),
                        minor_breaks = seq(0,100,2)
     )+
-    scale_color_manual(values = c(Nasjonal="blue",
-                                  "lightblue",
-                                  "red",
-                                  "brown",
-                                  Andre = "gold",
-                                  "darkblue",
+    scale_color_manual(values = c(Nasjonal="#003283", #blue",
+                                  "#81A9E1",#ligth blue,
+                                  "#dd052b",#red,
+                                  "#b68069" ,#brown
+                                  Andre = "#fbba00",#"gold",
+                                  "#4da32f", #green
                                   "black"))+
     {if(add_fill ==T)
       geom_area(aes(fill = AvdNavn, group = AvdNavn),
@@ -224,24 +240,13 @@ make_figFig_timetrend <- function(my_data,
           panel.grid.major.x = element_line())+
     ylab("Andel (prosent)")+
     xlab("År")+
+
+    {if(show_national_mean == T)
     #this line is included in all facets:
     geom_hline(yintercept = RegDataStartEndNatValFiltered_summarized3$perc,
-               color = "grey",
+               color = "#bbc2c6",#"grey"
                linetype= "dashed",
-               size=1)+
-    {if(do_facet_wrap == TRUE)
-    facet_wrap(~AvdNavn, ncol = 3)}+
-    #national variation over time for each facet (own data frame made earlier)
-    {if(do_facet_wrap == TRUE)
-    geom_line(data=RegDataStartEndNatValFiltered_summarized5,
-              aes(x = Year.y,
-                  y = perc#,
-                  #linetype="dashed"
-              ),
-              size = 1,
-              show.legend = F,
-              color = "grey")
-    }+
+               size=1)}+
     #https://stackoverflow.com/questions/41225294/avoid-overlapping-x-axis-labels-in-ggplot-facet-grid/53030221:
     theme(panel.spacing.x = unit(8, "mm"))
 
@@ -345,10 +350,11 @@ make_figFig_timetrend <- function(my_data,
     theme_bw()+
     ylab("Andel (prosent)")+
     xlab(" ")+
+    {if(show_national_mean ==T)
     geom_hline(yintercept = RegDataStartEndNatValFiltered_summarized3$perc,
-               color = "grey",
+               color = "#bbc2c6", #"grey",
                linetype= "dashed",
-               size=1)
+               size=1)}
 
   return(list(table1,
               table2,

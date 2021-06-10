@@ -179,6 +179,12 @@ make_figFig_unitCompar <- function(
                     mapping=ggplot2::aes(x = AvdNavn,
                                          y=value,
                                          fill= variable))+
+    #Green goal
+    {if(GreenGoal != '')
+    ggplot2::annotation_raster(alpha('#4da32f',.2),
+      xmin=0,xmax=Inf,
+      ymin=as.numeric(GreenGoal), ymax=100)
+    }+
     #The bars:
     ggplot2::geom_bar(
                                              #factor(ifelse(stringr::str_detect(
@@ -363,27 +369,6 @@ make_figFig_unitCompar <- function(
 
 
 
-  # green goal line:
-  if (GreenGoal!=''){
-    if(GreenGoal=='mean'){
-      fig <-   fig +
-        ggplot2::geom_hline(
-          yintercept = my_proptable_hospitals[stringr::str_detect(
-            my_proptable_hospitals$AvdNavn, "Nasjonal"),]$perc,
-          col='forestgreen',
-          size=1,
-          linetype=1) #to set goal value at national value, use:
-      #"my_proptable_hospitals[stringr::str_detect(
-      #  my_proptable_hospitals$AvdNavn, "Nasjonal"),]$perc"
-
-    } else {
-      fig <-   fig +
-        ggplot2::geom_hline(yintercept = as.numeric(GreenGoal),
-                            col='forestgreen',
-                            size=1,
-                            linetype=1)
-    }
-  }
 
   }
   # yellow goal line:
@@ -410,6 +395,34 @@ make_figFig_unitCompar <- function(
 
   }
 
+  # # green goal line:
+  # if (GreenGoal!=''){
+  #   if(GreenGoal=='mean'){
+  #     fig <-   fig +
+  #       ggplot2::geom_hline(
+  #         yintercept = my_proptable_hospitals[stringr::str_detect(
+  #           my_proptable_hospitals$AvdNavn, "Nasjonal"),]$perc,
+  #         col='#4da32f',#forestgreen',
+  #         size=1,
+  #         linetype=1) #to set goal value at national value, use:
+  #     #"my_proptable_hospitals[stringr::str_detect(
+  #     #  my_proptable_hospitals$AvdNavn, "Nasjonal"),]$perc"
+  #
+  #   } else {
+  #     fig <-   fig +
+  #       ggplot2::geom_rect(
+  #         aes(xmin=0,xmax=Inf, ymin=as.numeric(GreenGoal), ymax=100),
+  #         col='#4da32f',
+  #         fill='#4da32f'
+  #       )
+  #
+  #       # ggplot2::geom_hline(
+  #       #   yintercept = as.numeric(GreenGoal),
+  #       #   col='#4da32f',#'forestgreen',
+  #       #   size=1,
+  #       #   linetype=1)
+  #   }
+  # }
 
   return(fig)
 }

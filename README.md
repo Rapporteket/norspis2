@@ -86,7 +86,7 @@ the handbook and may be imprecise:* *Brown*
 
 -   \#eacbaa - light brown (PMS 4665)
 -   \#b68069 - dark brown (PMS 4715)
--   \#dd052b - reddish brown (PMS483)
+-   \#781d00 - reddish brown (PMS483)
 
 *Red*
 
@@ -105,4 +105,4 @@ the handbook and may be imprecise:* *Brown*
 
 -   \#86b29e - green-grey (PMS 624)
 -   \#4da32f - green (PMS 362)
--   \#00684b - dark grey(PMS 342)
+-   \#00684b - dark green(PMS 342)

@@ -356,10 +356,20 @@ make_figFig_timetrend <- function(my_data,
                linetype= "dashed",
                size=1)}
 
+
+  #finally we also output n and perc as regular tables (not a flextable),
+  #to use in trend analysis:
+
+
   return(list(table1,
               table2,
               table3,
               plot1,
-              plot2))
+              plot2,
+              #finally we also output n and perc as regular tables (not a flextable),
+              #to use in trend analysis:
+              n,
+              perc
+              ))
 
 }

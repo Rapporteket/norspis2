@@ -12,6 +12,7 @@ library(dplyr)
 library(tidyr)
 library(tibble)
 library(DT)
+library(ggplot2)
 
 shiny::addResourcePath('rap', system.file('www', package='rapbase'))
 
@@ -689,7 +690,7 @@ ui <- tagList(
     # ),#tab Datakvalitet
 
     tabPanel(
-      "Administrasjon", #change?Update hideTab, server
+      "Administrasjon - registrar", #change?Update hideTab, server
       tabsetPanel(
         type="tabs",
         tabPanel(
@@ -707,15 +708,9 @@ ui <- tagList(
                     "Nasjonal" = 'nasjonal',
                     "Egen enhet" = 'egenEnhet')
                 )
-              ),
-
-              box(status = "primary",
-                  selectInput(
-                    "progress", " ",
-                    choices = c("0%" = 0, "20%" = 20, "40%" = 40,
-                                "60%" = 60, "80%" = 80, "100%" = 100)
-                  )
               )
+
+
             ),
 
             # infoBoxes
@@ -725,74 +720,49 @@ ui <- tagList(
                 uiOutput("antallPas"), " ",
                 icon = icon("users")
               )
-              ,
-              infoBox(
-                " ", " ",
-                icon = icon("users"),
-                color = "green",
-                fill = TRUE
-              ),
-              infoBox(
-                " ",
-                uiOutput("progress2"),
-                icon = icon("users"),
-                color = "purple"
-              )
-            ),
-            # valueBoxes
-            fluidRow(
-              valueBox(
-                uiOutput("orderNum"), " ",
-                icon = icon("users"),
-                href = "http://google.com"
-              ),
-              valueBox(
-                tagList(" ", tags$sup(style="font-size: 20px", "%")),
-                " ",
-                icon = icon("line-chart"),
-                color = "green"
-              ),
-              valueBox(
-                htmlOutput("progress"), " ",
-                icon = icon("users"),
-                color = "purple"
-              )
+
             ),
 
             # Boxes
             fluidRow(
-              box(status = "primary",
-                  sliderInput(
-                    "orders",
-                    "Tidsperiode",
-                    min = 1, max = 2000,
-                    value = 650),
-                  selectInput(
-                    "progress",
-                    "Progresjon",
-                    choices = c("0%" = 0, "20%" = 20, "40%" = 40, "60%" = 60,
-                                "80%" = 80, "100%" = 100)
-                  )
-              ),
               box(title = "Antall startregistreringer over tid",
                   status = "warning",
                   solidHeader = TRUE,
                   collapsible = TRUE,
-                  collapsed = TRUE,
+                  collapsed = FALSE,
                   plotOutput("plotAntallRegTid", height = 250)
-              )
-              ,
-              box(title = " ",
-                  status = "warning",
-                  solidHeader = TRUE,
-                  collapsible = TRUE,
-                  plotOutput(" ", height = 250)
               )
             )
 
           )
-        ),
+        )
 
+
+        )#,
+
+        # tabPanel("Samlerapporter (PDF)",
+        #          sidebarPanel(width = 3,
+        #            selectInput("srcFile", "Velg rapport:",
+        #                        c("DUMMY_NorSpisEnhetsrapport.Rmd")),
+        #            radioButtons('formatSamlerapport',
+        #                         'Format for nedlasting',
+        #                         c('pdf', 'html'),
+        #                         inline = FALSE),
+        #            downloadButton(outputId = 'downloadSamlerapport',
+        #                         label='Last ned!',
+        #                         class = "butt")
+        #          ),
+        #          mainPanel(
+        #            htmlOutput("samlerapport", inline = TRUE)
+        #          )
+        # )
+
+
+    ),#tab Administrasjon registrar
+    tabPanel(
+      "Administrasjon - NorSpis", #change?Update hideTab, server
+      tabsetPanel(
+        type="tabs",
         tabPanel(
           "Registreringsoversikt",
           sidebarPanel(
@@ -823,27 +793,9 @@ ui <- tagList(
           ),
           mainPanel(DT::dataTableOutput("tableOversUtv")
           )
-        )#,
-
-        # tabPanel("Samlerapporter (PDF)",
-        #          sidebarPanel(width = 3,
-        #            selectInput("srcFile", "Velg rapport:",
-        #                        c("DUMMY_NorSpisEnhetsrapport.Rmd")),
-        #            radioButtons('formatSamlerapport',
-        #                         'Format for nedlasting',
-        #                         c('pdf', 'html'),
-        #                         inline = FALSE),
-        #            downloadButton(outputId = 'downloadSamlerapport',
-        #                         label='Last ned!',
-        #                         class = "butt")
-        #          ),
-        #          mainPanel(
-        #            htmlOutput("samlerapport", inline = TRUE)
-        #          )
-        # )
+          )
+        )
       )
-
-    )#tab Administrasjon
-
-  ))
+    )
+  )
 )

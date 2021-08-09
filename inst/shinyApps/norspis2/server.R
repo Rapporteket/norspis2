@@ -2,6 +2,8 @@ library(shiny)
 
 server <- function(input, output, session) {
 
+
+
   # Navbar user widget
   output$appUserName <- renderText(getUserFullName(session))
   output$appOrgName <- renderText(getUserReshId(session))
@@ -113,7 +115,7 @@ server <- function(input, output, session) {
   #hideTab(inputId = "tabs", target = "Sykehussammenligninger")
   #hideTab(inputId = "tabs", target = "Datakvalitet")
   if(!userRole %in% c('CC','SC')){
-    hideTab(inputId = "tabs", target = "Administrasjon")
+    hideTab(inputId = "tabs", target = "Administrasjon - NorSpis")
     hideTab(inputId = "tabsets", target = "Sykehussammenligninger (slutt)")
     hideTab(inputId = "tabsets",
             target = "Sykehussammenligninger (start/slutt)")
@@ -333,7 +335,7 @@ server <- function(input, output, session) {
       #table to plot
       tab1 <- norspis2::make_figTable_unitCompar(
         myIndata_NatVal =  dat1,
-        myInvar01 = input$valgtVarSykehusSammenlign)#rlang::quo(PROP_PO10Pasientsikkerhet))#input$valgtVarSykehusSammenlign)#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(!!input$valgtVarSykehusSammenlign))
+        myInvar01 = input$valgtVarSykehusSammenlign)#"PROP_PO10Pasientsikkerhet", rlang::quo(PROP_PO10Pasientsikkerhet))#input$valgtVarSykehusSammenlign)#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(!!input$valgtVarSykehusSammenlign))
       #table for comparison point
       tab2 <- norspis2::make_figTable_unitCompar(
         myIndata_NatVal =  dat2,

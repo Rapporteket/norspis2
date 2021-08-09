@@ -13,7 +13,9 @@ make_figFig_unitCompar(
   my_title = "",
   YellowGoal = "mean",
   GreenGoal = "mean",
+  exclude_unit = "Tønsberg (BUP, s.team)",
   sort_on_comparison_group_instead = TRUE,
+  use_name_without_n = TRUE,
   letter_size = 12,
   fig_type_comparison = "two_bars"
 )

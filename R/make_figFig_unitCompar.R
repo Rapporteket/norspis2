@@ -256,7 +256,7 @@ make_figFig_unitCompar <- function(
     ggplot2::theme(axis.ticks.y = ggplot2::element_blank(),
                    legend.position = "top")+
     #make national bold (https://stackoverflow.com/questions/39694490/highlighting-individual-axis-labels-in-bold-using-ggplot2):
-    scale_x_discrete(labels=c("Nasjonal"=expression(bold(Nasjonal)),
+    ggplot2::scale_x_discrete(labels=c("Nasjonal"=expression(bold(Nasjonal)),
                               parse=TRUE))+
     ggplot2::coord_flip()
 

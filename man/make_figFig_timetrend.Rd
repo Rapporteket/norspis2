@@ -2,16 +2,31 @@
 % Please edit documentation in R/make_figFig_timetrend.R
 \name{make_figFig_timetrend}
 \alias{make_figFig_timetrend}
-\title{Title}
+\title{Plot time trends of quality indicators}
 \usage{
-make_figFig_timetrend(variable01, add_fill = F)
+make_figFig_timetrend(
+  my_data,
+  data_type = "start_end",
+  variable01,
+  variable_type_0_100 = FALSE,
+  add_fill = F,
+  do_facet_wrap = TRUE,
+  show_legend = TRUE,
+  show_national_mean = FALSE
+)
 }
 \arguments{
+\item{data_type}{Choices: "start-end" and "regular"}
+
+\item{variable01}{}
+
 \item{add_fill}{Add fill under line}
 }
 \value{
 
 }
 \description{
-Title
+This function outputs figure and table (flextable) of content in figure.
+You need the input variable must be a 0-1 variable. If variable is not 0-1,
+but ranges from 0 to 100, use the argument variable_type_0_100 = TRUE
 }

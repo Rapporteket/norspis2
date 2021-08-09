@@ -7,12 +7,19 @@
 make_table_popchar(
   RegData = myFilteredData,
   varsInTab = myvarString,
+  varsNames = myvarNames,
   comparison = FALSE,
-  RegDataComparison
+  dont_visualize_nei = FALSE,
+  dont_visualize_mangler = FALSE,
+  mergevalues_2nd_column = TRUE,
+  row_height_ft = 0.25,
+  font_size_ft = 8,
+  lollipop_max_ft = 10,
+  lollipop_min_ft = -10
 )
 }
 \arguments{
-\item{varsInTab}{}
+\item{font_size_ft}{}
 }
 \value{
 

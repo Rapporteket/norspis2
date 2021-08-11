@@ -667,27 +667,28 @@ ui <- tagList(
     ),#tab Resultater
 
     #TODO: This tab will be implemented later
-    # tabPanel(
-    #   "Datakvalitet",
-    #   tabsetPanel(
-    #     type="tabs",
-    #     tabPanel("Variabelkompletthet",
-    #              fluidPage()
-    #     ),
-    #     tabPanel("Forløpskompletthet",
-    #              sidebarPanel(width = 3),
-    #              mainPanel()
-    #     ),
-    #     tabPanel("Tilslutning",
-    #              sidebarPanel(width = 3),
-    #              mainPanel()
-    #     ),
-    #     tabPanel("Dekningsgrad",
-    #              sidebarPanel(width = 3),
-    #              mainPanel()
-    #     )#,
-    #   )
-    # ),#tab Datakvalitet
+    tabPanel(
+      "Datakvalitet",
+      tabsetPanel(
+        type="tabs",
+        tabPanel("Variabelkompletthet",
+                 fluidPage()
+        )
+        # ,
+        # tabPanel("Forløpskompletthet",
+        #          sidebarPanel(width = 3),
+        #          mainPanel()
+        # ),
+        # tabPanel("Tilslutning",
+        #          sidebarPanel(width = 3),
+        #          mainPanel()
+        # ),
+        # tabPanel("Dekningsgrad",
+        #          sidebarPanel(width = 3),
+        #          mainPanel()
+        # )#,
+      )
+    ),#tab Datakvalitet
 
     tabPanel(
       "Administrasjon - registrar", #change?Update hideTab, server
@@ -735,27 +736,23 @@ ui <- tagList(
             )
 
           )
+        ),
+        tabPanel(
+          "Rapportnedlastning",
+          sidebarPanel(
+            "Last ned en autogenerert rapport for din enhet her:",
+            dateInput(inputId = "dateFromReportHospitalUnit", label = "Dato fra:"),
+            dateInput(inputId = "dateToReportHospitalUnit", label = "Dato til:"),
+            radioButtons('formatReportHospitalUnit', 'Dokoumentformat', c('PDF', 'HTML', 'Word'),
+                         inline = TRUE),
+            downloadButton(outputId = 'downloadReportHospitalUnit',
+                           label='Last ned!',
+                           class = "butt")
+          )
         )
 
 
-        )#,
-
-        # tabPanel("Samlerapporter (PDF)",
-        #          sidebarPanel(width = 3,
-        #            selectInput("srcFile", "Velg rapport:",
-        #                        c("DUMMY_NorSpisEnhetsrapport.Rmd")),
-        #            radioButtons('formatSamlerapport',
-        #                         'Format for nedlasting',
-        #                         c('pdf', 'html'),
-        #                         inline = FALSE),
-        #            downloadButton(outputId = 'downloadSamlerapport',
-        #                         label='Last ned!',
-        #                         class = "butt")
-        #          ),
-        #          mainPanel(
-        #            htmlOutput("samlerapport", inline = TRUE)
-        #          )
-        # )
+        )
 
 
     ),#tab Administrasjon registrar
@@ -793,6 +790,53 @@ ui <- tagList(
           ),
           mainPanel(DT::dataTableOutput("tableOversUtv")
           )
+        ),
+        tabPanel(
+          "Rapport: Fagrådet",
+          sidebarPanel(
+            "Generer rapport til fagrådsmøte:",
+            selectInput(inputId = "fileReportFagraad",
+                        label = "Velg rapport:",
+                        choices =
+                          c("Nasjonal resultatrapport"="norspis-report-to-fagraad",
+                            "Nasjonal oversiktsrapport"="norspis-oversiktsrapport")),
+            dateInput(inputId = "dateFrom", label = "Dato fra:"),
+            dateInput(inputId = "dateTo", label = "Dato til:"),
+            radioButtons('formatReportFagraad', 'Dokoumentformat', c('PDF', 'HTML', 'Word'),
+                          inline = TRUE),
+            downloadButton(outputId = 'downloadReportFagraad',
+                           label='Last ned!',
+                           class = "butt")
+            )
+          #,
+          # mainPanel(
+          #   htmlOutput("samlerapport", inline = TRUE)
+          #   )
+          ),
+        tabPanel(
+          "Rapport: Enhetsoversikter (kart og tabell)",
+          sidebarPanel(
+
+          )
+        ),
+
+        tabPanel(
+          "Rapport: Sykehusavdelingene",
+          sidebarPanel(
+            "Lag mulighet for å generere PDF-rapporter for alle
+            sykehusavdelingene her. Se fila norspis-create-reports.Rmd i inst"
+          )
+        ),
+
+        tabPanel(
+          "Test-rapport for Rmd til HTML/PDF",
+            sidebarPanel(
+              sliderInput("n", "Number of points", 1, 100, 50),
+
+              radioButtons('format', 'Dokumentformat', c('PDF', 'HTML', 'Word'),
+                           inline = TRUE),
+              downloadButton("downloadReport", "Generate report")
+            )
           )
         )
       )

@@ -42,11 +42,11 @@ library(norspis2)
 ```{r}
 library(dplyr)
 #------DATA norspis2
-RegData2 <- norspis2::fun1_1_import_data_FEA(path_data="F:/2020-28-12_data-til-utvikling/", #disk and folder of data to import
-                                             date_data="2020-12-28")
+RegData2 <- norspis2::fun1_1_import_data_FEA(path_data="F:/2021-08-06/", #disk and folder of data to import
+                                             date_data="2021-08-06")
 
-RegDataBeh2 <- norspis2::fun1_2_import_data_B(path_data="F:/2020-28-12_data-til-utvikling/", #disk and folder of data to import
-                                              date_data="2020-12-28")
+RegDataBeh2 <- norspis2::fun1_2_import_data_B(path_data="F:/2021-08-06/", #disk and folder of data to import
+                                              date_data="2021-08-06")
 #Five datasets (and outputted in a list):
 DL <- norspis2::fun2_dataList(myInData1 = RegData2, myInData2 = RegDataBeh2)
 #---DATA norspis2 (END)
@@ -94,9 +94,9 @@ RegDataNatVal_filtered2019 <- norspis2::fun3_1_filter_RegData(RegData = myInData
 
 tab <- norspis2::make_table_DQ_regCount(RegDataNatVal_filtered2019)
 
-ft <- norspis2::make_table_DQ_regCount_asFt(tab)
+#ft <- norspis2::make_table_DQ_regCount_asFt(tab)
 
-ft
+tab
 
 ```
 

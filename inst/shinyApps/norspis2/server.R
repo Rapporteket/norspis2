@@ -1209,6 +1209,131 @@ server <- function(input, output, session) {
       file.rename(out, file)
     }
   )
-
   ###---PDF-report, minimal for testing (END)
+
+  ###---Map and map table
+  output$mapPlot <- renderPlot({
+    #output$mapPlot <- function(){   #not completely sure why this part of code must be like this, but see: https://cran.r-project.org/web/packages/kableExtra/vignettes/use_kable_in_shiny.html
+    #Has to do this if want a checkbox for indludeMap. Usually we van just use a render function (e.g. renderPlot) and not write functions
+    req(input$includeMap)
+    norspis2::map_make_map(#chosen_map_area = input$chosen_map_area,
+      chosen_hf = input$chosen_hf,
+      chosen_unit_type = input$chosen_unit_type,
+      chosen_color_var = input$chosen_color_var,
+      visualize_points=input$visualize_points,
+      visualize_text_unitname=input$visualize_text_unitname,
+      visualize_colour_polygons=input$visualize_colour_polygons)
+    #}
+  })
+  output$tableView <- function(){ #not completely sure why this part of code must be like this, but see: https://cran.r-project.org/web/packages/kableExtra/vignettes/use_kable_in_shiny.html
+    req(input$includeTable)
+    norspis2::map_make_table(#chosen_map_area = input$chosen_map_area,
+      chosen_hf = input$chosen_hf,
+      chosen_unit_type = input$chosen_unit_type,
+      chosen_color_var = input$chosen_color_var,
+      chosen_color_var2 = input$chosen_color_var2,
+      chosen_color_var3 = input$chosen_color_var3,
+      chosen_string_var = input$chosen_string_var,
+      chosen_table_type = 'kable') #NOT IMPLEMENTED IN APP YET, JUST HARDCODED
+  }
+  ##Generate downloadable reports:
+  #See: https://shiny.rstudio.com/articles/generating-reports.html
+  #And: https://shiny.rstudio.com/gallery/download-knitr-reports.html
+  output$report <- downloadHandler(
+    # For PDF output, change this to "report.pdf" (for HTML, use "reportname.pdf")
+    filename = "mapandtablereport.html", #TODO: remember to update when changes. File lies in ShinyApps folder
+    #(remember also in mapandtablereport.Rmd)
+    content = function(file) {
+      # Copy the report (.Rmd) file to a temporary directory before processing it, in
+      # case we don't have write permissions to the current working dir (which
+      # can happen when deployed).
+      tempReport <- file.path(tempdir(), "mapandtablereport.Rmd")
+      file.copy("mapandtablereport.Rmd", tempReport, overwrite = TRUE)
+
+      # Set up parameters to pass to Rmd document
+      params <- list(#chosen_map_area = input$chosen_map_area,
+        chosen_hf = input$chosen_hf,
+        chosen_unit_type = input$chosen_unit_type,
+        chosen_color_var = input$chosen_color_var,
+        chosen_color_var2 = input$chosen_color_var2,
+        chosen_color_var3 = input$chosen_color_var3,
+        chosen_string_var = input$chosen_string_var,
+        visualize_colour_polygons = input$visualize_colour_polygons,
+        visualize_size_points = input$visualize_size_points,
+        visualize_text_unitname = input$visualize_text_unitname,
+        visualize_points = input$visualize_points,
+        includeMap = input$includeMap,
+        includeTable =input$includeTable,
+        chosen_table_type = 'kable') #NOT IMPLEMENTED AS CHOICE IN APP YET (HARDCODED HERE)
+
+      # Knit the document, passing in the `params` list, and eval it in a
+      # child of the global environment (this isolates the code in the document
+      # from the code in this app).
+      rmarkdown::render(tempReport, output_file = file,
+                        params = params,
+                        envir = new.env(parent = globalenv())
+      )
+    }
+  )
+  #FAILED: Tried to make a download buttont that downloaded report for all HF/RHF in one go
+  #(inspired by this post: https://stackoverflow.com/questions/40314582/how-to-download-multiple-reports-created-using-r-markdown-and-r-shiny-in-a-zip-f)
+  #
+  # #reports for all RHF/HF
+  # output$reportS <- downloadHandler(
+  #     filename = function(){
+  #       paste0("output", ".zip") #TODO: remember to update when changes. File lies in ShinyApps folder
+  #     },                                  #(remember also in mapandtablereport.Rmd)
+  #     content = function(file) {
+  #       k<- c('Helse Nord',
+  #             'Helse Midt',
+  #             'Helse Vest',
+  #             'Helse Sør-Øst',
+  #             'Helse Møre og Romsdal', 'Helse Nord-Trøndelag', 'St. Olavs Hospital',
+  #             'Finnmarkssykehuset','Helgelandssykehuset', 'Nordlandssykehuset',
+  #             'Universitetssykehuset Nord-Norge','Private behandlingssteder',
+  #             'Akershus universitetssykehus', 'Oslo universitetssykehus',
+  #             'Sykehuset i Vestfold', 'Sykehuset Innlandet', 'Sykehuset Telemark',
+  #             'Sykehuset Østfold','Sørlandet Sykehus', 'Vestre Viken', 'Helse Bergen',
+  #             'Helse Fonna', 'Helse Førde', 'Helse Stavanger')
+  #       fs <- c()
+  #       for (i in k) {
+  #         path <- paste0(i,".html")
+  #
+  #         #tempReport <- file.path(tempdir(), "mapandtablereport.Rmd")
+  #         #file.copy("mapandtablereport.Rmd", tempReport, overwrite = TRUE)
+  #
+  #         # Set up parameters to pass to Rmd document
+  #         params <- list(#chosen_map_area = input$chosen_map_area,
+  #           chosen_hf = i,                                        #<-note
+  #           chosen_unit_type = input$chosen_unit_type,
+  #           chosen_color_var = input$chosen_color_var,
+  #           chosen_color_var2 = input$chosen_color_var2,
+  #           chosen_color_var3 = input$chosen_color_var3,
+  #           chosen_string_var = input$chosen_string_var,
+  #           visualize_colour_polygons = input$visualize_colour_polygons,
+  #           visualize_size_points = input$visualize_size_points,
+  #           visualize_text_unitname = input$visualize_text_unitname,
+  #           includeMap = input$includeMap,
+  #           includeTable =input$includeTable)
+  #
+  #         # Knit the document, passing in the `params` list, and eval it in a
+  #         # child of the global environment (this isolates the code in the document
+  #         # from the code in this app).
+  #         rmarkdown::render("mapandtablereport.Rmd",
+  #                           rmarkdown::html_document(),
+  #                           output_file = path,
+  #                           params = params
+  #                           #envir = new.env(parent = globalenv())
+  #         )
+  #         fs <- c(fs, path)
+  #     }
+  #     zip(file,fs)
+  #   },
+  #   contentType = "application/zip"
+  # )
+
+
+  ###---Map and map table (END)
+
+
 }

@@ -1,0 +1,183 @@
+# How to include maps in R package
+This is a description of how NorSpis implemented maps in the norspis2 R package.
+
+We will end up with:
+
+- Script/recipe: attributedata_geoANDgadm.R (in norspis2/data-raw)
+- Script/recipe: kommuner_fylker_data.R (in norspis2/data-raw)
+- Excel file with attribute data: norspis_units_keyfigures_minuscontacts.xlsx (
+in norspis2/inst/extdata)
+
+Four R functions in package:
+
+
+## 1. Include data in package
+
+In the package we included map data and some attribute data.
+
+
+### Map data
+
+The following map data was used:
+
+* open map data from gadm.org. 
+
+The data come with the following license:
+
+> "These data were extracted from the GADM database (www.gadm.org), 
+version 3.4, April 2018. They can be used for non-commercial purposes only.
+It is not allowed to redistribute these data, or use them for commercial 
+purposes, without prior consent. 
+See the website (www.gadm.org) for more information."
+>
+>`r tufte::quote_footer('www.gadm.org')`
+ 
+
+
+The data was **downloaded to a local folder outside the norspis2 package**.
+
+Then **a script was made** to implement the map data in the norspis2 R package.
+This script is one part of a script called:
+
+* attributedata_geoANDgadm.R 
+
+In addition to *adding gadm map data in package*, this script also reads, edits 
+and saves data on treatment units in package (more on this beneath). 
+
+The script was placed in the folder:
+
+* norspis2/data-raw 
+
+This *folder was manually added to our norspis2 package*.
+
+#### Additonal map data
+We also retrieved data from Kartverket, and built them into the package, so that
+they can be used instead of or in addition to the data from GADM:
+
+- municipality data from Kartverket
+- county data from Kartverket
+
+These data are built into the package by the same script that builds GADM data 
+into the package (the file attributedata_geoANDgadm.R).
+
+### Attribute data
+#### An Excel file with attribute data
+The attribute data was an Excel file with one row per hospital unit. Variables 
+in this file were geographical coordinates and different attributes we wanted 
+to visualize. 
+
+The file was called:
+
+* norspis_units_keyfigures_minuscontacts.xlsx
+
+The file was made, mostly manually, in Excel, except for the geocoding of 
+addresses.
+
+The file was placed in the folder:
+
+* norspis2/inst/extdata
+
+The folder was manually created.
+
+##### Geocoding addresses in the Excel file
+We had the treatment units addresses, which allowed
+us to retrieve geographical coordinates for each unit using geocoding practices
+in R. There are different possibilities for geocoding, but the geocoding part 
+will not be treated in this document.
+
+##### Including information on municipalities in each county in the Excel file
+A script was made, called:
+
+* kommuner_fylker_data.R
+
+This script was saved in norspis2/data-raw folder, which was added manually to 
+the package.
+
+The script makes a semicolon character string with all municipalities in each 
+county. 
+
+These strings was in turn be used manually copied and pasted into
+the Excel sheet norspis_units_keyfigures_minuscontacts.xlsx in extdata folder.
+
+
+#### How to update information in Excel file
+This is a file we update manually with new information in Excel. After new 
+information has been added, we follow some steps to implement the new updated 
+file in our norpis2 R package. Included in these steps is the running of a 
+script we call attributedata_geoANDgadm.R. We made this script to 1)reads, 
+edits and save data on treatment units in package and to (2)add gadm map data 
+in package. 
+
+* The script attributedata_geoANDgadm.R is saved in norspis2/data-raw folder
+which was added manually to the package.
+
+How to update Excel sheet with new information:
+
+1. Update Excel-sheet you use in inst/extdata. E.g. change value of variable.
+1.1 If tou want to add new variable for visualisation, let it begin with 
+"egensk_" and ending with "_OK" (only these will be selected for visualization 
+by the design of our script).
+2. Run R-script (attributedata_geoANDgadm.R) in folder data-raw
+3. Update, with new variable, line marked with TODO in make_raptable.R
+4. Update line marked with "#TODO: make other if statements for other types 
+of "egenskaper")" in map_make_map.R. 
+	- NB: An important detail is that the order, where you put new variable in 
+	relation to other, must be correct (inspect fixedplusspossiblechosen to see 
+	correct order)
+5. Update app.R: choices_df (here you must update with variabels that should NOT 
+go into map) AND choices_df_w_null (important detail: As above in step 4, order 
+of new variable must be correct)
+6. Build package (ctrl+shift+b)
+7. Run app and it should work.
+
+## Make R functions for package
+In norspis2, three functions is added to make maps:
+
+* map_make_backmap: A background map used in map_make_map.
+* map_make_map: The map plot.
+* map_make_table: Table with unit data in the map.
+* map_filter_attributedata: Filter function for map_make_map and map_make_table.
+
+# Summary - final structure of the map functionality in norspis2
+
+Some notes about how this package is construced:
+
+Data and (raw) files for making data are added to package as recommended by 
+RDPENG in bookdown.org/rdpeng/RProgDA/data-within-a-package.html
+
+## data_raw folder
+This folder contains raw files (.R-files) that data objects in the package are 
+derived from:
+
+(1)  attributedata_geoANDgadm.R which edits and save data on treatment units in
+package, as well as saves gadm map data into package (gadm36_NOR_0_sf , _0_sp,  _1_sf, _1_sp, _2_sf, and _2_sp)
+*Depends on/uses/reads - the data:*
+- municipality data from Kartverket, and which I/you can consider to build into 
+the package
+- county data from Kartverket and which I/you can consider to build into the 
+package
+- /inst/extdata/norspis_units_keyfigures_minuscontacts.xlsxwhich is the datafile
+on the treatment units and which must be build into the package
+- data from gadm
+
+(2) kommuner_fylker_data.R which makes a semicolon character string with all 
+municipalities in each county.These strings must in turn be manually copied and 
+pasted into the Excel sheet norspis_units_keyfigures_minuscontacts.xlsx in extdata folder.
+
+## inst/extdata
+This folder contains data that are built into package: 
+
+* norspis_units_keyfigures_minuscontacts.xlsx
+
+## R/sysdata.rda		
+This is internal data, built into the package (by attributedata_geoANDgadm.R). 
+This is data that the functions in your package can use, but that is not 
+accessible to the users of the package as these data has nothing to do 
+with the purpose of the package.
+
+The following files are in sysdata.rda (in norspis2/R folder):
+ - attributedata_geo
+ - counties2020_simp
+ - gadm_NOR_1_sf
+ - gadm_NOR_1_sf_simp
+ - munic2020_simp

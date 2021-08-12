@@ -87,16 +87,29 @@ myInData <- DL$RegData2
 RegDataNatVal_filtered2019 <- norspis2::fun3_1_filter_RegData(RegData = myInData,
                                                               regStatus = c(1),
                                                               regType = c(1,2,3,4,5,6,98,99),
-                                                              dateFrom = "2019-01-01",
-                                                              dateTo = "2019-12-31",
+                                                              dateFrom = "2020-01-01",
+                                                              dateTo = "2021-12-31",
                                                               ageFrom = 0,
                                                               ageTo = 200)
 
-tab <- norspis2::make_table_DQ_regCount(RegDataNatVal_filtered2019)
+tab <- norspis2::make_table_DQ_regCount(RegDataNatVal_filtered2019) #%>%
+          #flextable::set_table_properties(layout = "autofit")
+          #flextable::fit_to_width(7.5)
 
 #ft <- norspis2::make_table_DQ_regCount_asFt(tab)
 
-tab
+tab[[2]]
+
+#https://stackoverflow.com/questions/57175351/flextable-autofit-in-a-rmarkdown-to-word-doc-causes-table-to-go-outside-page-mar
+# FitFlextableToPage <- function(ft, pgwidth = 5){
+# 
+#   ft_out <- ft %>% flextable::autofit()
+# 
+#   ft_out <- flextable::width(ft_out, width = dim(ft_out)$widths*pgwidth /(flextable::flextable_dim(ft_out)$widths))
+#   return(ft_out)
+# }
+# 
+# FitFlextableToPage(tab[[2]])
 
 ```
 
@@ -113,12 +126,13 @@ Startregistreringer
                                                  regStatus = c(1),
                                                  regType = c(1,2,3,4),#START
                                                  dateFrom = "2012-01-01",
-                                                 dateTo = "2019-12-31",
+                                                 dateTo = "2021-12-31",
                                                  ageFrom = 0,
                                                  ageTo = 200)
 
-  norspis2::make_table_DQ_regCountYearly(RegDataNatValFiltered = RegDataNatValFiltered)
+  tab_start <- norspis2::make_table_DQ_regCountYearly(RegDataNatValFiltered = RegDataNatValFiltered)
   
+  tab_start[[2]]
   
 
 ```
@@ -134,11 +148,14 @@ Sluttregistreringer
                                                  regStatus = c(1),
                                                  regType = c(5,6,98,99),#END
                                                  dateFrom = "2012-01-01",
-                                                 dateTo = "2019-12-31",
+                                                 dateTo = "2021-12-31",
                                                  ageFrom = 0,
                                                  ageTo = 200)
 
-  norspis2::make_table_DQ_regCountYearly(RegDataNatValFiltered = RegDataNatValFiltered)
+  tab_slutt <- norspis2::make_table_DQ_regCountYearly(RegDataNatValFiltered = RegDataNatValFiltered)
+  
+  tab_slutt[[2]]
+  
 ```
 
 

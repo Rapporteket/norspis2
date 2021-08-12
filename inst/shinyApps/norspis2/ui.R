@@ -16,6 +16,41 @@ library(ggplot2)
 
 shiny::addResourcePath('rap', system.file('www', package='rapbase'))
 
+
+##PREPARATIONS FOR MAP TAB:
+#---
+#1. Userfriendly names of variable choices in app:
+#1.1. By first selecting/making it possible to choose all attribute variables (i.e. beg. w. "egensk"),
+#and that are okeyed (ending w. OK):
+#for different ways to use and call internal data, see:
+#https://stackoverflow.com/questions/9521009/how-do-you-handle-r-data-internal-to-a-package
+names <- intersect(
+  grep("(^egensk)", names(norspis2:::attributedata_geo), value=TRUE),
+  grep("(.OK)", names(norspis2:::attributedata_geo), value=TRUE))
+names_map <- names[!(names %in% c("egensk_inkludere_OK", "egensk_datakval_kompl_dg2017_hfavd_OK",
+                                  "egensk_datakval_kompl_dg2018start_hfavd_OK","egensk_datakval_kompl_dg2018slutt_hfavd_OK",
+                                  "egensk_sengerSF_OK", "egensk_prioritert2020_OK", "egensk_kontaktperson_OK" ))]#variables that are (ARE NOT) OK in map
+names_w_null<-c('null', names)
+
+#1.1 And then making a dataframe with variable names and display names:
+choices_df = data.frame(
+  names =  names_map,
+  displaynames = c('Tilslutning 2017', 'Tilslutning 2018', 'Tilslutning 2019','Tilslutning 2020')
+)
+# choices_df = data.frame(
+#    names =  names,
+#    displaynames = c('Inkludering', 'Tilslutning 2017', 'Tilslutning 2018', 'Tilslutning 2019', 'Dekningsgrad 2017')
+# )
+
+choices_df_w_null = data.frame(
+  names =  names_w_null,
+  displaynames = c('Ingen', 'Inkludering', 'Tilslutning 2017','Tilslutning 2018', 'Tilslutning 2019', 'Tilslutning 2020',
+                   'Dekningsgrad 2017', 'Dekningsgrad 2018 (start)', 'Dekningsgrad 2018 (slutt)',
+                   'Senger SF (N)', 'Prioritert 2020','Kontaktperson')
+)
+##PREPARATIONS FOR MAP TAB (END)
+
+
 shinyUI(
 
 ui <- tagList(
@@ -815,8 +850,81 @@ ui <- tagList(
           ),
         tabPanel(
           "Rapport: Enhetsoversikter (kart og tabell)",
-          sidebarPanel(
+          sidebarLayout(
+            sidebarPanel(width = 2,
+                         selectInput("chosen_hf", "Helseforetak:",
+                                     choices = c('Alle',
+                                                 'Helse Nord',
+                                                 'Helse Midt',
+                                                 'Helse Vest',
+                                                 'Helse Sør-Øst',
+                                                 'Helse Møre og Romsdal', 'Helse Nord-Trøndelag', 'St. Olavs Hospital',
+                                                 'Finnmarkssykehuset','Helgelandssykehuset', 'Nordlandssykehuset',
+                                                 'Universitetssykehuset Nord-Norge','Private behandlingssteder',
+                                                 'Akershus universitetssykehus', 'Oslo universitetssykehus',
+                                                 'Sykehuset i Vestfold', 'Sykehuset Innlandet', 'Sykehuset Telemark',
+                                                 'Sykehuset Østfold','Sørlandet Sykehus', 'Vestre Viken', 'Helse Bergen',
+                                                 'Helse Fonna', 'Helse Førde', 'Helse Stavanger'),#choices, see: unique(attributedata_geo$enhet_hf)
+                                     selected = 'Alle'
+                         ),
 
+                         selectInput("chosen_color_var", "Variabel (kart):",
+                                     choices = setNames(as.character(choices_df$names), choices_df$displaynames), #why as.character: https://stackoverflow.com/questions/30022732/shiny-all-sub-lists-in-choices-must-be-named
+                                     selected = 'egensk_tilslutning2019_hfavd_OK'
+                         ),
+                         checkboxInput("includeMap", "Show map:", value=TRUE),
+
+                         # c('Tilslutning 2019'='egensk_tilslutning2019_hfavd',
+                         #          'Tilslutning 2018'='egensk_tilslutning2018_hfavd',
+                         #          'Tilslutning 2017'='egensk_tilslutning2017_hfavd')),
+                         # selectInput("chosen_map_area", "Område:",
+                         #             choices = c('Norge'='norway', 'Nord'='north', 'Midt'='middle', 'Vest' = 'west', 'Sør-Øst'='southeast')),
+                         checkboxGroupInput('chosen_unit_type',
+                                            "Behandlingsenheter:",
+                                            choices = c('Regional enhet'='3',
+                                                        'Regional enhet (BU)'='11',
+                                                        'Regional enhet (V)'='12',
+                                                        'Spesialpoliklinikk' = '10',
+                                                        'BU: Spisset tilbud SF'='4',
+                                                        'V: spisset tilbud SF'='5',
+                                                        'BU: Spisset tilbud SF med døgnbeh.' = '6',
+                                                        'V: Spisset tilbud SF med døgnbeh.' = '7',
+                                                        'BU: Ordinær BUP'='1',
+                                                        'V: Ordinær DPS'='2',
+                                                        'Annen/ukjent'='9'),
+                                            selected = '3'),
+                         radioButtons('visualize_points', "Vis enheter i kart:",
+                                      choices = c('Ja'='yes',
+                                                  'Nei'='no'),
+                                      selected ='yes'),
+                         radioButtons('visualize_text_unitname', "Vis enhetsnavn i kart:",
+                                      choices = c('Ja'='yes',
+                                                  'Nei'='no'),
+                                      selected ='no'),
+                         radioButtons('visualize_colour_polygons', "Fargelegg område med variabel 1:",
+                                      choices = c('Ja'='yes',
+                                                  'Nei'='no'),
+                                      selected ='no'),
+                         checkboxInput("includeTable", "Show table:", value=TRUE),
+                         selectInput("chosen_color_var2", "Variabel 2 (tabell):",
+                                     choices = setNames(as.character(choices_df_w_null$names), choices_df_w_null$displaynames)
+                         ),
+                         selectInput("chosen_color_var3", "Variabel 3 (tabell):",
+                                     choices = setNames(as.character(choices_df_w_null$names), choices_df_w_null$displaynames)
+                         ),
+                         selectInput("chosen_string_var", "Variabel 4 (tabell)",
+                                     choices = setNames(as.character(choices_df_w_null$names), choices_df_w_null$displaynames)),
+                         downloadButton("report", "Generer rapport")
+                         #FAILED: Tried to make a download buttont that downloaded report for all HF/RHF in one go
+                         #(inspired by this post: https://stackoverflow.com/questions/40314582/how-to-download-multiple-reports-created-using-r-markdown-and-r-shiny-in-a-zip-f)
+                         #downloadButton("reportS", "Rapporter for alle HF/RHF")
+
+            ),
+            # Show a plot of the generated distribution
+            mainPanel(
+              plotOutput("mapPlot", height="800px"),
+              tableOutput("tableView")
+            )
           )
         ),
 

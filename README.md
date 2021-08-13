@@ -34,10 +34,19 @@ So far the package contains functions to prepare:
     proportions at different hospital units).
 -   The figures have functions for tables belonging to them (figTable),
     which must be run first and used as input to the figure functions.
+-   four functions used to make maps with overview of units and tables
+    to go along with the maps
+-   …
 
 A function for making parameterized reports for each hospital unit,
 norspis2::make\_report(), in connection to a a .Rmd document,
 inst/norspis-periodisk-rapport.Rmd, has also been made.
+
+A document, recipe-implement-maps-in-R-package, describes how map
+graphics were included in the norspis2 package, and can be found in the
+folder norspis2/inst.
+
+## Installation
 
 You can install the released version/development version of norspis2
 from [GitHub](https://github.com/) with:
@@ -69,7 +78,7 @@ devtools::install_github("Rapporteket/norspis2")
 
 ### Colors
 
-Three colors from?
+Three colors from …?
 
 -   ‘\#c6dbef’,
 -   ‘\#2171b5’
@@ -78,8 +87,10 @@ Three colors from?
 **HEX codes for colors (from the Norwegian national profile handbook for
 the specialist health care service):**
 
-*Codes gotten directly from the handbook:* \* \#003283 - dark blue (PMS
-287) \* \#81A9E1 - light blue (PMS 284)
+*Codes gotten directly from the handbook:*
+
+-   \#003283 - dark blue (PMS 287)
+-   \#81A9E1 - light blue (PMS 284)
 
 *The following colors have been collected through color sampling from
 the handbook and may be imprecise:* *Brown*

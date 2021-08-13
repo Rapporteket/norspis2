@@ -416,25 +416,26 @@ server <- function(input, output, session) {
 
   })
 
-  output$tableOvers <- DT::renderDataTable({
-    norspis2::NorSpis1TabRegStatus(
-      RegData = DL$RegData2,
-      userRole = userRole,
-      reshID = reshID,
-      datoFra=input$datovalgRegOvers[1],
-      datoTil=input$datovalgRegOvers[2])
 
-  })
-
-  output$tableOversUtv <- DT::renderDataTable({
-    norspis2::NorSpis1TabRegStatusUtvidet(
-      RegData = RegData,
-      userRole = userRole,
-      reshID = reshID,
-      datoFra=input$datovalgRegOversUtv[1],
-      datoTil=input$datovalgRegOversUtv[2])
-
-  })
+  # output$tableOvers <- DT::renderDataTable({
+  #   norspis2::NorSpis1TabRegStatus(
+  #     RegData = DL$RegData2,
+  #     userRole = userRole,
+  #     reshID = reshID,
+  #     datoFra=input$datovalgRegOvers[1],
+  #     datoTil=input$datovalgRegOvers[2])
+  #
+  # })
+  #
+  # output$tableOversUtv <- DT::renderDataTable({
+  #   norspis2::NorSpis1TabRegStatusUtvidet(
+  #     RegData = RegData,
+  #     userRole = userRole,
+  #     reshID = reshID,
+  #     datoFra=input$datovalgRegOversUtv[1],
+  #     datoTil=input$datovalgRegOversUtv[2])
+  #
+  # })
 
 
 
@@ -1020,11 +1021,21 @@ server <- function(input, output, session) {
 
   output$tableOversUtv <- DT::renderDataTable({
     norspis2::NorSpis1TabRegStatusUtvidet(
-      RegData = RegData,
+      RegData = DL$RegData2,
       userRole = userRole,
       reshID = reshID,
       datoFra=input$datovalgRegOversUtv[1],
       datoTil=input$datovalgRegOversUtv[2])
+
+  })
+
+  output$tableDQcompletness_endreg <- renderTable({
+    norspis2::make_table_DQ_completeness_endreg(
+      RegDataStartEnd = DL$RegDataStartEnd2,
+      userRole = userRole,
+      reshID = reshID,
+      dateFrom=input$datovalgDatakvalForlop[1],
+      dateTo=input$datovalgDatakvalForlop[2])
 
   })
 

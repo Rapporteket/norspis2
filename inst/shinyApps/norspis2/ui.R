@@ -827,6 +827,21 @@ ui <- tagList(
           )
         ),
         tabPanel(
+          "Datakvalitet (forløpskompletthet)",
+          sidebarPanel(
+            width = 3,
+            dateRangeInput(
+              inputId = 'datovalgDatakvalForlop',
+              start = "2012-01-01",
+              end = "2020-12-31",
+              label = 'Velg tidsperiode',
+              separator="t.o.m.",
+              language="nb")
+          ),
+          mainPanel(tableOutput("tableDQcompletness_endreg")
+          )
+        ),
+        tabPanel(
           "Rapport: Fagrådet",
           sidebarPanel(
             "Generer rapport til fagrådsmøte:",

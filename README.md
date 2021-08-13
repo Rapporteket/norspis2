@@ -27,16 +27,16 @@ quality registries.
 
 So far the package contains functions to prepare:
 
--   five differently structured datasets (RegData, RegDataBeh,
+  - five differently structured datasets (RegData, RegDataBeh,
     RegDataNatVal, RegDataStartEnd, RegDataStartEndNatVal)
--   three tables (DQ\_missing ,DQ\_regCount, and patChar)
--   two figures (one simple distribution figure and one to compare
+  - three tables (DQ\_missing ,DQ\_regCount, and patChar)
+  - two figures (one simple distribution figure and one to compare
     proportions at different hospital units).
--   The figures have functions for tables belonging to them (figTable),
+  - The figures have functions for tables belonging to them (figTable),
     which must be run first and used as input to the figure functions.
--   four functions used to make maps with overview of units and tables
+  - four functions used to make maps with overview of units and tables
     to go along with the maps
--   …
+  - …
 
 A function for making parameterized reports for each hospital unit,
 norspis2::make\_report(), in connection to a a .Rmd document,
@@ -59,19 +59,33 @@ devtools::install_github("Rapporteket/norspis2")
 ## Example
 
 <!-- This is a basic example which shows you how to solve a common problem: -->
+
 <!-- ```{r example} -->
+
 <!-- library(norspis2) -->
+
 <!-- ## basic example code -->
+
 <!-- ``` -->
+
 <!-- What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so: -->
+
 <!-- ```{r cars} -->
+
 <!-- summary(cars) -->
+
 <!-- ``` -->
+
 <!-- You may render `README.Rmd` manually, to keep `README.md` up-to-date. However, you may also leave this to the ci process at GitHub. -->
+
 <!-- You can also embed plots, for example: -->
+
 <!-- ```{r pressure, echo = FALSE} -->
+
 <!-- plot(pressure) -->
+
 <!-- ``` -->
+
 <!-- In that case, don't forget to commit and push the resulting figure files, so they display on GitHub! -->
 
 ## Other useful information
@@ -80,40 +94,40 @@ devtools::install_github("Rapporteket/norspis2")
 
 Three colors from …?
 
--   ‘\#c6dbef’,
--   ‘\#2171b5’
--   ‘\#c6dbef’
+  - ‘\#c6dbef’,
+  - ‘\#2171b5’
+  - ‘\#c6dbef’
 
 **HEX codes for colors (from the Norwegian national profile handbook for
 the specialist health care service):**
 
 *Codes gotten directly from the handbook:*
 
--   \#003283 - dark blue (PMS 287)
--   \#81A9E1 - light blue (PMS 284)
+  - \#003283 - dark blue (PMS 287)
+  - \#81A9E1 - light blue (PMS 284)
 
 *The following colors have been collected through color sampling from
 the handbook and may be imprecise:* *Brown*
 
--   \#eacbaa - light brown (PMS 4665)
--   \#b68069 - dark brown (PMS 4715)
--   \#781d00 - reddish brown (PMS483)
+  - \#eacbaa - light brown (PMS 4665)
+  - \#b68069 - dark brown (PMS 4715)
+  - \#781d00 - reddish brown (PMS483)
 
 *Red*
 
--   \#dd052b - red (PMS1795)
+  - \#dd052b - red (PMS1795)
 
 *Yellow*
 
--   \#f6e48c - light yellow (PMS 459)
--   \#fbba00 - yellow (PMS 130)
+  - \#f6e48c - light yellow (PMS 459)
+  - \#fbba00 - yellow (PMS 130)
 
 *Grey*
 
--   \#bbc2c6 - grey (PMS 7543)
+  - \#bbc2c6 - grey (PMS 7543)
 
 *Green*
 
--   \#86b29e - green-grey (PMS 624)
--   \#4da32f - green (PMS 362)
--   \#00684b - dark green(PMS 342)
+  - \#86b29e - green-grey (PMS 624)
+  - \#4da32f - green (PMS 362)
+  - \#00684b - dark green(PMS 342)

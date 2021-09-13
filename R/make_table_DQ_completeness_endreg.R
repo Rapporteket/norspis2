@@ -118,18 +118,18 @@ base_data <-
 
 #make into a time tibble, which will make it easier to make time series:
 base_data2 <-
-  as_tbl_time(base_data, HovedDato.x) %>%
+  tibbletime::as_tbl_time(base_data, HovedDato.x) %>%
   mutate(HovedDato.x = as.Date(as.character(HovedDato.x))) %>% #format for time tibble manipulation
   arrange(HovedDato.x) %>%  #must be sorted to enable timetibble functionality
   #Make new date variable for year:
   #(see: https://cran.r-project.org/web/packages/tibbletime/vignettes/TT-04-use-with-dplyr.html)
-  mutate(date_index_year = collapse_index(HovedDato.x,"yearly")) %>%
+  mutate(date_index_year = tibbletime::collapse_index(HovedDato.x,"yearly")) %>%
   relocate(date_index_year)
   #        %>%
   # group_by(HovedDato.x)
 
 
-estimated_completeness <- base_data2 %>%
+completeness <- base_data2 %>%
   #estimated completeness per treatment unit:
     #about if statement, see John Paul's comment here:
     #https://stackoverflow.com/questions/30604107/r-conditional-evaluation-when-using-the-pipe-operator
@@ -148,11 +148,12 @@ estimated_completeness <- base_data2 %>%
             expected_n_end_reg_notdelivered =
               expected_n_end_reg - actual_n_end_reg
             ) %>%
-  mutate(completeness_end_reg_estimated = actual_n_end_reg/expected_n_end_reg,
-         completeness_raw = actual_n_end_reg/actual_n_start_reg,
+  mutate(completeness_end_reg_estimated = (actual_n_end_reg/expected_n_end_reg)*100,
+         completeness_raw = (actual_n_end_reg/actual_n_start_reg)*100,
          completeness_diff_estimated_vs_raw =
            completeness_end_reg_estimated - completeness_raw) %>%
-  relocate(completeness_raw, .after = actual_n_end_reg_notdelivered)
+  relocate(completeness_raw, .after = actual_n_end_reg_notdelivered)%>%
+  mutate(across(where(is.numeric), round, 1))
 
 
 
@@ -160,11 +161,48 @@ estimated_completeness <- base_data2 %>%
 #   rename("Startdato" = HovedDato.x,
 #          "sluttdato" = HovedDato.y)
 
+#separate into three tables, raw, estimated and difference
+raw_completeness <-
+  completeness %>%
+  select (AvdNavn.x,
+          actual_n_start_reg,
+          actual_n_end_reg,
+          completeness_raw,
+          actual_n_end_reg_notdelivered) %>%
+  rename("Avdeling"= AvdNavn.x,
+         "Startreg. (faktisk) (n)" = actual_n_start_reg,
+         "Sluttreg. (faktisk) (n)" = actual_n_end_reg,
+         "Kompletthet (rå) (%)" = completeness_raw,
+         "Manglende (faktisk) (n)" = actual_n_end_reg_notdelivered)
 
-#2) Also make a separate table with FID of start registrations missing
+estimated_completeness <-
+  completeness %>%
+  select (AvdNavn.x,
+          expected_n_end_reg,
+          actual_n_end_reg,
+          completeness_end_reg_estimated,
+          expected_n_end_reg_notdelivered) %>%
+  rename("Avdeling"= AvdNavn.x,
+         "Sluttreg. (forventet) (n)" = expected_n_end_reg,
+         "Sluttreg. (faktisk) (n)" = actual_n_end_reg,
+         "Kompletthet (estimert) (%)" = completeness_end_reg_estimated,
+         "Manglende (estimert) (n)" = expected_n_end_reg_notdelivered)
+
+difference_raw_estimated_completeness <-
+  completeness %>%
+  select (AvdNavn.x,
+          completeness_diff_estimated_vs_raw) %>%
+  rename("Avdeling"= AvdNavn.x,
+         "Differanse (estimert - rå) (%)" =completeness_diff_estimated_vs_raw)
+
+#2) Also make a separate table with FID of start registrations missing, so
+#that they can now which ones is missing FID
 #end registrations
 
-estimated_completeness
+return(list(raw_completeness,
+            estimated_completeness,
+            difference_raw_estimated_completeness))
+
 #DT::datatable(estimated_completeness, options = list(pageLength = 50))
 
 }

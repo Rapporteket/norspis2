@@ -13,6 +13,7 @@
 make_table_DQ_regCountYearly <- function(RegDataNatValFiltered,
                                          saveAsImage=F,
                                          saveAsDoc=F,
+                                         width_first_column=2,
                                          pathToSaveTableFile = "F:/",
                                          fileNameSuffix= "_2021" #any text
                                          ){
@@ -61,7 +62,8 @@ make_table_DQ_regCountYearly <- function(RegDataNatValFiltered,
   ft3 <- flextable::flextable(RegData_NatVal_overview) %>%
     flextable::hline(i=nrow(RegData_NatVal_overview)-1, part = "body", border=border)%>%
     flextable::colformat_int(na_str = "-")%>%#remove NA from visual
-    flextable::autofit()
+    flextable::autofit() %>%
+    flextable::width(j=1, width =width_first_column)
 
   # Print/save as .png and .docx
   # flextable::save_as_image(ft3, path = "F:/Nreg2012_2019start.png" )

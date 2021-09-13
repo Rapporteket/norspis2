@@ -31,6 +31,8 @@ fun2_1_1_RegData_newVarGlobal <- function(myInData){
   myInData$AvdNavn[myInData$AvdNavn==107026] <- 'Bergen (regional)'
   myInData$AvdNavn[myInData$AvdNavn==4210303] <- 'Tr.heim (spes.pol.)'
   myInData$AvdNavn[myInData$AvdNavn==4207697] <- 'Stjordal (DPS)'
+  myInData$AvdNavn[myInData$AvdNavn==4204275] <- 'Halden/Sarpsborg (DPS)'
+  myInData$AvdNavn[myInData$AvdNavn==104083] <- 'Arendal (dogn)'
 
   # Hospital department CATEGORY
   myInData$AvdKategori <- myInData$AvdRESH
@@ -50,6 +52,8 @@ fun2_1_1_RegData_newVarGlobal <- function(myInData){
   myInData$AvdKategori[myInData$AvdKategori==107026] <- 'regional'
   myInData$AvdKategori[myInData$AvdKategori==4210303] <- 'spec_outpaitent'
   myInData$AvdKategori[myInData$AvdKategori==4207697] <- 'outpatient'
+  myInData$AvdNavn[myInData$AvdNavn==4204275] <- 'inpatient'
+  myInData$AvdNavn[myInData$AvdNavn==104083] <- 'inpatient'
 
   # Hospital department AGE CATEGORY
   myInData$AvdAlder <- myInData$AvdRESH
@@ -69,7 +73,8 @@ fun2_1_1_RegData_newVarGlobal <- function(myInData){
   myInData$AvdAlder[myInData$AvdAlder==107026] <- 'adult'
   myInData$AvdAlder[myInData$AvdAlder==4210303] <- 'adult'
   myInData$AvdAlder[myInData$AvdAlder==4207697] <- 'adult'
-
+  myInData$AvdNavn[myInData$AvdNavn==4204275] <- 'adult'
+  myInData$AvdNavn[myInData$AvdNavn==104083] <- 'adult'
 
   myInData
 }

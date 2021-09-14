@@ -1,0 +1,376 @@
+---
+title: "Rapport - NorSpis"
+author: 'Forløpskompletthet'
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    number_sections: 2
+  html_document:
+    df_print: paged
+params: 
+  reshID: 700821
+  dateFrom: !r format(Sys.Date(), "%Y")
+  dateTo: "`r Sys.Date()`" 
+---
+
+[//]: # Just a list of usefull rmarkdown formatting commands:
+[//]: # \pagebreak
+
+
+[//]: # just setting things up
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  echo = params$reshID,
+  warning=FALSE,
+  comment = "#>",
+  cache.path = 'F:/'
+)
+```
+
+```{r loadPackages, include=FALSE}
+#rm(list=ls()) WARNING: Do not use this line in parameterized .Rmd-documents, or else the parameters will not be found 
+library(rapbase)
+library(tidyverse)
+library(norspis2)
+```
+
+[//]: # remember to load data - use "script-to-load-data-locally-norspis (...)"
+
+```{r}
+library(dplyr)
+#------DATA norspis2
+RegData2 <- norspis2::fun1_1_import_data_FEA(path_data="F:/2021-09-13/", #disk and folder of data to import
+                                             date_data="2021-09-13")
+
+RegDataBeh2 <- norspis2::fun1_2_import_data_B(path_data="F:/2021-09-13/", #disk and folder of data to import
+                                              date_data="2021-09-13")
+#Five datasets (and outputted in a list):
+DL <- norspis2::fun2_dataList(myInData1 = RegData2, myInData2 = RegDataBeh2)
+#---DATA norspis2 (END)
+#-----DATA  for norspis functions
+#When we use norspis functions we use the call "RegData" (while we in norspis2 use DL$RegData12345)
+RegData <- RegData2
+#---DATA norspis2 (END)
+```
+
+
+[//]: # paramemters 
+
+<!-- ```{r} -->
+<!-- reshID = '700821' #TESTNO" , Oslo: 109979, Bodø: 700821 -->
+<!-- userRole <-'SC' #'CC' , 'LC', 'LU' -->
+<!-- ``` -->
+
+\pagebreak
+
+# Om denne rapporten
+
+*Bruk:* Til bruk i fagrådsmøte uke 37 2021. Annen bruk må avklares med NorSpis-administrasjonen,
+og dokumenteres der.
+
+*Formål*: Vurdere forløpskompletthet og metode for beregning av 
+forløpskompletthet.
+
+*Datagrunnlag:* Til og med uke 36, 2021 (12. september).
+
+
+\pagebreak
+
+
+
+\pagebreak
+
+
+# Datakvalitetsmål
+
+* Forløpskompletthet
+
+\pagebreak
+
+## Forløpskompletthet
+
+### Bakgrunn
+
+**Definsjon av forløpskomplettet**: Andelen leverte sluttregistreringer av alle 
+leverte startregisteringer, for alle behandlingsforløp som faktisk er ferdige.
+
+**Hvorfor beregne forløpskompletthet?**: Statistikken gir enhetene en mulighet til
+jobbe med å forbedre sin forløpskompletthet ved å sammenligne seg med seg selv 
+over tid, samt med andre enheter. Forløpskompletthet er et viktig datakvalitets-
+mål fordi blant annet kvalitetsindikatorene kun kan beregnes ut fra sluttreg-
+istreringene. Høy forløpskompletthet reduserer faren for skjevheter (*bias*), og
+øker generaliserbarheten av enhetenes resultater tilbake til egen pasientgruppe,
+slik at man kan være tryggere på avgjørelser som tas på bakgrunn av statistikken.
+
+**Utfordring ved bergning av forløpskompletthet**: Det er vanskelig å måle 
+forløpskompletthet direkte fordi man i fraværet av en sluttregistrering ikke 
+vet om en sluttregistrering skulle vært levert eller om pasienten fremdeles er i
+behandling og derfor enda ikke aktulle for sluttregistrering.
+
+**Løsning**: Sannsynlighetsbasert beregning, basert på statistikk fra NorSpis om
+behandlingslengdene for de komplette forløpene. Dette gir et estimat, som ikke 
+vil være presist, men kan gi enhetene pekepinn. 
+
+Under følger et forslag til beregning av forløpskompletthet. 
+
+
+\pagebreak
+
+
+### Beregning - teoretisk bakgrunn (for spesielt interesserte)
+
+Som et pedagogisk utgangspunkt kan vi kan først beregne en rå 
+forløpskompletthet, som altså ikke tar hensyn til at noen av de manglende
+registreringene jo ikke skulle vært levert enda. 
+
+Under følger en tabell med "rå" forløpskompletthet i NorSpis for hele registerets
+levetid og frem til i dag:
+
+```{r}
+completeness <- make_table_DQ_completeness_endreg()
+
+raw_completeness <- completeness[[1]]%>%
+  mutate(across(where(is.numeric), round, 1))
+
+
+flextable::flextable(raw_completeness)
+
+```
+
+
+Vi beregner først behandlingslengden i NorSpis, som tiden fra start av behandling
+til slutt av behandling:
+```{r, echo=T}
+#Treatment length, days - we make such a variable like this:
+times <- as.Date(DL$RegDataStartEnd2$HovedDato.y)-
+  as.Date(DL$RegDataStartEnd2$HovedDato.x)
+
+#Quick inspection:
+summary(as.numeric(times))
+
+```
+
+Over ser vi at median behandlingslengde i NorSpis, for komplette forløp, er 
+119 dager, mens gjennomsnittet er 174 dager. Høyere gjennomsnitt enn median, 
+indikerer at det er noen behandlingsforløp som er mye lengre enn hva som er 
+mest normalt, og dermed drar opp gjennomsnittet. 
+
+
+Basert på behandlingstidene, ønsker vi å finne sannsynligheten for at en 
+behandlingstid på x antall dager skulle væ rt ferdigstil. 
+Til det bruker vi en funksjon i en statistikk-pakke i R som heter *stats*:
+
+```{r, echo=TRUE}
+# To calculate the probability for a given treatment length, we first 
+#utilize the ecdf function (tip on it here: https://stats.stackexchange.com/questions/209369/estimate-the-probability-of-the-distribution-of-a-sample)
+
+time_cdf <- ecdf(times) #this becomes a function
+
+```
+
+Med denne funksjonen kan vi for eksempel finne sannsynligheten for at en 
+andelen registreringer som er har behandlingslengde på opp til 365 dager, 
+og vi kan også plotte den kumulative sannsynlighetsfordelingen for 
+behandlingslengdene:
+
+```{r, echo=TRUE}
+#we can plot the cumulative distribution of probabilities of treatment lengths:
+plot(ecdf(times))
+
+##and we can use the time_cdf function to calculate probabilities:
+#For instance we can get the probability for a treatment length of 365 days:
+time_cdf(365)
+
+
+```
+Vi ser at 88,8 prosent av ferdigstilte registreringer i NorSpis har en lengde på mindre enn
+365 dager. 
+
+Under en rekke forutsetning, som ikke alltid vil holde,men likevel ikke er til 
+hinder for en fornuftig analyse, kan man som et estimat si at en en registrering 
+med startdato for 365 dager siden, med 88,8 prosents sannsynlghet skulle vært 
+levert.
+
+Denne tankegangen kan man videre bruke til å estimere hvor mange av startregistreringene
+ved en enhet som skulle vært levert, på bakgrunn av at vi vet datoen for 
+startregistreringen.
+
+\pagebreak
+
+For å beregne forløpskompletthet ut fra tankegangen over, er noen ytterligere 
+variabler beregnet. En tabell med disse variablene og esitimert forløpskompletthet
+per avdeling i NorSpis følger under:
+
+```{r, echo=TRUE}
+#we have made a function to that computes and presents the needed variables:
+completeness <- norspis2::make_table_DQ_completeness_endreg()
+estimated_completeness <- completeness[[2]]
+flextable::flextable(estimated_completeness)
+```
+
+\pagebreak
+
+Til å vurdere metoden vi har brukt for å estimere forløpskomplettheten, kan 
+vi også se på forskjellen mellom den rå kompletthet og estimert kompletthet:
+```{r}
+completeness <- norspis2::make_table_DQ_completeness_endreg()
+
+difference_raw_estimated_completeness <- completeness[[3]]
+
+flextable::flextable(difference_raw_estimated_completeness)
+
+```
+
+\pagebreak
+
+Som vi ser over er det ikke store prosentdifferanser, altså utgjør det ikke stor
+forskjell om man beregner rå forløpskompletthet eller estimert forløpskompletthet.
+Dette er imidlertid når vi nå har sett på alle data i NorSpis så langt under ett.
+Hvis man ser på komplettheten for en kortere tidsperiode, og som er nærmere dags 
+dato, vil det være naturlig at differensen mellom rå og estimert 
+forløpskompletthet vil øke. 
+
+Vi kan illustrere dette ved å se på forløpskomplettheten så langt i år 
+(datagrunnlag: 1.jan. til 12. sep.). Under følger tre tabeller for denne 
+perioden med rå kompletthet, estimert kompletthet og differansen mellom de. 
+
+\pagebreak
+
+
+```{r}
+completeness <- norspis2::make_table_DQ_completeness_endreg(dateFrom = "2021-01-01",
+                                                            dateTo = "2021-12-09",
+                                                            timeseries = F)
+completeness_raw <- completeness[[1]]
+
+flextable::flextable(completeness_raw)
+
+```
+
+\pagebreak
+
+```{r}
+completeness <- norspis2::make_table_DQ_completeness_endreg(dateFrom = "2021-01-01",
+                                                            dateTo = "2021-12-09",
+                                                            timeseries = F)
+
+completeness_estimated <- completeness[[2]] 
+
+flextable::flextable(completeness_estimated)
+
+```
+
+\pagebreak
+
+```{r}
+completeness <- norspis2::make_table_DQ_completeness_endreg(dateFrom = "2021-01-01",
+                                                            dateTo = "2021-12-09")
+completeness_difference <- completeness[[3]]
+
+flextable::flextable(completeness_difference)
+
+```
+
+
+Ut fra det over, hvis vi ser bort fra Halden/Sarpsborg som nylig har startet registrering, 
+ser vi at vi at den estimerte komplettheten for de fleste enhetene ligger 
+omkring eller over 10 prosent høyere enn den rå. For de enhetene hvor 
+differensen er null, er det fordi de i 2021 ikke har levert - da blir både den 
+estimerte og rå komplettheten null prosent. 
+
+Når man skal rapportere på forløpskompletthet i NorSpis sin 
+årsrapport, kan det gi et riktigere resultat å rapportere estimert fremfor rå 
+forløpskompletthet. 
+
+\pagebreak
+
+
+# Kompletthet over tid
+
+Under følger to tabeller med kompletthet det enkelte år ved avdelingene.
+En tabell er må med rå kompletthet og en med estimert kompletthet.
+Her kan man se om det det har vært noen utvikling i komplettheten over tid. 
+
+\pagebreak
+
+## Kompletthet (rå) over tid
+
+```{r}
+completeness <- norspis2::make_table_DQ_completeness_endreg(dateFrom = "2012-01-01",
+                                                            dateTo = "2021-12-09",
+                                                            timeseries = T)
+completeness_raw <- completeness[[1]]
+
+flextable::flextable(completeness_raw)
+
+```
+\pagebreak
+
+## Kompletthet  (estimert) over tid
+
+```{r}
+completeness <- norspis2::make_table_DQ_completeness_endreg(dateFrom = "2012-01-01",
+                                                            dateTo = "2021-12-09",
+                                                            timeseries = T)
+completeness_raw <- completeness[[2]]
+
+flextable::flextable(completeness_raw)
+
+```
+Hvis vi ser bort fra 2021, tyder begge de to tabellene med forløpskompletthet over tid på at komplettheten
+i ved flere enheter var lavere i 2020 enn foregående år, også den estimerte forløpskomlettheten.
+Dette kan reflektere både at man har hentet inne færre sluttregistreringer enn forventet fra 
+pasientene i 2020 enn foregående år - f.eks. som en følge av registreringstretthet 
+hos enhetene, men det kan også reflektere etterslep i innlegging i elektronisk løsning.
+
+Ser man f.eks. på Bodø (regionalt senter) var estimert kompletthet (rå i parentes) 
+95,7 (95,7) og 94,0 (93,9) prosent de to første årene (2017 og 2018) før den
+falt til 69,4 (68,8) prosent i 2019 og  37,5 (35,6) prosent i 2020. 
+
+Den falt altså forholdvis mye for Bodø som eksempel, både i 2019 og 2020. 
+
+**Men et annet moment her kan være at selv den estimerte forløpskomplettheten 
+*underestimerer* dekningsgradene fordi behandlingstidene i NorSpis per i dag,
+som man har brukt som grunnlag til å estimere forløpskomplettheten, ikke tar opp
+i seg flere lange behandlingsforløp - altså at det skal være relativt sett mange 
+flere lange behandlingsforløp i statistikken over behandlingslengder, enn man har 
+i statistikken i dag.** Over tid vil en slik underestimering kunne 
+jevne seg ut, men for å unngå å over*sample* korte forløp, kan man likevel 
+vurdere å utelate behandlinger fra siste året når man lager 
+statistikken på behandlinslengdene - f.eks. bruke behandlingslengdestatistikk 
+kun frem til og med 2020, når man beregner forløpskompletthet for 2021. Slik 
+vil ikke korte forløp som både startet og sluttet i 2020 bli *samplet*, siden jo 
+heller ikke lange forløp som også startet i 2021 vil bli "*samplet*" fordi  
+den statistikken enda ikke er mulig å måle siden de jo ikke har hatt mulighet 
+til å levere sluttregistrering når de enda er i behandling. 
+Dermed blir forholdet mellom *samplingen* av korte og lange forløp mer lik/realistisk.
+
+Samtidig er det ikke nødvendig å gjøre mer arbeid ut av forløpskompletthetmålene
+enn nødvendig, og gjøre ting så enkelt som mulig for å oppnå formålet. 
+Forløpskomplettheten skal tjene to formål - (1) feedback, slik at man kan jobbe
+med å øke forløpskompletthetn, og (2) dokumentasjon, i forbindelse med 
+forbedringsarbeid, årsrapport og i forskningsrapporter, slik at man kan vurdere 
+resultatens gyldighet.
+
+\pagebreak
+
+## Differansen på de to metodene (per år)
+Til å vurdere metoden, kan vi til slutt også vise en tabell for differansen på
+de to metodene når vi ser på år for år. Her følger en tabell med 
+forskjellen i prosentandel på kompletthetsmålet:
+```{r}
+completeness <- norspis2::make_table_DQ_completeness_endreg(dateFrom = "2012-01-01",
+                                                            dateTo = "2021-12-09",
+                                                            timeseries = T)
+completeness_raw <- completeness[[3]]
+
+flextable::flextable(completeness_raw)
+
+```
+
+Den siste tabellen over viser ikke noe mer enn det vi allerede har vært inne på, 
+nemlig at det er for det siste året (her 2021) at differansen mellom de to
+metodene slår ut. 

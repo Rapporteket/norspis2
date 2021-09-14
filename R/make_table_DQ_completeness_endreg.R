@@ -33,12 +33,6 @@ make_table_DQ_completeness_endreg <- function(RegDataStartEnd =
                                               dateFrom = "2012-01-01",
                                               dateTo="2021-12-31",
                                               timeseries=F
-
-
-
-
-
-
 ){
 
 
@@ -153,7 +147,9 @@ completeness <- base_data2 %>%
          completeness_diff_estimated_vs_raw =
            completeness_end_reg_estimated - completeness_raw) %>%
   relocate(completeness_raw, .after = actual_n_end_reg_notdelivered)%>%
-  mutate(across(where(is.numeric), round, 1))
+  mutate(across(where(is.numeric), round, 1)) %>%
+  {if(timeseries==T) mutate(., date_index_year = format(date_index_year, format="%Y"))
+    else .}
 
 
 
@@ -164,36 +160,73 @@ completeness <- base_data2 %>%
 #separate into three tables, raw, estimated and difference
 raw_completeness <-
   completeness %>%
-  select (AvdNavn.x,
-          actual_n_start_reg,
-          actual_n_end_reg,
-          completeness_raw,
-          actual_n_end_reg_notdelivered) %>%
+  {if(timeseries==T)select(.,
+                           AvdNavn.x,
+                           date_index_year,
+                           actual_n_start_reg,
+                           actual_n_end_reg,
+                           completeness_raw,
+                           actual_n_end_reg_notdelivered)
+    else select(.,
+                AvdNavn.x,
+                actual_n_start_reg,
+                actual_n_end_reg,
+                completeness_raw,
+                actual_n_end_reg_notdelivered)} %>%
   rename("Avdeling"= AvdNavn.x,
          "Startreg. (faktisk) (n)" = actual_n_start_reg,
          "Sluttreg. (faktisk) (n)" = actual_n_end_reg,
          "Kompletthet (rå) (%)" = completeness_raw,
-         "Manglende (faktisk) (n)" = actual_n_end_reg_notdelivered)
+         "Manglende (faktisk) (n)" = actual_n_end_reg_notdelivered) %>%
+  {if(timeseries==T)
+  rename(.,
+         "År" = date_index_year)
+    else .
+  }
 
 estimated_completeness <-
   completeness %>%
-  select (AvdNavn.x,
-          expected_n_end_reg,
-          actual_n_end_reg,
-          completeness_end_reg_estimated,
-          expected_n_end_reg_notdelivered) %>%
+  {if(timeseries==T)select(.,
+                           AvdNavn.x,
+                           date_index_year,
+                           expected_n_end_reg,
+                           actual_n_end_reg,
+                           completeness_end_reg_estimated,
+                           expected_n_end_reg_notdelivered)
+    else select(.,
+                AvdNavn.x,
+                expected_n_end_reg,
+                actual_n_end_reg,
+                completeness_end_reg_estimated,
+                expected_n_end_reg_notdelivered)} %>%
   rename("Avdeling"= AvdNavn.x,
          "Sluttreg. (forventet) (n)" = expected_n_end_reg,
          "Sluttreg. (faktisk) (n)" = actual_n_end_reg,
          "Kompletthet (estimert) (%)" = completeness_end_reg_estimated,
-         "Manglende (estimert) (n)" = expected_n_end_reg_notdelivered)
+         "Manglende (estimert) (n)" = expected_n_end_reg_notdelivered) %>%
+  {if(timeseries==T)
+  rename(.,
+         "År" = date_index_year)
+    else .
+  }
 
 difference_raw_estimated_completeness <-
   completeness %>%
-  select (AvdNavn.x,
-          completeness_diff_estimated_vs_raw) %>%
+  {if(timeseries==T)select(.,
+                           AvdNavn.x,
+                           date_index_year,
+                           completeness_diff_estimated_vs_raw)
+    else select(.,
+                AvdNavn.x,
+                completeness_diff_estimated_vs_raw)} %>%
+
   rename("Avdeling"= AvdNavn.x,
-         "Differanse (estimert - rå) (%)" =completeness_diff_estimated_vs_raw)
+        "Differanse (estimert - rå) (%)"=completeness_diff_estimated_vs_raw) %>%
+  {if(timeseries==T)
+    rename(.,
+           "År" = date_index_year)
+    else .
+  }
 
 #2) Also make a separate table with FID of start registrations missing, so
 #that they can now which ones is missing FID

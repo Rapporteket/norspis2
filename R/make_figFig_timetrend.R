@@ -8,7 +8,7 @@
 #' @param add_fill Add fill under line
 #' @param my_data
 #' @param do_facet_wrap
-#' @param data_type Choices: "start-end" and "regular"
+#' @param data_type Choices: "start_end" and "regular"
 #' @param variable_type_0_100
 #' @param variable01
 #'
@@ -17,15 +17,16 @@
 #'
 #' @examples
 
-make_figFig_timetrend <- function(my_data,
-                                  data_type = "start_end",
-                                  variable01,
+make_figFig_timetrend <- function(my_data = DL$RegDataNatVal2,
+                                  data_type = "regular",
+                                  variable01 = "PasOppErfaring",
                                   variable_type_0_100 = FALSE,
                                   #= c(quo(EDEQ60GlobalScore_CHANGE_PROP))
                                   add_fill = F,
                                   do_facet_wrap = TRUE,
                                   show_legend = TRUE,
-                                  show_national_mean = FALSE
+                                  show_national_mean = FALSE,
+                                  dateTo = "2021-12-31"
                                   ){
 
 
@@ -33,7 +34,7 @@ make_figFig_timetrend <- function(my_data,
   variable01 <- quo({{variable01}})
 
   #filter data for e.g. 2012-2019
-  if(data_type == "start-end"){
+  if(data_type == "start_end"){
   RegDataStartEndNatValFiltered <- norspis2::fun3_2_filter_RegDataStartEnd(
     RegDataStartEnd = my_data,
     BasisRegStatus.x = c(1),#c(0,1,-1),
@@ -43,7 +44,7 @@ make_figFig_timetrend <- function(my_data,
     dateFrom.x = "2012-01-01",
     dateTo.x = "2100-12-31",
     dateFrom.y = "2012-01-01",
-    dateTo.y = "2020-12-31",
+    dateTo.y = dateTo,
     ageFrom.x = 0,
     ageTo.x = 200,
     ageFrom.y = 0,
@@ -58,7 +59,7 @@ make_figFig_timetrend <- function(my_data,
     regStatus = c(1),#c(0,1,-1),
     regType = c(5,6,98,99,NA),
     dateFrom = "2012-01-01",
-    dateTo = "2020-12-31",
+    dateTo = dateTo,
     ageFrom = 0,
     ageTo = 200)%>%
     #quick fix - just to make this work for now:

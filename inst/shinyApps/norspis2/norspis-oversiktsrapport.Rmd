@@ -24,6 +24,7 @@ params:
 knitr::opts_chunk$set(
   collapse = TRUE,
   echo = params$reshID,
+  message=FALSE,
   warning=FALSE,
   comment = "#>",
   cache.path = 'F:/'
@@ -74,13 +75,13 @@ og dokumenteres der.
 *Datagrunnlag:* Til og med uke 36, 2021 (12. september).
 
 
-\pagebreak
+<!-- \pagebreak -->
 
-# Antall pasienter
+<!-- # Antall pasienter -->
 
-* Totalt
-* Over tid
-* Per enhet
+<!-- * Totalt -->
+<!-- * Over tid -->
+<!-- * Per enhet -->
 
 \pagebreak
 
@@ -216,195 +217,297 @@ og dokumenteres der.
 
 \pagebreak
 
-# Datakvalitetsmål
-
-* Totalt
-* Over tid
-* Per enhet
-
-\pagebreak
-
-## Forløpskompletthet
-
-Under følger et forslag til beregning av forløpskompletthet. 
-
-**Definsjon av forløpskomplettet**: Andelen leverte sluttregistreringer av alle 
-leverte startregisteringer, for alle behandlingsforløp som faktisk er ferdige.
-
-**Utfordring ved bergning av forløpskompletthet**: Det er vanskelig å måle 
-forløpskompletthet direkte fordi man i fraværet av en sluttregistrering ikke 
-vet om en sluttregistrering skulle vært levert eller om pasienten fremdeles er i
-behandling og derfor enda ikke aktulle for sluttregistrering.
-
-**Løsning**: Sannsynlighetsbasert beregning, basert på statistikk fra NorSpis om
-behandlingslengdene for de komplette forløpene. Dette gir et estimat, som ikke 
-vil være presist, men kan gi enhetene pekepinn. 
-
-**Hvorfor beregne forløpskompletthet?**: Statistikken gir enhetene en mulighet til
-jobbe med å forbedre sin forløpskompletthet ved å sammenligne seg med seg selv 
-over tid, samt med andre enheter. Forløpskompletthet er et viktig datakvalitets-
-mål fordi blant annet kvalitetsindikatorene kun kan beregnes ut fra sluttreg-
-istreringene. Høy forløpskompletthet reduserer faren for skjevheter (*bias*), og
-øker generaliserbarheten av enhetenes resultater tilbake til egen pasientgruppe.
-
-\pagebreak
-
-
-### Beregning - teoretisk bakgrunn (for spesielt interesserte)
-
-Som et pedagogisk utgangspunkt kan vi kan først beregne en ræ 
-forløpskompletthet, som altså ikke tar hensyn til at noen av registreringene 
-jo ikke skulle
-
-Under følger en tabell med "rå" forløpskompletthet i NorSpis for hele registerets
-levetid og frem til i dag:
-
-```{r}
-completeness <- make_table_DQ_completeness_endreg()
-
-raw_completeness <- completeness[[1]]%>%
-  mutate(across(where(is.numeric), round, 1))
-
-
-flextable::flextable(raw_completeness)
-
-```
-
-
-Vi beregner først behandlingslengden i NorSpis, som tiden fra start av behandling
-til slutt av behandling:
-```{r, echo=T}
-#Treatment length, days - we make such a variable like this:
-times <- as.Date(DL$RegDataStartEnd2$HovedDato.y)-
-  as.Date(DL$RegDataStartEnd2$HovedDato.x)
-
-#Quick inspection:
-summary(as.numeric(times))
-
-```
-
-Over ser vi at median behandlingslengde i NorSpis, for komplette forløp, er 
-119 dager, mens gjennomsnittet er 174 dager. Høyere gjennomsnitt enn median, 
-indikerer at det er noen behandlingsforløp som er mye lengre enn hva som er 
-mest normalt, og dermed drar opp gjennomsnittet. 
-
-
-Basert på behandlingstidene, ønsker vi å finne sannsynligheten for at en 
-behandlingstid på x antall dager skulle væ rt ferdigstil. 
-Til det bruker vi en funksjon i en statistikk-pakke i R som heter *stats*:
-
-```{r, echo=TRUE}
-# To calculate the probability for a given treatment length, we first 
-#utilize the ecdf function (tip on it here: https://stats.stackexchange.com/questions/209369/estimate-the-probability-of-the-distribution-of-a-sample)
-
-time_cdf <- ecdf(times) #this becomes a function
-
-```
-
-Med denne funksjonen kan vi for eksempel finne sannsynligheten for at en 
-andelen registreringer som er har behandlingslengde på opp til 365 dager, 
-og vi kan også plotte den kumulative sannsynlighetsfordelingen for 
-behandlingslengdene:
-
-```{r, echo=TRUE}
-#we can plot the cumulative distribution of probabilities of treatment lengths:
-plot(ecdf(times))
-
-##and we can use the time_cdf function to calculate probabilities:
-#For instance we can get the probability for a treatment length of 365 days:
-time_cdf(365)
-
-
-```
-Vi ser at 88,8 prosent av ferdigstilte registreringer i NorSpis har en lengde på mindre enn
-365 dager. 
-
-Under en rekke forutsetning, som ikke alltid vil holde,men likevel ikke er til 
-hinder for en fornuftig analyse, kan man som et estimat si at en en registrering 
-med startdato for 365 dager siden, med 88,8 prosents sannsynlghet skulle vært 
-levert.
-
-Denne tankegangen kan man videre bruke til å estimere hvor mange av startregistreringene
-ved en enhet som skulle vært levert, på bakgrunn av at vi vet datoen for 
-startregistreringen.
-
-\pagebreak
-
-For å beregne forløpskompletthet ut fra tankegangen over, er noen ytterligere 
-variabler beregnet. En tabell med disse variablene og esitimert forløpskompletthet
-per avdeling i NorSpis følger under:
-
-```{r, echo=TRUE}
-#we have made a function to that computes and presents the needed variables:
-completeness <- norspis2::make_table_DQ_completeness_endreg()
-
-estimated_completeness <- completeness[[2]]
-
-flextable::flextable(estimated_completeness)
-```
-
-Til å vurdere metoden vi har brukt for å estimere forløpskomplettheten, kan 
-vi også se på forskjellen mellom den rå kompletthet og estimert kompletthet:
-```{r}
-completeness <- norspis2::make_table_DQ_completeness_endreg()
-
-difference_raw_estimated_completeness <- completeness[[3]]
-
-flextable::flextable(difference_raw_estimated_completeness)
-
-```
-Som vi ser over er det ikke store prosentdifferanser, altså utgjør det ikke stor
-forskjell om man beregner rå forløpskompletthet eller estimert forløpskompletthet.
-Dette er imidlertid når vi nå har sett på alle data i NorSpis så langt under ett.
-Hvis man ser på komplettheten for en kortere tidsperiode, og som er nærmere dags 
-dato, vil det være naturlig at differensen mellom rå og estimert 
-forløpskompletthet vil øke. 
-
-Vi kan illustrere dette ved å se på forløpskomplettheten så langt i år:
-
-```{r}
-completeness <- norspis2::make_table_DQ_completeness_endreg(dateFrom = "2021-01-01",
-                                                            dateTo = "2021-12-09")
-completeness_raw <- completeness[[1]]
-completeness_estimated <- completeness[[2]] 
-completeness_difference <- completeness[[3]]
-
-flextable::flextable(completeness_raw)
-flextable::flextable(completeness_estimated)
-flextable::flextable(completeness_difference)
-
-
-```
 
 
 # Resultater
 
-## Pasientrapporterte effekt- og utfallsmål
+## Kvalitetsindikatorer over tid (så langt i år)
 
+### Kvalitetsindikator 1: Andel pasienter med endring positiv endring i EDE-Q
+
+```{r, message=FALSE}
+KI1_time <- 
+  norspis2::make_figFig_timetrend(
+    my_data = DL$RegDataStartEndNatVal2,
+    data_type = "start_end",
+    variable01 =  "EDEQ60GlobalScore_CHANGE_PROP",
+    variable_type_0_100 = FALSE,
+    do_facet_wrap = T,
+    show_legend = F)
+
+KI1_time[[4]]
+KI1_time[[3]]
+
+```
 \pagebreak
 
-### Skjemaet Pasienttilfredshet 
+### Kvalitetsindikator 2: Andel pasienter med endring positiv endring i CIA 
 
-Under følger svar på de fire ja/nei-spørsmålene i skjemaet pasienttilfredshet, som pasientene spørres ved slutten av behandlingen. Det femte spørsmålet om vurdering av utfall av mottatt behandling er ikke med her, nå. 
+```{r}
+KI2_time <- 
+  norspis2::make_figFig_timetrend(
+    my_data = DL$RegDataStartEndNatVal2,
+    data_type = "start_end",
+    variable01 = "CIA30GlobalScore_RCI_01",
+    variable_type_0_100 = FALSE,
+    do_facet_wrap = T,
+    show_legend = F)
 
-```{r fig.width=9, fig.height=9, fig.align='center'}
-variable <- c('PT03Utfallsvurd', 'PT01OnsketInvolv', 'PT02BleInvolv', 'PT04KontaktBrukerorg') #'PT05OrientertBrukerorg')
-regType <- ''
-
-for (valgtVar in variable) {
-      outfile <- ''
-      norspis2::NorSpis1FigAndeler(RegData=DL$RegData2, 
-                        datoFra = "2019-01-01", 
-                        valgtVar = valgtVar, 
-                        datoTil = "2019-12-31",
-                        reshID = params$reshID, 
-                        enhetsUtvalg = 0, #0 nasjonal?
-                        outfile = outfile, 
-                        minald = 0, 
-                        maxald = 150)
-                        #minbmistart = "",
-                        #maxbmistart = "", 
-                        #regType = regType #filterargumenter bmi og regtype ikke lagt inn.
-}
+KI2_time[[4]]
+KI2_time[[3]]
 ```
+
+\pagebreak
+### Kvalitetsindikator 3: Andel pasienter som ikke lenger er undervektige ved behandlingsslutt
+
+```{r}
+KI3_time <- 
+  norspis2::make_figFig_timetrend(
+    my_data = DL$RegDataStartEndNatVal2,
+    data_type = "start_end",
+    variable01 = "MedBMI_start18.5_slutt18.5",
+    variable_type_0_100 = FALSE,
+    do_facet_wrap = T,
+    show_legend = F)
+
+KI3_time[[4]]
+KI3_time[[3]]
+
+```
+\pagebreak
+
+### Kvalitetsindikator 4: Pasientvurdert bedring("utfall") av behandlingen
+
+Andelen pasiener som oppgir noen form for bedring ("ikke noe problem lenger",
+"klar bedring" eller "noe bedring").
+
+```{r}
+KI5_time <- 
+  norspis2::make_figFig_timetrend(
+    my_data =  DL$RegDataNatVal2,
+    data_type = "regular",
+    variable01 = "PROP_PT03Utfallsvurd",
+    variable_type_0_100 = FALSE,
+    do_facet_wrap = T,
+    show_legend = F)
+
+KI5_time[[4]]
+KI5_time[[3]]
+
+```
+\pagebreak
+
+## Pasientrapporterte erfarings- og utfallsmål
+
+### Pasientvurdert tilgjengelighet
+
+Indeks 1 fra Pasienterfaringer - ett spørsmål alene: "Måtte du vente for å få
+tilbud ved behandlinsenheten?". Skala fra 0 til 100, hvor høyere skåre angir
+kortere opplevd ventetid.
+
+```{r}
+paserf_indeks1_tilgj_time <- norspis2::make_figFig_timetrend(
+  my_data =  DL$RegDataNatVal2, 
+  data_type = "regular",
+  variable_type_0_100 = TRUE,
+  variable01 = "PasOppTilgjengelighet",
+  do_facet_wrap = T,
+  show_legend = F)
+
+paserf_indeks1_tilgj_time[[4]]
+paserf_indeks1_tilgj_time[[3]]
+```
+\pagebreak
+
+### Pasienttilfredshet
+
+Indeks 2 fra Pasienterfaringer, om utbytte av behandlingen og om behandlingen 
+var tilfredstillende. Skala fra 0 til 100. 
+
+```{r}
+paserf_indeks2_tilfreds_time <- norspis2::make_figFig_timetrend(
+  my_data =  DL$RegDataNatVal2, 
+  data_type = "regular",
+  variable_type_0_100 = TRUE,
+  variable01 = "PasOppTilfredshet",
+  do_facet_wrap = T,
+  show_legend = F)
+
+paserf_indeks2_tilfreds_time[[4]]
+paserf_indeks2_tilfreds_time[[3]]
+```
+\pagebreak
+
+### Pasientvurderte erfaringer
+
+Indeks 3 fra Pasienttilfredshet, om kommunikasjon, informasjon, hvorvidt
+behandlingen var tilpasset pasientens situasjon, om pasienten var involvert i 
+behandlingen, dyktighet hos behandlerne og om arbeidet ved avdelingen var godt 
+organisert - slik pasienten ser det. Skala fra 0 til 100. 
+
+```{r}
+paserf_indeks3_erfaring_time <- norspis2::make_figFig_timetrend(
+  my_data =  DL$RegDataNatVal2, 
+  data_type = "regular",
+  variable_type_0_100 = TRUE,
+  variable01 = "PasOppErfaring",
+  do_facet_wrap = T,
+  show_legend = F)
+
+paserf_indeks3_erfaring_time[[4]]
+paserf_indeks3_erfaring_time[[3]]
+```
+\pagebreak
+
+### Pasientvurdert pasientsikkerhet
+
+Indeks 4 fra Pasienttilfredshet: "Mener du at du på noen måte ble feilbehandlet
+(etter det du selv kan bedømme). Skala fra 0 til 100. 
+
+```{r}
+paserf_indeks4_psikkerhet_time <- norspis2::make_figFig_timetrend(
+  my_data =  DL$RegDataNatVal2, 
+  data_type = "regular",
+  variable_type_0_100 = FALSE,
+  variable01 = "PROP_PO10Pasientsikkerhet",
+  do_facet_wrap = T,
+  show_legend = F)
+
+paserf_indeks4_psikkerhet_time[[4]]
+paserf_indeks4_psikkerhet_time[[3]]
+```
+
+### Samlede svar fra skjemaet "pasienttilfredshet" utarbeidet av brukerorganisasjonene
+
+```{r}
+data_ordinary <- DL$RegData2 
+data_ordinary_tom2021 <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary,
+                                        dateFrom =
+                                          "2012-01-01",
+                                        dateTo =
+                                          "2021-12-31",
+                                        regStatus = 1) #only complete reg
+
+#filter RegDataNatVal
+data_gjsn <- data_ordinary_tom2021 %>% 
+                        #first make a variable that we will group results by:
+                        mutate(Year_custom = case_when(Year == 2021 ~ "2021",
+                                                       Year == 2020 ~ "2020",
+                                                      Year < 2020 ~ "<=2019",
+                                                      #Year == 2021 ~ "2021",
+                                                      TRUE ~ NA_character_  )) %>%  
+                        filter(
+                             #Year %in% c(2019,2021),
+                             BasisRegStatus == 1)  %>%
+                        group_by(Year_custom) %>%
+                        summarize(PT01=mean(as.numeric(PT01OnsketInvolv), na.rm=T),#mean
+                                  PT02=mean(as.numeric(PT02BleInvolv), na.rm=T), #mean
+                                  PT04=mean(as.numeric(PT04KontaktBrukerorg), na.rm=T), #mean
+                                  PT05=mean(as.numeric(PT05OrientertBrukerorg), na.rm=T)) %>%#mean
+                        tidyr::gather(PT02,PT01,PT05,PT04, key= "PT", value="gj_sn", na.rm = T)%>%
+                        arrange(PT,Year_custom)%>%
+                        mutate(my_key =c(1:length(.$Year_custom)))
+
+data_counts <- data_ordinary_tom2021 %>%
+                      #first make a variable that we will group results by:
+                      mutate(Year_custom = case_when( Year == 2020 ~"2020",
+                                                      Year == 2021 ~ "2021", 
+                                                      Year < 2021 ~ "<=2019",
+                                                      #Year == 2021 ~ "2021",
+                                                      TRUE ~ NA_character_  )) %>% 
+                      filter(
+                             #Year %in% c(2019,2021),
+                             BasisRegStatus == 1)  %>%
+                          group_by(Year_custom) %>%
+                          summarize(PT01 = sum(PT01OnsketInvolv %in% c(0,1)),#counts valid observations 
+                                    PT02 = sum(PT02BleInvolv %in% c(0,1)),
+                                    PT04 = sum(PT04KontaktBrukerorg %in% c(0,1)),
+                                    PT05 = sum(PT05OrientertBrukerorg %in% c(0,1))) %>%
+                      tidyr::gather(PT01,PT02,PT04,PT05, key="PT", value="n")%>%
+                      arrange(PT,Year_custom)%>%
+                      mutate(my_key =c(1:length(.$Year_custom)))
+
+
+data <- data_gjsn %>% #merge counts and percentages into one table, and rename values of PT
+            full_join(data_counts)%>%
+            mutate(PT = case_when(
+                              PT == "PT01" ~ "Familie/venner \n var ønsket involvert",
+                              PT == "PT02" ~ "Familie/venner \n ble involvert",
+                              PT == "PT04" ~ "Noen gang \n kontakt med \n ROS/SPISFO",
+                              PT == "PT05" ~ "Fikk informasjon \n ila. behandling \n om ROS/SPISFO"))
+
+p <- ggplot(data, aes(x= PT,y=gj_sn*100, fill=as.factor(Year_custom)))+
+  geom_col(position = "dodge")+
+  geom_text(#to map percentace label at bar
+      aes(x = PT, y= gj_sn*100, # ta map on TOP of bar - use 
+          label=scales::percent(gj_sn, 
+                                decimal.mark = ",",
+                                accuracy = 0.1)), 
+      alpha=0.5,
+      size=2,
+      position = position_dodge(0.9), #to place percentage text at each bar (not each bar pair)
+      vjust=1.5)+
+  geom_text(#to map n label at bar
+      aes(x = PT, y= 0, # ta map on TOP of bar - use 
+          label=paste0("N=",n, "")), 
+      alpha=0.5,
+      size = 2,
+      position = position_dodge(0.9), #to place percentage text at each bar (not each bar pair)
+      vjust=-0.5)+
+  ggplot2::labs(title = 'Samlende svar fra skjemaet "pasienttilfredshet" utarbeidet av brukerorganisasjonene'  #labels: title, subtitle and caption
+                # subtitle = paste0("(N = ",
+                #                   sum(
+                #                     #as.numeric(
+                #                       case_when(
+                #                         data$Year_custom == "<=2019" ~ data$n), 
+                #                     na.rm = T),
+                #                   ") ",
+                #                   "N = ",
+                #                   sum(
+                #                     #as.numeric(
+                #                       case_when(
+                #                         data$Year_custom == "2021" ~ data$n),
+                #                     na.rm = T),
+                #                   "")
+                )+
+  
+  xlab("")+
+  ylab("Andel (%)")+
+  theme_minimal()+
+  theme(panel.grid.major.x = element_blank(),
+                  panel.grid.minor.x = element_blank())+
+  scale_y_continuous(breaks = seq(10,100,10))+
+  scale_fill_discrete(name="År")+
+  scale_fill_manual(values = c("grey",
+                               "lightgrey",
+                               "lightblue"
+                               ) , name = 'År')
+p
+
+```
+
+<!-- ### Skjemaet Pasienttilfredshet  -->
+
+<!-- Under følger svar på de fire ja/nei-spørsmålene i skjemaet pasienttilfredshet, som pasientene spørres ved slutten av behandlingen. Det femte spørsmålet om vurdering av utfall av mottatt behandling er ikke med her, nå.  -->
+
+<!-- ```{r fig.width=9, fig.height=9, fig.align='center'} -->
+<!-- variable <- c('PT03Utfallsvurd', 'PT01OnsketInvolv', 'PT02BleInvolv', 'PT04KontaktBrukerorg') #'PT05OrientertBrukerorg') -->
+<!-- regType <- '' -->
+
+<!-- for (valgtVar in variable) { -->
+<!--       outfile <- '' -->
+<!--       norspis2::NorSpis1FigAndeler(RegData=DL$RegData2,  -->
+<!--                         datoFra = "2019-01-01",  -->
+<!--                         valgtVar = valgtVar,  -->
+<!--                         datoTil = "2019-12-31", -->
+<!--                         reshID = params$reshID,  -->
+<!--                         enhetsUtvalg = 0, #0 nasjonal? -->
+<!--                         outfile = outfile,  -->
+<!--                         minald = 0,  -->
+<!--                         maxald = 150) -->
+<!--                         #minbmistart = "", -->
+<!--                         #maxbmistart = "",  -->
+<!--                         #regType = regType #filterargumenter bmi og regtype ikke lagt inn. -->
+<!-- } -->
+<!-- ``` -->
 

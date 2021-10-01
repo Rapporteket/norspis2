@@ -90,6 +90,36 @@ devtools::install_github("Rapporteket/norspis2")
 
 ## Other useful information
 
+## Registration types:
+
+The variable regRegtype gives eight different types of registrations for the patients.
+Four of these registrations types are start registrations, and four are end 
+registrations. These are (value of regRegtype in parenthesis):
+
+Start registrations:
+   - Examination only ("kun utredning") - adults (value 1)
+   - Examination only ("kun utredning") - children/adolescents (value 2)
+   - Start - adults (value 3)
+   - Start - children/adolescents (value 4)
+
+End registrations
+   - End - adults (value 5)
+   - End - children/adolescents (value 6)
+   - Discontinued - adults (value 98)
+   - Discontinued - children/adolescents (value 99)
+
+In addition, as of version 1.4 of the NorSpis registry, october 2021, NorSpis will
+contain two more registrations types. These are follow-up ("oppfølging") registations one
+year after ended treatment. 
+
+  - Follow-up children/adolescents (value undecided)
+  - Follow-up children/adolescents (value undecided) 
+
+Note also that the "examination only" registration type is no longer in use in NorSpis. In 
+addition, as of version 1.4 of the NorSpis registry, october 2021, the examination only 
+registration types will no longer be used. But all registration types will still be 
+kept in historical data, and must thus be taken into account in the code.
+
 ### Colors
 
 Three colors from …?

@@ -96,6 +96,10 @@ devtools::install_github("Rapporteket/norspis2")
 
 ## Other useful information
 
+## Working with development of the package locally
+A script to load data, for development of the package locally, can be found in the NorSpisEkstra project 
+under Rapporteket at GitHub.
+
 ## Annual report
 The functions in the norspis2 package is used in NorSpis' annual report. An annual report .Rmd document
 can be found in the NorSpisEkstra project under Rapporteket at GitHub. NorSpisEkstra also contain other 

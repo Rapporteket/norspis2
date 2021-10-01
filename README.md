@@ -38,6 +38,12 @@ So far the package contains functions to prepare:
     to go along with the maps
   - …
 
+Some functions belongs together. For instance the function make_figFig_unitCompar.R 
+belongs to make_figTable_unitCompar.R in the following way: The function
+make_figFig_unitCompar.R depends on make_figTable_unitCompar.R. One must first make
+the table by running make_figTable_unitCompar., which can then put into 
+make_figFig_unitCompar.R to make a figure for that table. 
+
 A function for making parameterized reports for each hospital unit,
 norspis2::make\_report(), in connection to a a .Rmd document,
 inst/norspis-periodisk-rapport.Rmd, has also been made.
@@ -89,6 +95,11 @@ devtools::install_github("Rapporteket/norspis2")
 <!-- In that case, don't forget to commit and push the resulting figure files, so they display on GitHub! -->
 
 ## Other useful information
+
+## Annual report
+The functions in the norspis2 package is used in NorSpis' annual report. An annual report .Rmd document
+can be found in the NorSpisEkstra project under Rapporteket at GitHub. NorSpisEkstra also contain other 
+documents used in the administration of NorSpis. 
 
 ## Registration types:
 

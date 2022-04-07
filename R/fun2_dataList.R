@@ -47,8 +47,8 @@ fun2_dataList <- function (myInData1=RegData, myInData2 = RegDataBeh){
   RegDataStartEndNatVal <- norspis2::fun2_5_RegDataStartEndNatVal(RegDataStartEnd)
   #END dataset 5: RegDataStartEndNatVal2
 
-  dataList <- list("RegData2" = RegData,
-                   "RegDataBeh2" = RegDataBeh,
+  dataList <- list(RegData2 = RegData,
+                   RegDataBeh2 = RegDataBeh,
                    RegDataNatVal2 = RegDataNatVal,
                    RegDataStartEnd2 = RegDataStartEnd,
                    RegDataStartEndNatVal2 = RegDataStartEndNatVal)

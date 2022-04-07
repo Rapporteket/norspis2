@@ -31,7 +31,8 @@ Imports:
     rapFigurer,
     rlang,
     wrapr,
-    ggplot2
+    ggplot2,
+    directlabels
 Remotes:
     Rapporteket/rapFigurer
 VignetteBuilder: knitr

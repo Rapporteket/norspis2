@@ -21,5 +21,6 @@ fun2_3_RegDataNatVal <- function(myInData){
     dplyr::mutate(AvdRESH ='99999', SykehusNavn='Nasjonal', AvdNavn='Nasjonal') #set national RESH-id to 99999 and name to "Nasjonal"
 
   # Attaching national data myInData (so that it become double the size with half having AvdRESH.x and SykehusNavn 99999 and national)
-  rbind(myInData, NatVal)
+  # rbind(myInData, NatVal)
+  dplyr::bind_rows(myInData, NatVal)
 }

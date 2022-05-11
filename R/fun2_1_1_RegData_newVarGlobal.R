@@ -69,7 +69,9 @@ fun2_1_1_RegData_newVarGlobal <- function(myInData){
   myInData$AvdAlder <- myInData$AvdRESH
 
   myInData$AvdAlder[myInData$AvdAlder==105806] <- 'VOP'
-  myInData$AvdAlder[myInData$AvdAlder==109979] <- 'VOP'
+  # myInData$AvdAlder[myInData$AvdAlder==109979] <- 'VOP'
+  myInData$AvdAlder[myInData$AvdAlder==109979 & myInData$ForlopsType1Num %in% c(99,8,6,4,2)] <- 'BUP'
+  myInData$AvdAlder[myInData$AvdAlder==109979 & myInData$ForlopsType1Num %in% c(98,1,3,5,7)] <- 'VOP'
   myInData$AvdAlder[myInData$AvdAlder==110361] <- 'VOP'
   myInData$AvdAlder[myInData$AvdAlder==700698] <- 'BUP'
   myInData$AvdAlder[myInData$AvdAlder==700821] <- 'VOP'

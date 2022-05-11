@@ -37,6 +37,7 @@ fun3_2_filter_RegDataStartEnd <- function(RegDataStartEnd = myInData,
                                   ageTo.x = 200,
                                   ageFrom.y = 0,
                                   ageTo.y = 200,
+                                  AvdAlder=99,
                                   BUP=99){
 
   RegData_filtered <- RegDataStartEnd %>%
@@ -56,6 +57,17 @@ fun3_2_filter_RegDataStartEnd <- function(RegDataStartEnd = myInData,
     } else {
       RegData_filtered <- RegData_filtered %>%
         filter(ForlopsType1Num.x %in% c(98, 1,3, 5, 7))
+    }
+  }
+
+
+  if (AvdAlder %in% c(0, 1)) {
+    if (AvdAlder == 1) {
+      RegData_filtered <- RegData_filtered %>%
+        filter(AvdAlder.y %in% c("BUP"))
+    } else {
+      RegData_filtered <- RegData_filtered %>%
+        filter(AvdAlder.y %in% c("VOP"))
     }
   }
 

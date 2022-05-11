@@ -18,13 +18,14 @@
 #' @examples
 
 fun3_1_filter_RegData <- function(RegData = myInData, #OBS this function does not work with StartEndData as the date filter is named with a suffix ,HovedDato_FRMT.x there
-                                 regStatus = c(0,1,-1),
-                                 regType = c(0,1,2,3,4,5,6,98,99),
-                                 dateFrom = "2012-01-01",
-                                 dateTo = "2100-12-31",
-                                 ageFrom = 0,
-                                 ageTo = 200,
-                                 BUP=99){
+                                  regStatus = c(0,1,-1),
+                                  regType = c(0,1,2,3,4,5,6,98,99),
+                                  dateFrom = "2012-01-01",
+                                  dateTo = "2100-12-31",
+                                  ageFrom = 0,
+                                  ageTo = 200,
+                                  BUP=99,
+                                  AvdAlder=99){
 
   RegData_filtered <- RegData %>%
     filter(BasisRegStatus %in% regStatus) %>% #this var has no NAs
@@ -41,6 +42,18 @@ fun3_1_filter_RegData <- function(RegData = myInData, #OBS this function does no
         filter(ForlopsType1Num %in% c(98, 1,3, 5, 7))
     }
   }
+
+  if (AvdAlder %in% c(0, 1)) {
+    if (AvdAlder == 1) {
+      RegData_filtered <- RegData_filtered %>%
+        filter(AvdAlder %in% c("BUP"))
+    } else {
+      RegData_filtered <- RegData_filtered %>%
+        filter(AvdAlder %in% c("VOP"))
+    }
+  }
+
+
 
 
   output <- RegData_filtered

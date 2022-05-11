@@ -903,7 +903,7 @@ norspis2::make_figFig_unitCompar(tab3_BUP,
                                  showErrorBar2 = F,
                                  showComparisonPoints = T,
                                  fig_type_comparison = 'two_bars',
-                                 my_y_lab = "Gjennomsnittlig skÃ¥re",
+                                 my_y_lab = "Gjennomsnittlig skåre",
                                  
                                  my_title = "Tilgjengelighet..."
 )
@@ -959,7 +959,7 @@ norspis2::make_figFig_unitCompar(tab3_BUP,
                                  showErrorBar2 = F,
                                  showComparisonPoints = T,
                                  fig_type_comparison = 'two_bars',
-                                 my_y_lab = "Gjennomsnittlig skÃ¥re",
+                                 my_y_lab = "Gjennomsnittlig skåre",
                                  my_title = "Pasienttilfredshet..."
 )
 
@@ -1013,7 +1013,7 @@ norspis2::make_figFig_unitCompar(tab3_BUP,
                                  showErrorBar2 = F,
                                  showComparisonPoints = T,
                                  fig_type_comparison = 'two_bars',
-                                 my_y_lab = "Gjennomsnittlig skÃ¥re",
+                                 my_y_lab = "Gjennomsnittlig skåre",
                                  my_title = "Pasienterfaringer..."
 )
 
@@ -1067,7 +1067,7 @@ norspis2::make_figFig_unitCompar(tab3_BUP,
                                  showErrorBar2 = F,
                                  showComparisonPoints = T,
                                  fig_type_comparison = 'two_bars',
-                                 my_y_lab = "Gjennomsnittlig skÃ¥re",
+                                 my_y_lab = "Gjennomsnittlig skåre",
                                  my_title = "Pasientsikkerhet..."
 )
 
@@ -1191,10 +1191,10 @@ data_counts_BUP <- data_ordinary_tom2021_BUP %>%
 data_BUP_involvering<- data_gjsn_BUP %>% #merge counts and percentages into one table, and rename values of PT
             full_join(data_counts_BUP)%>%
             mutate(PT = case_when(
-                              PT == "PT01" ~ "Familie/venner var ønsket involvert",
-                              PT == "PT02" ~ "Familie/venner ble involvert",
-                              PT == "PT04" ~ "Noen gang kontakt med \n ROS/SPISFO",
-                              PT == "PT05" ~ "Fikk informasjon ila. behandling om ROS/SPISFO"))
+                              PT == "PT01" ~ "Familie/venner var\n  ønsket involvert",
+                              PT == "PT02" ~ "Familie/venner ble\n involvert",
+                              PT == "PT04" ~ "Noen gang\n kontakt med\n ROS/SPISFO",
+                              PT == "PT05" ~ "Fikk informasjon\n ila. behandling \nom ROS/SPISFO"))
 
 ggplot(data_BUP_involvering, aes(x= PT,y=gj_sn*100, fill=as.factor(Year_custom)))+
   geom_col(position = "dodge")+

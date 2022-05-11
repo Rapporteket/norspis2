@@ -36,7 +36,8 @@ fun3_2_filter_RegDataStartEnd <- function(RegDataStartEnd = myInData,
                                   ageFrom.x = 0,
                                   ageTo.x = 200,
                                   ageFrom.y = 0,
-                                  ageTo.y = 200){
+                                  ageTo.y = 200,
+                                  BUP=99){
 
   RegData_filtered <- RegDataStartEnd %>%
     filter(BasisRegStatus.x %in% BasisRegStatus.x) %>% #this var has no NAs
@@ -47,6 +48,16 @@ fun3_2_filter_RegDataStartEnd <- function(RegDataStartEnd = myInData,
     filter(HovedDato_FRMT.y >= dateFrom.y  & HovedDato_FRMT.y <= dateTo.y) %>%
     filter(PasientAlder.x >= ageFrom.x  &  PasientAlder.x <= ageTo.x) %>% #FIX data format du as. numeric, but earlier,not here
     filter(PasientAlder.y >= ageFrom.y  &  PasientAlder.y <= ageTo.y)
+
+  if (BUP %in% c(0, 1)) {
+    if (BUP == 1) {
+      RegData_filtered <- RegData_filtered %>%
+        filter(ForlopsType1Num.x %in% c(99, 8, 6, 4, 2))
+    } else {
+      RegData_filtered <- RegData_filtered %>%
+        filter(ForlopsType1Num.x %in% c(98, 1,3, 5, 7))
+    }
+  }
 
   output <- RegData_filtered
   return(invisible(output))

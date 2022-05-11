@@ -78,7 +78,7 @@ make_figFig_timetrend <- function(my_data = DL$RegDataNatVal2,
 
   RegDataStartEndNatValFiltered <- RegDataStartEndNatValFiltered%>%
     dplyr::mutate(AvdKategori.x = dplyr::case_when(AvdNavn == "Nasjonal" ~ "nasjonal",
-                                                   !(AvdKategori.x %in% c("regional","nasjonal")) ~ "annen",
+                                                   !(AvdKategori.x %in% c("Reg.", "Reg.Døgn.","nasjonal")) ~ "annen",
                                                    TRUE ~ AvdKategori.x)) %>%
     dplyr::mutate(AvdNavn = dplyr::case_when(AvdKategori.x == "annen" ~ "Andre",
                                              TRUE ~ AvdNavn))

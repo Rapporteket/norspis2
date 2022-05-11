@@ -1,42 +1,47 @@
 ---
-title: "Årsrapport 2021"
+title: "annual_report_2021_CB"
+author: "Carina Bach"
+date: "5/4/2022"
 output:
   html_document: default
   pdf_document: default
   word_document: default
 ---
+---
+
+First; determine the global settings for the code chunk and load packages:
 
 ```{r setup, include=FALSE}
-#global chunk settings:
-knitr::opts_chunk$set(echo = FALSE,  #that the `echo = FALSE` parameter was added 
-                                    #to the code chunk to prevent printing of
-                                    #the R code that generates the output
+knitr::opts_chunk$set(echo = FALSE,      
                       warning = FALSE,
                       message = FALSE,
-                      fig.height = 7,
-                      fig.width = 7)
-library(dplyr)
-library(ggplot2)
+                      fig.width = 7,
+                      fig.height = 7)
+# echo = F - parameter that is added to the code chunk to prevent printing the 
+#code that generate the plot.
+
 library(tidyverse)
+library(ggplot2)
+library(dplyr)
+```                 
 
 
-```
-
-```{r}
-#setting comma as separator in output
-options(OutDec = ",") 
-```
-
+Secondly; decide which folder the output is stored in (ssh/norspisdara_aarsrapp2021), as well as loading data
+through functions fun1_1_import_data_FEA and fun1_2_import_data_B which is then names RegDataNatVal2 and RegDataBeh2. 
 
 ```{r load_data, warning=FALSE}
-# library(dplyr)
 if (!dir.exists("~/.ssh/norspisdata_aarsrapp2021/")) {
   dir.create("~/.ssh/norspisdata_aarsrapp2021/")
 }
-#------DATA norspis2
+#import data - forlopsoversikt, enkeltledd and alle scorer and name it 
+#RegDataNatVal2
 RegDataNatVal2 <- norspis2::fun1_1_import_data_FEA()
 
+
+#import data - behandlingnum
 RegDataBeh2 <- norspis2::fun1_2_import_data_B()
+
+
 #Five datasets (outputted in a list):
 DL <- norspis2::fun2_dataList(myInData1 = RegDataNatVal2, myInData2 = RegDataBeh2)
 #---DATA norspis2 (END)
@@ -47,28 +52,14 @@ RegData <- RegDataNatVal2
 
 ```
 
-
-
-
-## Antall registreringer 
-
-```{r}
-## Totaloversikt (skal nok ikke bruke denne tabellen, men for å triangulere)
-  
-  ##norspis2::make_table_DQ_regCount(RegData = RegDataNatValFiltered)[[1]]
-  
-#norspis2::make_table_DQ_regCount(RegData = RegDataNatValFiltered)[[2]]
-
-```
-
-
-
+3: amount of startreg. from 2012 until 2021 divided by unit - this has to be devided between 
+BUP & VOP! based on RegDataNatValFiltred. its called start. 
 
 ```{r, results='hide'}
 ### Startregistreringer
   #START
   #filter data for e.g. 2012-2021
-  RegDataNatValFiltered <- norspis2::fun3_1_filter_RegData(RegData = DL$RegDataNatVal2 ,
+  RegDataNatValFiltered <- norspis2::fun3_1_filter_RegData(RegData = DL$RegDataNatVal2,
                                                  regStatus = c(1),
                                                  regType = c(1,2,3,4),#START
                                                  dateFrom = "2012-01-01",
@@ -82,10 +73,11 @@ RegData <- RegDataNatVal2
                                          pathToSaveTableFile = "~/.ssh/norspisdata_aarsrapp2021/",
                                          fileNameSuffix = "_2021_start"
                                          )
-  
-  start[[2]]
-
+   start[[2]]
 ```
+
+4: amount of end.reg divided by unit from 2012-2021. - this has to be divided between BUP and VOP. 
+based on RegDataNatValFiltred. Its is called end. 
 
 
 ```{r, results='hide'}
@@ -113,6 +105,8 @@ RegData <- RegDataNatVal2
 
 ```
 
+5: amount of only utredning (START) - filtred from 2012 to 2021. baed on RegDatNatValFiltred. 
+
 ```{r, results='hide'}
 #START (only "kun utredning")
 #filter data for e.g. 2012-2021
@@ -139,6 +133,8 @@ start_utredning[[2]]
 
 
 
+6: amount of only avbrudd (END) - filtred from 2012 to 2021. based on RegDatNatValFiltred. Skille mellom BUP OG VOP! 
+
 ```{r, results='hide'}
 #SLUTT (only "avbrudd")
 
@@ -163,7 +159,8 @@ end_avbrudd[[2]] <- flextable::set_caption(end_avbrudd[[2]], caption = "Antall s
 end_avbrudd[[2]]
 
 ```
-\pagebreak
+
+7: ???? Start
 
 ```{r}
 #merge the two diffferent start data from above (start data for "kun utredning" and all start data)
@@ -173,9 +170,9 @@ end_avbrudd[[2]]
 start[[1]] <- start[[1]] %>% 
   rename("AvdNavn" = colnames(start[[1]][1]))%>%
   rowwise()%>%
-  mutate("<=2017" = sum(`2015`,`2016`,`2017`, na.rm=TRUE))%>%#sum three first y.
+  mutate("<=2017" = sum(`2017`, na.rm=TRUE))%>%#sum three first y.
   relocate("<=2017",.after="AvdNavn")%>%
-  select(-c(`2015`,`2016`,`2017`))%>%#remove columns
+  select(-c(`2017`))%>%#remove columns
   mutate_all(as.character)%>%
   mutate_all(coalesce,"-")#this replaces all NAs with "-"
 
@@ -214,7 +211,8 @@ flextable::save_as_docx("nRegAllYears" = ft, path = paste0("~/.ssh/norspisdata_a
 
 ```
 
-## Samme som over men for sluttdata
+8: ??? End
+
 ```{r}
 #merge the two diffferent start data from above (start data for "kun utredning" and all start data)
 #https://stackoverflow.com/questions/27167151/merge-combine-columns-with-same-name-but-incomplete-data
@@ -267,16 +265,16 @@ flextable::save_as_docx("nRegAllYearsEnd" = ft, path = paste0("~/.ssh/norspisdat
 
 
 
-Antall unike pasienter per aar
+9: amount of unique patients divided by year 
 ```{r}
 RegDataTOM2021 <- DL$RegData2 %>% 
                     filter(HovedDato_FRMT<="2021-12-31", BasisRegStatus==1) 
 
 
-#unike forløp alle år sett under ett
+#unike forlÃ¸p alle Ã¥r sett under ett
 #length(unique(RegDataTOM2020$ForlopsID)) 
 
-#unike pasienter alle år sett under ett
+#unike pasienter alle Ã¥r sett under ett
 length(unique(RegDataTOM2021$PasientID)) #gives 622
 
 
@@ -297,50 +295,52 @@ flextable::save_as_docx("nUniqiePatients" = ft, path = paste0("~/.ssh/norspisdat
 ```
 
 
-## Kvalitetsindikatorer
-
-
+Kvalitetsindikatorer som benytter både start/end-data: EDE-Q, CIA & Undervekt BUP
 ```{r KI-data-KI1-KI3}
 #Her, KI som benytter StartEnd data (ikke kun End data) - tre stykk: EDEQ, CIA og bortfall av undervekt
 
 #data
-data <- DL$RegDataStartEndNatVal2
+data_BUP <- DL$RegDataStartEndNatVal2
 
-dat1 <- norspis2::fun3_2_filter_RegDataStartEnd(RegData = data,
+dat1_BUP <- norspis2::fun3_2_filter_RegDataStartEnd(RegData = data_BUP,
                                         dateFrom.y =
                                           "2012-01-01",
                                         dateTo.y =
                                           "2020-12-31",
+                                        BUP=1,
                                         BasisRegStatus.y = 1) #only complete reg
 
 #filter data for comparison point
-dat2 <- norspis2::fun3_2_filter_RegDataStartEnd(RegData = data,
+dat2_BUP <- norspis2::fun3_2_filter_RegDataStartEnd(RegData = data_BUP,
                                                 dateFrom.y  =
                                                   "2021-01-01",
                                                 dateTo.y =
                                                   "2021-12-31",
+                                                BUP=1,
                                                 BasisRegStatus.y = 1)
 
 #NOT national values, but start_end, 
 #for data quality table (for completeness of KI 1-3 which relies on start_end data)
-data_start_end <- DL$RegDataStartEnd2
+data_start_end_BUP <- DL$RegDataStartEnd2
 
-data_start_end_tom2020_onlyEndIkkeAvbrudd <- 
-  norspis2::fun3_2_filter_RegDataStartEnd(RegData = data_start_end,
+data_start_end_tom2020_onlyEndIkkeAvbrudd_BUP <- 
+  norspis2::fun3_2_filter_RegDataStartEnd(RegData = data_start_end_BUP,
                                           dateFrom.y =
                                             "2012-01-01",
                                           dateTo.y =
                                             "2020-12-31",
+                                          BUP=1,
                                           BasisRegStatus.y = 1) %>%#only complete reg
   filter(RegRegtype.y %in% c(5,6))
 
 #filter data for comparison point
-data_start_end_2021_onlyEndIkkeAvbrudd <- 
-  norspis2::fun3_2_filter_RegDataStartEnd(RegData = data_start_end,
+data_start_end_2021_onlyEndIkkeAvbrudd_BUP <- 
+  norspis2::fun3_2_filter_RegDataStartEnd(RegData = data_start_end_BUP,
                                           dateFrom.y  =
                                             "2021-01-01",
                                           dateTo.y =
                                             "2021-12-31",
+                                          BUP=1,
                                           BasisRegStatus.y = 1) %>%
   filter(RegRegtype.y %in% c(5,6))
 
@@ -349,106 +349,118 @@ data_start_end_2021_onlyEndIkkeAvbrudd <-
 
 ```{r}
 #data til figurerer som ikke benytter StartEnd-data
-data_ordinary <- DL$RegData2 
+data_ordinary_BUP <- DL$RegData2 
 
-data_ordinary_tom2020 <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary,
+data_ordinary_tom2020_BUP <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary_BUP,
                                         dateFrom =
                                           "2012-01-01",
                                         dateTo =
                                           "2020-12-31",
+                                        BUP=1,
                                         regStatus = 1) #only complete reg
 
-data_ordinary_tom2021 <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary,
+data_ordinary_tom2021_BUP <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary_BUP,
                                         dateFrom =
                                           "2012-01-01",
                                         dateTo =
                                           "2021-12-31",
+                                        BUP=1,
                                         regStatus = 1) #only complete reg
-data_ordinary_tom2021_only_start <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary,
+
+data_ordinary_tom2021_only_start_BUP <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary_BUP,
                                         regType = c(1,2,3,4), #<-                           
                                         dateFrom =
                                           "2012-01-01",
                                         dateTo =
                                           "2021-12-31",
+                                        BUP=1,
                                         regStatus = 1) #only complete reg
 
-data_ordinary_tom2021_only_end <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary,
+data_ordinary_tom2021_only_end_BUP <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary_BUP,
                                         regType = c(5,6,98,99), #<-                           
                                         dateFrom =
                                           "2012-01-01",
                                         dateTo =
                                           "2021-12-31",
+                                        BUP=1, 
                                         regStatus = 1) #only complete reg
 
-data_ordinary_tom2021_only_end_ikkeavbrudd <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary,
+data_ordinary_tom2021_only_end_ikkeavbrudd_BUP <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary_BUP,
                                         regType = c(5,6), #<-                           
                                         dateFrom =
                                           "2012-01-01",
                                         dateTo =
                                           "2021-12-31",
+                                        BUP=1, 
                                         regStatus = 1) #only complete reg
 
-data_ordinary_tom2021_only_end_avbrudd_utred <- 
-  norspis2::fun3_1_filter_RegData(RegData = data_ordinary,
+data_ordinary_tom2021_only_end_avbrudd_utred_BUP <- 
+  norspis2::fun3_1_filter_RegData(RegData = data_ordinary_BUP,
                                         regType = c(1,2,5,6,98,99), #<-                           
                                         dateFrom =
                                           "2012-01-01",
                                         dateTo =
                                           "2021-12-31",
+                                        BUP=1, 
                                         regStatus = 1) #only complete reg
 
-data_ordinary_only2021_only_end.slutt_and_start.utred <- 
-  norspis2::fun3_1_filter_RegData(RegData = data_ordinary,
+data_ordinary_only2021_only_end.slutt_and_start.utred_BUP <- 
+  norspis2::fun3_1_filter_RegData(RegData = data_ordinary_BUP,
                                         regType = c(1,2,5,6), #<-
                                         dateFrom =
                                           "2021-01-01",
                                         dateTo =
                                           "2021-12-31",
+                                        BUP=1, 
                                         regStatus = 1) #only complete reg
 
-data_ordinary_only2021 <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary,
+data_ordinary_only2021_BUP <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary_BUP,
                                         dateFrom =
                                           "2021-01-01",
                                         dateTo =
                                           "2021-12-31",
+                                        BUP=1, 
                                         regStatus = 1) #only complete reg
 
-data_ordinary_only2021_only_start <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary,
+data_ordinary_only2021_only_start_BUP <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary_BUP,
                                         regType = c(1,2,3,4), #<-
                                         dateFrom =
                                           "2021-01-01",
                                         dateTo =
                                           "2021-12-31",
+                                        BUP=1, 
                                         regStatus = 1) #only complete reg
 
-data_ordinary_only2021_only_end_ikkeavbrudd <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary,
+data_ordinary_only2021_only_end_ikkeavbrudd_BUP <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary_BUP,
                                         regType = c(5,6), #<-
                                         dateFrom =
                                           "2021-01-01",
                                         dateTo =
                                           "2021-12-31",
+                                        BUP=1, 
                                         regStatus = 1) #only complete reg
 
 
 
 
-data_ordinary1 <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary,
+data_ordinary1_BUP <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary_BUP,
                                         dateFrom =
                                           "2012-01-01",
                                         dateTo =
                                           "2020-12-31",
+                                        BUP=1, 
                                         regStatus = 1) #only complete reg
 
-data_ordinary2 <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary,
+data_ordinary2_BUP <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary_BUP,
                                                 dateFrom  =
                                                   "2021-01-01",
                                                 dateTo =
                                                   "2021-12-31",
+                                                BUP=1, 
                                                 regStatus = 1)
 
 
 ```
-
 
 ```{r KI-data-KI4-KI5}
 #Her, KI som benytter kun End data) 
@@ -456,60 +468,59 @@ data_ordinary2 <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary,
   #- de fire indeksene: Tilgjengelighet, pasientsikkerhet, pasienterfaringer, pasienttilfredshet
 
 #data
-data <- DL$RegDataNatVal2
+data_BUP <- DL$RegDataNatVal2
 
-dat1_end <- norspis2::fun3_1_filter_RegData(RegData = DL$RegDataNatVal2,
+dat1_end_BUP <- norspis2::fun3_1_filter_RegData(RegData = DL$RegDataNatVal2,
                                         dateFrom =
                                           "2012-01-01",
                                         dateTo =
                                           "2020-12-31",
+                                        BUP=1,
                                         regStatus = 1)#only complete reg
 #filter data for comparison point
-dat2_end <- norspis2::fun3_1_filter_RegData(RegData = DL$RegDataNatVal2,
+dat2_end_BUP <- norspis2::fun3_1_filter_RegData(RegData = DL$RegDataNatVal2,
                                         dateFrom  =
                                           "2021-01-01",
                                         dateTo =
                                           "2021-12-31",
+                                        BUP=1, 
                                         regStatus = 1)
 
 ```
-
-
-
-
+KI1 - EDE-Q BUP
 ```{r KI1, fig.height=7}
 
 #tables to plot
-tab1 <- norspis2::make_figTable_unitCompar(
-  myIndata_NatVal =  dat1,
+tab1_BUP <- norspis2::make_figTable_unitCompar(
+  myIndata_NatVal =  dat1_BUP,
   myInvar01 = "EDEQ60GlobalScore_CHANGE_PROP")#rlang::quo(PROP_PO10Pasientsikkerhet))#input$valgtVarSykehusSammenlign)#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(!!input$valgtVarSykehusSammenlign))
 #table for comparison point
-tab2 <- norspis2::make_figTable_unitCompar(
-  myIndata_NatVal =  dat2,
+tab2_BUP <- norspis2::make_figTable_unitCompar(
+  myIndata_NatVal =  dat2_BUP,
   myInvar01 = "EDEQ60GlobalScore_CHANGE_PROP")
 
 #merge columns for perc into tab1
 #(only keeping rows from 1 by left_join):
-tab3 <- left_join(tab1,
-                  tab2, 
+tab3_BUP <- left_join(tab1_BUP,
+                  tab2_BUP, 
                   by="AvdNavnNavn",
                   #add sufix only to merged data
                   suffix = c("",".compare"))
 
 #testing for statical significant difference beteween proporions
 #adding a column
-tabNasjonal <- 
-  tab3 %>% 
+tabNasjonal_BUP <- 
+  tab3_BUP %>% 
   filter(AvdNavnNavn=="Nasjonal")
 
-prop.test(x=c(tabNasjonal$n*(tabNasjonal$perc/100),
-              tabNasjonal$n.compare*(tabNasjonal$perc.compare/100)),
-          n = c(tabNasjonal$n, 
-                tabNasjonal$n.compare))
+prop.test(x=c(tabNasjonal_BUP$n*(tabNasjonal_BUP$perc/100),
+              tabNasjonal_BUP$n.compare*(tabNasjonal_BUP$perc.compare/100)),
+          n = c(tabNasjonal_BUP$n, 
+                tabNasjonal_BUP$n.compare))
   
 
 #fig
-fig <- norspis2::make_figFig_unitCompar(my_proptable_hospitals=tab3, 
+fig_BUP <- norspis2::make_figFig_unitCompar(my_proptable_hospitals=tab3_BUP, 
                                         showErrorBar = F,
                                         showComparisonPoints = T,
                                         YellowGoal = '',
@@ -517,20 +528,18 @@ fig <- norspis2::make_figFig_unitCompar(my_proptable_hospitals=tab3,
                                         fig_type_comparison = 'two_bars',
                                         
                                         my_title = paste('KI1 (EDE-Q): Endring i symptomer', sep = "\n"))
-ggsave(filename = "KI_EDEQ_endring.png", 
+ggsave(filename = "KI_EDEQ_endring_BUP.png", 
        height = 6,
        width = 6,
        plot= last_plot(), 
        path = "~/.ssh/norspisdata_aarsrapp2021")
 
-fig
+fig_BUP
 
 ```
 
-
-
-
-```{r KI1-over-tid}
+KI1 overtid - regional (NB! ikke skilt på BUP OG VOP)
+````{r KI1-over-tid}
 KI1_time <- 
   norspis2::make_figFig_timetrend(
     my_data = DL$RegDataStartEndNatVal2,
@@ -561,7 +570,7 @@ tabBodo_perc_n <-
   tidyr::pivot_longer(c(2:length(.))) %>%
   tidyr::pivot_wider(names_from = AvdNavn, values_from = value)%>%
   mutate(bodo_n_numerator = round((bodo_n * bodo_perc)/100,1)) %>% 
-  filter(name!="Alle år")
+  filter(name!="Alle Ã¥r")
 
 prop.trend.test(x = tabBodo_perc_n$bodo_n_numerator,
                 n = tabBodo_perc_n$bodo_n#,
@@ -584,39 +593,38 @@ flextable::save_as_docx(
 
 
 ```
+####jobber med å endre Mads sin
 
-
-
-
+KI2 - CIA - BUP
 ```{r KI2}
 #tables to plot
-tab1 <- norspis2::make_figTable_unitCompar(
-  myIndata_NatVal =  dat1,
+tab1_BUP <- norspis2::make_figTable_unitCompar(
+  myIndata_NatVal =  dat1_BUP,
   myInvar01 = "CIA30GlobalScore_RCI_01")#rlang::quo(PROP_PO10Pasientsikkerhet))#input$valgtVarSykehusSammenlign)#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(!!input$valgtVarSykehusSammenlign))
 #table for comparison point
-tab2 <- norspis2::make_figTable_unitCompar(
-  myIndata_NatVal =  dat2,
+tab2_BUP <- norspis2::make_figTable_unitCompar(
+  myIndata_NatVal =  dat2_BUP,
   myInvar01 = "CIA30GlobalScore_RCI_01")
 
 #merge columns for perc into tab1
 #(only keeping rows from 1 by left_join):
-tab3 <- left_join(tab1,
-                  tab2, 
+tab3_BUP <- left_join(tab1_BUP,
+                  tab2_BUP, 
                   by="AvdNavnNavn",
                   #add sufix only to merged data
                   suffix = c("",".compare"))
 
 #testing for statical significant difference beteween proporions
 #adding a column
-tabNasjonal <- 
-  tab3 %>% 
+tabNasjonal_BUP <- 
+  tab3_BUP %>% 
   filter(AvdNavnNavn=="Nasjonal")
 
-#prop.test som gir x2-statistics, men skal vÃ¦re lik som en z-test
-prop.test(x=c(tabNasjonal$n*(tabNasjonal$perc/100),
-              tabNasjonal$n.compare*(tabNasjonal$perc.compare/100)),
-          n = c(tabNasjonal$n, 
-                tabNasjonal$n.compare))
+#prop.test som gir x2-statistics, men skal vÃÂ¦re lik som en z-test
+prop.test(x=c(tabNasjonal_BUP$n*(tabNasjonal_BUP$perc/100),
+              tabNasjonal_BUP$n.compare*(tabNasjonal_BUP$perc.compare/100)),
+          n = c(tabNasjonal_BUP$n, 
+                tabNasjonal_BUP$n.compare))
 
 #Z.test (https://www.r-bloggers.com/2009/07/comparison-of-two-proportions-parametric-z-test-and-non-parametric-chi-squared-methods/)
 z.prop = function(x1,x2,n1,n2){
@@ -627,15 +635,15 @@ z.prop = function(x1,x2,n1,n2){
   return(z.prop.ris)
 }
 
-z.prop(tabNasjonal$n*(tabNasjonal$perc/100), 
-       tabNasjonal$n.compare*(tabNasjonal$perc.compare/100),
-       tabNasjonal$n,
-       tabNasjonal$n.compare)
+z.prop(tabNasjonal_BUP$n*(tabNasjonal_BUP$perc/100), 
+       tabNasjonal_BUP$n.compare*(tabNasjonal_BUP$perc.compare/100),
+       tabNasjonal_BUP$n,
+       tabNasjonal_BUP$n.compare)
 
 
 
 #fig
-fig <- norspis2::make_figFig_unitCompar(my_proptable_hospitals=tab3, 
+fig_BUP <- norspis2::make_figFig_unitCompar(my_proptable_hospitals=tab3_BUP, 
                                         showErrorBar = F,
                                         showComparisonPoints = T,
                                         YellowGoal = '',
@@ -644,7 +652,7 @@ fig <- norspis2::make_figFig_unitCompar(my_proptable_hospitals=tab3,
                                         
                                         my_title = paste('KI2 (CIA): Pasienter med "bedring" eller "stor forbedring" i funksjon', '(mot "uendret" eller "verre")', sep = "\n"))
 #ggsave(filename = "KI_CIA_endring.png", plot= last_plot(), path = "F:/") #png("F:/my_fig.png") just give empty result
-fig
+fig_BUP
 
 ggsave(filename = "KI2_CIA_endring.png", 
        height = 6,
@@ -655,7 +663,7 @@ ggsave(filename = "KI2_CIA_endring.png",
 
 
 ```
-
+KI2 - Overtid - REG- IKKE SKILT PÅ BUP/VOP
 ```{r KI2-over-tid}
 KI2_time <- 
   norspis2::make_figFig_timetrend(
@@ -705,39 +713,39 @@ flextable::save_as_docx(
 
 ```
 
-### KI3: Bortfall av undervekt
+### KI3: Bortfall av undervekt - BUP
 ```{r KI3}
 #tables to plot
-tab1 <- norspis2::make_figTable_unitCompar(
-  myIndata_NatVal =  dat1,
+tab1_BUP <- norspis2::make_figTable_unitCompar(
+  myIndata_NatVal =  dat1_BUP,
   myInvar01 = "MedBMI_start18.5_slutt18.5")#rlang::quo(PROP_PO10Pasientsikkerhet))#input$valgtVarSykehusSammenlign)#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(!!input$valgtVarSykehusSammenlign))
 #table for comparison point
-tab2 <- norspis2::make_figTable_unitCompar(
-  myIndata_NatVal =  dat2,
+tab2_BUP <- norspis2::make_figTable_unitCompar(
+  myIndata_NatVal =  dat2_BUP,
   myInvar01 = "MedBMI_start18.5_slutt18.5")
 
 #merge columns for perc into tab1
 #(only keeping rows from 1 by left_join):
-tab3 <- left_join(tab1,
-                  tab2, 
+tab3_BUP <- left_join(tab1_BUP,
+                  tab2_BUP, 
                   by="AvdNavnNavn",
                   #add sufix only to merged data
                   suffix = c("",".compare"))
 
 #testing for statical significant difference beteween proporions
 #adding a column
-tabNasjonal <- 
-  tab3 %>% 
+tabNasjonal_BUP <- 
+  tab3_BUP %>% 
   filter(AvdNavnNavn=="Nasjonal")
 
-prop.test(x=c(tabNasjonal$n*(tabNasjonal$perc/100),
-              tabNasjonal$n.compare*(tabNasjonal$perc.compare/100)),
-          n = c(tabNasjonal$n, 
-                tabNasjonal$n.compare))
+prop.test(x=c(tabNasjonal_BUP$n*(tabNasjonal_BUP$perc/100),
+              tabNasjonal_BUP$n.compare*(tabNasjonal_BUP$perc.compare/100)),
+          n = c(tabNasjonal_BUP$n, 
+                tabNasjonal_BUP$n.compare))
 
 
 #fig
-fig <- norspis2::make_figFig_unitCompar(my_proptable_hospitals=tab3, 
+fig <- norspis2::make_figFig_unitCompar(my_proptable_hospitals=tab3_BUP, 
                                         showErrorBar = F,
                                         showComparisonPoints = T,
                                         YellowGoal = '',
@@ -754,8 +762,9 @@ ggsave(filename = "KI3_undervektsreduksjon.png",
        path = "~/.ssh/norspisdata_aarsrapp2021") 
 
 ```
-
+##KI3 - overtid regionalt - BUP OG VOP. 
 ```{r KI3-over-tid}
+
 
 KI3_time <- 
   norspis2::make_figFig_timetrend(
@@ -786,116 +795,39 @@ flextable::save_as_docx(
 ```
 
 
+KI4 - Utfallsvurdering BUP
 ```{r KI4}
-# 
-# #table to plot
-# tab1 <- norspis2::make_figTable_unitCompar(
-#   myIndata_NatVal =  dat1_end,
-#   myInvar01 = "PROP_PO09Utbytte")#rlang::quo(PROP_PO10Pasientsikkerhet))#input$valgtVarSykehusSammenlign)#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(!!input$valgtVarSykehusSammenlign))
-# #table for comparison point
-# tab2 <- norspis2::make_figTable_unitCompar(
-#   myIndata_NatVal =  dat2_end,
-#   myInvar01 = "PROP_PO09Utbytte")
-# 
-# #merge columns for perc into tab1
-# #(only keeping rows from 1 by left_join):
-# tab3 <- left_join(tab1,tab2, by="AvdNavnNavn",
-#                   #add sufix only to merged data
-#                   suffix = c("",".compare"))
-# 
-# 
-# 
-# #testing for statical significant difference beteween proporions
-# #adding a column
-# tabNasjonal <- 
-#   tab3 %>% 
-#   filter(AvdNavnNavn=="Nasjonal")
-# 
-# prop.test(x=c(tabNasjonal$n*(tabNasjonal$perc/100),
-#               tabNasjonal$n.compare*(tabNasjonal$perc.compare/100)),
-#           n = c(tabNasjonal$n, 
-#                 tabNasjonal$n.compare))
-# 
-# 
-# #plot
-# norspis2::make_figFig_unitCompar(tab3,
-#                                  YellowGoal = "",
-#                                  GreenGoal = "",
-#                                  showErrorBar = F,
-#                                  showErrorBar2 = F,
-#                                  showComparisonPoints = T,
-#                                  fig_type_comparison = 'two_bars',
-#                                  
-#                                  my_title = "KI 4: Utbytte av behandlingen"
-# )
-# 
-# 
-# ggsave(filename = "KI4_PO09Utbytte.png", 
-#        height = 6,
-#        width = 6,
-#        plot= last_plot(), 
-#        path = "~/.ssh/norspisdata_aarsrapp2021") 
-
-```
-
-```{r KI4-over-tid}
-# KI4_time <- 
-#   norspis2::make_figFig_timetrend(
-#     my_data =  DL$RegDataNatVal2,
-#     data_type = "regular",
-#     variable01 = "PROP_PO09Utbytte",
-#     variable_type_0_100 = FALSE,
-#     do_facet_wrap = T,
-#     show_legend = FALSE)
-# 
-# KI4_time[[3]]
-# KI4_time[[4]]
-# 
-# ggsave(filename = "KI4_PROP_PO09Utbytte_time.png", 
-#        height = 6,
-#        width = 7,
-#        plot= last_plot(), 
-#        path = "~/.ssh/norspisdata_aarsrapp2021") 
-# 
-# flextable::save_as_docx(
-#     "Tabell 3.1: Text"= KI4_time[[3]], 
-#                           path = paste0("~/.ssh/norspisdata_aarsrapp2021/", "KI4_PROP_PO09Utbytte_time.docx"))
-
-```
-
-
-```{r KI5}
 
 #table to plot
-tab1 <- norspis2::make_figTable_unitCompar(
-  myIndata_NatVal =  dat1_end,
+tab1_BUP <- norspis2::make_figTable_unitCompar(
+  myIndata_NatVal =  dat1_end_BUP,
   myInvar01 = "PROP_PT03Utfallsvurd")#rlang::quo(PROP_PO10Pasientsikkerhet))#input$valgtVarSykehusSammenlign)#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(!!input$valgtVarSykehusSammenlign))
 #table for comparison point
-tab2 <- norspis2::make_figTable_unitCompar(
-  myIndata_NatVal =  dat2_end,
+tab2_BUP <- norspis2::make_figTable_unitCompar(
+  myIndata_NatVal =  dat2_end_BUP,
   myInvar01 = "PROP_PT03Utfallsvurd")
 
 #merge columns for perc into tab1
 #(only keeping rows from 1 by left_join):
-tab3 <- left_join(tab1,tab2, by="AvdNavnNavn",
+tab3_BUP <- left_join(tab1_BUP,tab2_BUP, by="AvdNavnNavn",
                   #add sufix only to merged data
                   suffix = c("",".compare"))
 
 #testing for statical significant difference beteween proporions
 #adding a column
-tabNasjonal <- 
-  tab3 %>% 
+tabNasjonal_BUP <- 
+  tab3_BUP %>% 
   filter(AvdNavnNavn=="Nasjonal")
-prop.test(x=c(tabNasjonal$n*(tabNasjonal$perc/100),
-              tabNasjonal$n.compare*(tabNasjonal$perc.compare/100)),
-          n = c(tabNasjonal$n, 
-                tabNasjonal$n.compare))
+prop.test(x=c(tabNasjonal_BUP$n*(tabNasjonal_BUP$perc/100),
+              tabNasjonal_BUP$n.compare*(tabNasjonal_BUP$perc.compare/100)),
+          n = c(tabNasjonal_BUP$n, 
+                tabNasjonal_BUP$n.compare))
 
 #binom.test()
 
 
 #plot
-norspis2::make_figFig_unitCompar(tab3,
+norspis2::make_figFig_unitCompar(tab3_BUP,
                                  YellowGoal = "",
                                  GreenGoal = "",
                                  showErrorBar = F,
@@ -948,29 +880,29 @@ flextable::save_as_docx(
 ```{r indeks1_tilgengelighet}
 
 #table to plot
-tab1 <- norspis2::make_figTable_unitCompar(
-  myIndata_NatVal =  dat1_end,
+tab1_BUP <- norspis2::make_figTable_unitCompar(
+  myIndata_NatVal =  dat1_end_BUP,
   myInvar01 = "PasOppTilgjengelighet")#rlang::quo(PROP_PO10Pasientsikkerhet))#input$valgtVarSykehusSammenlign)#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(!!input$valgtVarSykehusSammenlign))
 #table for comparison point
-tab2 <- norspis2::make_figTable_unitCompar(
-  myIndata_NatVal =  dat2_end,
+tab2_BUP <- norspis2::make_figTable_unitCompar(
+  myIndata_NatVal =  dat2_end_BUP,
   myInvar01 = "PasOppTilgjengelighet")
 
 #merge columns for perc into tab1
 #(only keeping rows from 1 by left_join):
-tab3 <- left_join(tab1,tab2, by="AvdNavnNavn",
+tab3_BUP <- left_join(tab1_BUP,tab2_BUP, by="AvdNavnNavn",
                   #add sufix only to merged data
                   suffix = c("",".compare"))
 
 #plot
-norspis2::make_figFig_unitCompar(tab3,
+norspis2::make_figFig_unitCompar(tab3_BUP,
                                  YellowGoal = "",
                                  GreenGoal = "",
                                  showErrorBar = F,
                                  showErrorBar2 = F,
                                  showComparisonPoints = T,
                                  fig_type_comparison = 'two_bars',
-                                 my_y_lab = "Gjennomsnittlig skåre",
+                                 my_y_lab = "Gjennomsnittlig skÃ¥re",
                                  
                                  my_title = "Tilgjengelighet..."
 )
@@ -1004,29 +936,29 @@ paserf_indeks1_tilgj_time[[4]]
 ```{r indeks2_pasienttilfredshet}
  
 #table to plot
-tab1 <- norspis2::make_figTable_unitCompar(
-  myIndata_NatVal =  dat1_end,
+tab1_BUP <- norspis2::make_figTable_unitCompar(
+  myIndata_NatVal =  dat1_end_BUP,
   myInvar01 = "PasOppTilfredshet")#rlang::quo(PROP_PO10Pasientsikkerhet))#input$valgtVarSykehusSammenlign)#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(!!input$valgtVarSykehusSammenlign))
 #table for comparison point
-tab2 <- norspis2::make_figTable_unitCompar(
-  myIndata_NatVal =  dat2_end,
+tab2_BUP <- norspis2::make_figTable_unitCompar(
+  myIndata_NatVal =  dat2_end_BUP,
   myInvar01 = "PasOppTilfredshet")
 
 #merge columns for perc into tab1
 #(only keeping rows from 1 by left_join):
-tab3 <- left_join(tab1,tab2, by="AvdNavnNavn",
+tab3_BUP <- left_join(tab1_BUP,tab2_BUP, by="AvdNavnNavn",
                   #add sufix only to merged data
                   suffix = c("",".compare"))
 
 #plot
-norspis2::make_figFig_unitCompar(tab3,
+norspis2::make_figFig_unitCompar(tab3_BUP,
                                  YellowGoal = "",
                                  GreenGoal = "",
                                  showErrorBar = F,
                                  showErrorBar2 = F,
                                  showComparisonPoints = T,
                                  fig_type_comparison = 'two_bars',
-                                 my_y_lab = "Gjennomsnittlig skåre",
+                                 my_y_lab = "Gjennomsnittlig skÃ¥re",
                                  my_title = "Pasienttilfredshet..."
 )
 
@@ -1058,29 +990,29 @@ paserf_indeks2_tilfreds_time[[4]]
 
 
 #table to plot
-tab1 <- norspis2::make_figTable_unitCompar(
-  myIndata_NatVal =  dat1_end,
+tab1_BUP <- norspis2::make_figTable_unitCompar(
+  myIndata_NatVal =  dat1_end_BUP,
   myInvar01 = "PasOppErfaring")#rlang::quo(PROP_PO10Pasientsikkerhet))#input$valgtVarSykehusSammenlign)#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(!!input$valgtVarSykehusSammenlign))
 #table for comparison point
-tab2 <- norspis2::make_figTable_unitCompar(
-  myIndata_NatVal =  dat2_end,
+tab2_BUP <- norspis2::make_figTable_unitCompar(
+  myIndata_NatVal =  dat2_end_BUP,
   myInvar01 = "PasOppErfaring")
 
 #merge columns for perc into tab1
 #(only keeping rows from 1 by left_join):
-tab3 <- left_join(tab1,tab2, by="AvdNavnNavn",
+tab3_BUP <- left_join(tab1_BUP,tab2_BUP, by="AvdNavnNavn",
                   #add sufix only to merged data
                   suffix = c("",".compare"))
 
 #plot
-norspis2::make_figFig_unitCompar(tab3,
+norspis2::make_figFig_unitCompar(tab3_BUP,
                                  YellowGoal = "",
                                  GreenGoal = "",
                                  showErrorBar = F,
                                  showErrorBar2 = F,
                                  showComparisonPoints = T,
                                  fig_type_comparison = 'two_bars',
-                                 my_y_lab = "Gjennomsnittlig skåre",
+                                 my_y_lab = "Gjennomsnittlig skÃ¥re",
                                  my_title = "Pasienterfaringer..."
 )
 
@@ -1112,29 +1044,29 @@ paserf_indeks3_erfaring_time[[4]]
 ```{r indeks4_pasientssikkerhet}
 
 #table to plot
-tab1 <- norspis2::make_figTable_unitCompar(
-  myIndata_NatVal =  dat1_end,
+tab1_BUP <- norspis2::make_figTable_unitCompar(
+  myIndata_NatVal =  dat1_end_BUP,
   myInvar01 = "PasOppSikkerhet")#"PROP_PO10Pasientsikkerhet")#rlang::quo(PROP_PO10Pasientsikkerhet))#input$valgtVarSykehusSammenlign)#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(!!input$valgtVarSykehusSammenlign))
 #table for comparison point
-tab2 <- norspis2::make_figTable_unitCompar(
-  myIndata_NatVal =  dat2_end,
+tab2_BUP <- norspis2::make_figTable_unitCompar(
+  myIndata_NatVal =  dat2_end_BUP,
   myInvar01 = "PasOppSikkerhet")#"PROP_PO10Pasientsikkerhet")
 
 #merge columns for perc into tab1
 #(only keeping rows from 1 by left_join):
-tab3 <- left_join(tab1,tab2, by="AvdNavnNavn",
+tab3_BUP <- left_join(tab1_BUP,tab2_BUP, by="AvdNavnNavn",
                   #add sufix only to merged data
                   suffix = c("",".compare"))
 
 #plot
-norspis2::make_figFig_unitCompar(tab3,
+norspis2::make_figFig_unitCompar(tab3_BUP,
                                  YellowGoal = "",
                                  GreenGoal = "",
                                  showErrorBar = F,
                                  showErrorBar2 = F,
                                  showComparisonPoints = T,
                                  fig_type_comparison = 'two_bars',
-                                 my_y_lab = "Gjennomsnittlig skåre",
+                                 my_y_lab = "Gjennomsnittlig skÃ¥re",
                                  my_title = "Pasientsikkerhet..."
 )
 
@@ -1174,7 +1106,7 @@ mylabQ <- vars("0"="Ikke i det hele tatt", #alternatively to vars, use "exprs(" 
               "2"="I noen grad",
               "3"="I stor grad",
               "4"="I sv?rt stor grad")#labels
-mytitle <- '"Mener du at du på noen måte ble feilbehandlet \n (etter det du selv kan bedÃ¦mme)?"' 
+mytitle <- '"Mener du at du på  noen måte ble feilbehandlet (etter det du selv kan bedømme)?"' 
 #Choose dataset to use (prepared earlier)
 myInDataQ <- RegData
 
@@ -1182,14 +1114,14 @@ my_proptable <- norspis2::make_figTable_variableDist(
                   myvar=myvarQ,
                   mycat=mycatQ,
                   mylab=mylabQ,
-                  myInData = data_ordinary1)
+                  myInData = data_ordinary1_BUP)
 #comparison
 
 my_proptable_compare <- norspis2::make_figTable_variableDist(
                   myvar=myvarQ,
                   mycat=mycatQ,
                   mylab=mylabQ,
-                  myInData = data_ordinary2)
+                  myInData = data_ordinary2_BUP)
 
 #2)make figure with the function that is made
 my_fig <- norspis2::make_figFig_variableDist(
@@ -1218,10 +1150,10 @@ Samlende svar fra skjemaet "pasienttilfredshet" utarbeidet av brukerorganisasjon
 ```{r}
 
 #filter RegDataNatVal
-data_gjsn <- data_ordinary_tom2021 %>% 
+data_gjsn_BUP <- data_ordinary_tom2021_BUP %>% 
                         #first make a variable that we will group results by:
                         mutate(Year_custom = case_when(Year == 2021 ~ "2021", 
-                                                      Year < 2021 ~ "<=2020",
+                                                      Year < 2021 ~ " T.O.M 2020",
                                                       #Year == 2021 ~ "2021",
                                                       TRUE ~ NA_character_  )) %>%  
                         filter(
@@ -1236,7 +1168,7 @@ data_gjsn <- data_ordinary_tom2021 %>%
                         arrange(PT,Year_custom)%>%
                         mutate(my_key =c(1:length(.$Year_custom)))
 
-data_counts <- data_ordinary_tom2021 %>%
+data_counts_BUP <- data_ordinary_tom2021_BUP %>%
                       #first make a variable that we will group results by:
                       mutate(Year_custom = case_when(Year == 2021 ~ "2021", 
                                                       Year < 2021 ~ "<=2020",
@@ -1255,15 +1187,15 @@ data_counts <- data_ordinary_tom2021 %>%
                       mutate(my_key =c(1:length(.$Year_custom)))
 
 
-data <- data_gjsn %>% #merge counts and percentages into one table, and rename values of PT
-            full_join(data_counts)%>%
+data_BUP_involvering<- data_gjsn_BUP %>% #merge counts and percentages into one table, and rename values of PT
+            full_join(data_counts_BUP)%>%
             mutate(PT = case_when(
-                              PT == "PT01" ~ "Familie/venner \n var ønsket involvert",
-                              PT == "PT02" ~ "Familie/venner \n ble involvert",
-                              PT == "PT04" ~ "Noen gang \n kontakt med \n ROS/SPISFO",
-                              PT == "PT05" ~ "Fikk informasjon \n ila. behandling \n om ROS/SPISFO"))
+                              PT == "PT01" ~ "Familie/venner var ønsket involvert",
+                              PT == "PT02" ~ "Familie/venner ble involvert",
+                              PT == "PT04" ~ "Noen gang kontakt med \n ROS/SPISFO",
+                              PT == "PT05" ~ "Fikk informasjon ila. behandling om ROS/SPISFO"))
 
-ggplot(data, aes(x= PT,y=gj_sn*100, fill=as.factor(Year_custom)))+
+ggplot(data_BUP_involvering, aes(x= PT,y=gj_sn*100, fill=as.factor(Year_custom)))+
   geom_col(position = "dodge")+
   geom_text(#to map percentace label at bar
       aes(x = PT, y= gj_sn*100, # ta map on TOP of bar - use 
@@ -1302,10 +1234,10 @@ ggplot(data, aes(x= PT,y=gj_sn*100, fill=as.factor(Year_custom)))+
   theme(panel.grid.major.x = element_blank(),
                   panel.grid.minor.x = element_blank())+
   scale_y_continuous(breaks = seq(10,100,10))+
-  scale_fill_discrete(name="Ãr")+
+  scale_fill_discrete(name="År")+
   scale_fill_manual(values = c("lightgrey",
                                "lightblue"
-                               ) , name = 'Ãr')
+                               ) , name = 'År')
 
 ggsave(filename = "pasienttilfredshet_samlet.png", 
        height = 5,
@@ -1346,7 +1278,7 @@ ggsave(filename = "pasienttilfredshet_samlet.png",
                   quo(B06Hovedaktivitet_MISSING_NAMES),
                   quo(B07Hovedinntekt_MISSING_NAMES))
   
-  myvarNames <- c("PasientKjonn" = "Kjønn",
+  myvarNames <- c("PasientKjonn" = "KjÃ¸nn",
                   "PasientAlder_CAT_MISSING" =
                     "Alder",
                   "B01Sivilstatus_MISSING_NAMES"="Sivilstatus",
@@ -1379,7 +1311,7 @@ ggsave(filename = "pasienttilfredshet_samlet.png",
   flextable::save_as_image(popCharTab_ft, path=paste0("~/.ssh/norspisdata_aarsrapp2021/", "sosiodemCharAlleAar2.png"))
   flextable::save_as_docx(
     "Tabell 3.1: Sosiodemografiske karakteristika ved de registrerte pasientene,
-under oppstart i behandling, for alle år siden registerets oppstart frem til 
+under oppstart i behandling, for alle Ã¥r siden registerets oppstart frem til 
 og med 2020. N angir antall gyldige observasjoner"= popCharTab_ft, 
                           path = paste0("~/.ssh/norspisdata_aarsrapp2021/", "sosiodemCharAlleAar2.docx"))
 
@@ -1416,10 +1348,10 @@ og med 2020. N angir antall gyldige observasjoner"= popCharTab_ft,
                   "B18PsykMishandl_CAT_MISSING"= "Psykisk mishandling",
                   "B19Overgrep_CAT_MISSING" = "Misbruk/overgrep",
                   "B20Mobbing_CAT_MISSING" = "Mobbing",
-                  "B21SelvskadTidl" = "Selvskading (>1 år siden)",
-                  "B22SelvskadSisteAr" = "Selvskading siste året",
-                  "B23SelvmordFTidl" = "Selvmordforsøk (>1 år siden)",
-                  "B24SelvmordFSisteAr" = "Selvmordforsøk siste år",
+                  "B21SelvskadTidl" = "Selvskading (>1 Ã¥r siden)",
+                  "B22SelvskadSisteAr" = "Selvskading siste Ã¥ret",
+                  "B23SelvmordFTidl" = "SelvmordforsÃ¸k (>1 Ã¥r siden)",
+                  "B24SelvmordFSisteAr" = "SelvmordforsÃ¸k siste Ã¥r",
                   "B25Avhengighet" = "Misbruk/avh.(rusmidler/medikamenter)")
 
   popCharTab_ft <- norspis2::make_table_popchar(
@@ -2115,14 +2047,14 @@ ft
 <!--                                         'Helse Nord', -->
 <!--                                         'Helse Midt', -->
 <!--                                         'Helse Vest', -->
-<!--                                         'Helse Sør-Øst', -->
-<!--                                         'Helse Møre og Romsdal', 'Helse Nord-Trøndelag', 'St. Olavs Hospital', -->
+<!--                                         'Helse SÃ¸r-Ãst', -->
+<!--                                         'Helse MÃ¸re og Romsdal', 'Helse Nord-TrÃ¸ndelag', 'St. Olavs Hospital', -->
 <!--                                         'Finnmarkssykehuset','Helgelandssykehuset', 'Nordlandssykehuset', -->
 <!--                                         'Universitetssykehuset Nord-Norge','Private behandlingssteder', -->
 <!--                                         'Akershus universitetssykehus', 'Oslo universitetssykehus', -->
 <!--                                         'Sykehuset i Vestfold', 'Sykehuset Innlandet', 'Sykehuset Telemark', -->
-<!--                                         'Sykehuset Østfold','Sørlandet Sykehus', 'Vestre Viken', 'Helse Bergen', -->
-<!--                                         'Helse Fonna', 'Helse Førde', 'Helse Stavanger'), -->
+<!--                                         'Sykehuset Ãstfold','SÃ¸rlandet Sykehus', 'Vestre Viken', 'Helse Bergen', -->
+<!--                                         'Helse Fonna', 'Helse FÃ¸rde', 'Helse Stavanger'), -->
 <!--                           chosen_string_var='null',#'egensk_datakval_kompl_dg2017_hfavd_OK', -->
 <!--                           chosen_color_var='egensk_tilslutning2017_hfavd_OK', -->
 <!--                           chosen_color_var2='egensk_tilslutning2018_hfavd_OK', -->
@@ -2135,14 +2067,14 @@ ft
 <!--                                         'Helse Nord', -->
 <!--                                         'Helse Midt', -->
 <!--                                         'Helse Vest', -->
-<!--                                         'Helse Sør-Øst', -->
-<!--                                         'Helse Møre og Romsdal', 'Helse Nord-Trøndelag', 'St. Olavs Hospital', -->
+<!--                                         'Helse SÃ¸r-Ãst', -->
+<!--                                         'Helse MÃ¸re og Romsdal', 'Helse Nord-TrÃ¸ndelag', 'St. Olavs Hospital', -->
 <!--                                         'Finnmarkssykehuset','Helgelandssykehuset', 'Nordlandssykehuset', -->
 <!--                                         'Universitetssykehuset Nord-Norge','Private behandlingssteder', -->
 <!--                                         'Akershus universitetssykehus', 'Oslo universitetssykehus', -->
 <!--                                         'Sykehuset i Vestfold', 'Sykehuset Innlandet', 'Sykehuset Telemark', -->
-<!--                                         'Sykehuset Østfold','Sørlandet Sykehus', 'Vestre Viken', 'Helse Bergen', -->
-<!--                                         'Helse Fonna', 'Helse Førde', 'Helse Stavanger'), -->
+<!--                                         'Sykehuset Ãstfold','SÃ¸rlandet Sykehus', 'Vestre Viken', 'Helse Bergen', -->
+<!--                                         'Helse Fonna', 'Helse FÃ¸rde', 'Helse Stavanger'), -->
 <!--                           chosen_string_var='null',#'egensk_datakval_kompl_dg2017_hfavd_OK', -->
 <!--                           chosen_color_var='egensk_tilslutning2017_hfavd_OK', -->
 <!--                           chosen_color_var2='egensk_tilslutning2018_hfavd_OK', -->
@@ -2156,14 +2088,14 @@ ft
 <!-- #                                         'Helse Nord', -->
 <!-- #                                         'Helse Midt', -->
 <!-- #                                         'Helse Vest', -->
-<!-- #                                         'Helse Sør-Øst', -->
-<!-- #                                         'Helse Møre og Romsdal', 'Helse Nord-Trøndelag', 'St. Olavs Hospital', -->
+<!-- #                                         'Helse SÃ¸r-Ãst', -->
+<!-- #                                         'Helse MÃ¸re og Romsdal', 'Helse Nord-TrÃ¸ndelag', 'St. Olavs Hospital', -->
 <!-- #                                         'Finnmarkssykehuset','Helgelandssykehuset', 'Nordlandssykehuset', -->
 <!-- #                                         'Universitetssykehuset Nord-Norge','Private behandlingssteder', -->
 <!-- #                                         'Akershus universitetssykehus', 'Oslo universitetssykehus', -->
 <!-- #                                         'Sykehuset i Vestfold', 'Sykehuset Innlandet', 'Sykehuset Telemark', -->
-<!-- #                                         'Sykehuset Østfold','Sørlandet Sykehus', 'Vestre Viken', 'Helse Bergen', -->
-<!-- #                                         'Helse Fonna', 'Helse Førde', 'Helse Stavanger'), -->
+<!-- #                                         'Sykehuset Ãstfold','SÃ¸rlandet Sykehus', 'Vestre Viken', 'Helse Bergen', -->
+<!-- #                                         'Helse Fonna', 'Helse FÃ¸rde', 'Helse Stavanger'), -->
 <!-- #                           chosen_string_var='null',#'egensk_datakval_kompl_dg2017_hfavd_OK', -->
 <!-- #                           chosen_color_var='egensk_tilslutning2017_hfavd_OK', -->
 <!-- #                           chosen_color_var2='egensk_tilslutning2018_hfavd_OK', -->
@@ -2216,4 +2148,90 @@ time_cdf(365)
 
 
 ```
+
+###dette er ikke en kvalietsindikator lengre 
+<!-- #```{r KI4} -->
+<!-- #  -->
+<!-- # #table to plot -->
+<!-- # tab1 <- norspis2::make_figTable_unitCompar( -->
+<!-- #   myIndata_NatVal =  dat1_end, -->
+<!-- #   myInvar01 = "PROP_PO09Utbytte")#rlang::quo(PROP_PO10Pasientsikkerhet))#input$valgtVarSykehusSammenlign)#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(PROP_PO10Pasientsikkerhet))#rlang::quo(!!input$valgtVarSykehusSammenlign)) -->
+<!-- # #table for comparison point -->
+<!-- # tab2 <- norspis2::make_figTable_unitCompar( -->
+<!-- #   myIndata_NatVal =  dat2_end, -->
+<!-- #   myInvar01 = "PROP_PO09Utbytte") -->
+<!-- #  -->
+<!-- # #merge columns for perc into tab1 -->
+<!-- # #(only keeping rows from 1 by left_join): -->
+<!-- # tab3 <- left_join(tab1,tab2, by="AvdNavnNavn", -->
+<!-- #                   #add sufix only to merged data -->
+<!-- #                   suffix = c("",".compare")) -->
+<!-- #  -->
+<!-- #  -->
+<!-- #  -->
+<!-- # #testing for statical significant difference beteween proporions -->
+<!-- # #adding a column -->
+<!-- # tabNasjonal <-  -->
+<!-- #   tab3 %>%  -->
+<!-- #   filter(AvdNavnNavn=="Nasjonal") -->
+<!-- #  -->
+<!-- # prop.test(x=c(tabNasjonal$n*(tabNasjonal$perc/100), -->
+<!-- #               tabNasjonal$n.compare*(tabNasjonal$perc.compare/100)), -->
+<!-- #           n = c(tabNasjonal$n,  -->
+<!-- #                 tabNasjonal$n.compare)) -->
+<!-- #  -->
+<!-- #  -->
+<!-- # #plot -->
+<!-- # norspis2::make_figFig_unitCompar(tab3, -->
+<!-- #                                  YellowGoal = "", -->
+<!-- #                                  GreenGoal = "", -->
+<!-- #                                  showErrorBar = F, -->
+<!-- #                                  showErrorBar2 = F, -->
+<!-- #                                  showComparisonPoints = T, -->
+<!-- #                                  fig_type_comparison = 'two_bars', -->
+<!-- #                                   -->
+<!-- #                                  my_title = "KI 4: Utbytte av behandlingen" -->
+<!-- # ) -->
+<!-- #  -->
+<!-- #  -->
+<!-- # ggsave(filename = "KI4_PO09Utbytte.png",  -->
+<!-- #        height = 6, -->
+<!-- #        width = 6, -->
+<!-- #        plot= last_plot(),  -->
+<!-- #        path = "~/.ssh/norspisdata_aarsrapp2021")  -->
+
+<!-- ``` -->
+
+<!-- # ```{r KI4-over-tid} -->
+<!-- # KI4_time <-  -->
+<!-- #   norspis2::make_figFig_timetrend( -->
+<!-- #     my_data =  DL$RegDataNatVal2, -->
+<!-- #     data_type = "regular", -->
+<!-- #     variable01 = "PROP_PO09Utbytte", -->
+<!-- #     variable_type_0_100 = FALSE, -->
+<!-- #     do_facet_wrap = T, -->
+<!-- #     show_legend = FALSE) -->
+<!-- #  -->
+<!-- # KI4_time[[3]] -->
+<!-- # KI4_time[[4]] -->
+<!-- #  -->
+<!-- # ggsave(filename = "KI4_PROP_PO09Utbytte_time.png",  -->
+<!-- #        height = 6, -->
+<!-- #        width = 7, -->
+<!-- #        plot= last_plot(),  -->
+<!-- #        path = "~/.ssh/norspisdata_aarsrapp2021")  -->
+<!-- #  -->
+<!-- # flextable::save_as_docx( -->
+<!-- #     "Tabell 3.1: Text"= KI4_time[[3]],  -->
+<!-- #                           path = paste0("~/.ssh/norspisdata_aarsrapp2021/", "KI4_PROP_PO09Utbytte_time.docx")) -->
+
+<!-- ``` -->
+
+
+
+<!-- ## R Markdown -->
+
+<!-- This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>. -->
+
+<!-- When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this: -->
 

@@ -23,12 +23,25 @@ fun3_1_filter_RegData <- function(RegData = myInData, #OBS this function does no
                                  dateFrom = "2012-01-01",
                                  dateTo = "2100-12-31",
                                  ageFrom = 0,
-                                 ageTo = 200){
+                                 ageTo = 200,
+                                 BUP=99){
+
   RegData_filtered <- RegData %>%
     filter(BasisRegStatus %in% regStatus) %>% #this var has no NAs
     filter(RegRegtype %in% regType) %>% #this var has no NAs
     filter(HovedDato_FRMT >= dateFrom  &  HovedDato_FRMT <= dateTo) %>% #some dates are NA, and will observations will thus be reomved even if we filter on the lowest and highest available date.
     filter(as.numeric(PasientAlder) >= ageFrom  &  as.numeric(PasientAlder) <= ageTo) #FIX format on data earlier, not here
+
+  if (BUP %in% c(0, 1)) {
+    if (BUP == 1) {
+      RegData_filtered <- RegData_filtered %>%
+        filter(ForlopsType1Num %in% c(99, 8, 6, 4, 2))
+    } else {
+      RegData_filtered <- RegData_filtered %>%
+        filter(ForlopsType1Num %in% c(98, 1,3, 5, 7))
+    }
+  }
+
 
   output <- RegData_filtered
   return(invisible(output))

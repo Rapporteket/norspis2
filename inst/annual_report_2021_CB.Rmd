@@ -1153,7 +1153,7 @@ Samlende svar fra skjemaet "pasienttilfredshet" utarbeidet av brukerorganisasjon
 data_gjsn_BUP <- data_ordinary_tom2021_BUP %>% 
                         #first make a variable that we will group results by:
                         mutate(Year_custom = case_when(Year == 2021 ~ "2021", 
-                                                      Year < 2021 ~ " T.O.M 2020",
+                                                      Year < 2021 ~ "T.o.m. 2020",
                                                       #Year == 2021 ~ "2021",
                                                       TRUE ~ NA_character_  )) %>%  
                         filter(
@@ -1171,7 +1171,7 @@ data_gjsn_BUP <- data_ordinary_tom2021_BUP %>%
 data_counts_BUP <- data_ordinary_tom2021_BUP %>%
                       #first make a variable that we will group results by:
                       mutate(Year_custom = case_when(Year == 2021 ~ "2021", 
-                                                      Year < 2021 ~ "<=2020",
+                                                      Year < 2021 ~ "T.o.m. 2020",
                                                       #Year == 2021 ~ "2021",
                                                       TRUE ~ NA_character_  )) %>% 
                       filter(
@@ -1292,7 +1292,7 @@ ggsave(filename = "pasienttilfredshet_samlet.png",
   
 
   popCharTab_ft <- norspis2::make_table_popchar(
-                              RegData = data_ordinary_tom2021_only_start, 
+                              RegData = data_ordinary_tom2021_only_start_BUP, 
                               varsInTab = myvarString,
                               varsNames = myvarNames,
                               #exclude:
@@ -1355,7 +1355,7 @@ og med 2020. N angir antall gyldige observasjoner"= popCharTab_ft,
                   "B25Avhengighet" = "Misbruk/avh.(rusmidler/medikamenter)")
 
   popCharTab_ft <- norspis2::make_table_popchar(
-                              RegData = data_ordinary_tom2021_only_start, 
+                              RegData = data_ordinary_tom2021_only_start_BUP, 
                               varsInTab = myvarString,
                               varsNames = myvarNames,
                               dont_visualize_nei = TRUE,
@@ -1409,7 +1409,7 @@ myvarNames <- c("DiagSF_V_BU_MISSING_NAMES" = "Diagnoser (ICD-10)"
 
 popCharTab_ft <- 
   norspis2::make_table_popchar(
-    RegData = data_ordinary_tom2021_only_end_avbrudd_utred, 
+    RegData = data_ordinary_tom2021_only_end_avbrudd_utred_BUP, 
     varsInTab = myvarString,
     varsNames = myvarNames,
     dont_visualize_mangler = F,
@@ -1476,7 +1476,7 @@ myvarNames <- c(#"DiagSF_V_BU_MISSING_NAMES" = "Diagnoser (ICD-10)",
 
 popCharTab_ft <- 
   norspis2::make_table_popchar(
-    RegData = data_ordinary_tom2021_only_start, 
+    RegData = data_ordinary_tom2021_only_start_BUP, 
     varsInTab = myvarString,
     varsNames = myvarNames,
     font_size_ft = 8,
@@ -1534,7 +1534,7 @@ myvarNames <- c(#"DiagSF_V_BU_MISSING_NAMES" = "Diagnoser (ICD-10)",
 
 popCharTab_ft <- 
   norspis2::make_table_popchar(
-    RegData = data_ordinary_tom2021_only_end_ikkeavbrudd, 
+    RegData = data_ordinary_tom2021_only_end_ikkeavbrudd_BUP, 
     varsInTab = myvarString,
     varsNames = myvarNames,
     font_size_ft = 8,
@@ -1590,7 +1590,7 @@ myvarNames <- c(#"DiagSF_V_BU_MISSING_NAMES" = "Diagnoser (ICD-10)",
                 )
 
 popCharTab_ft <- norspis2::make_table_popchar(
-  RegData = data_ordinary_tom2021_only_start, 
+  RegData = data_ordinary_tom2021_only_start_BUP, 
   varsInTab = myvarString,
   varsNames = myvarNames,
   font_size_ft = 8,
@@ -1649,7 +1649,7 @@ myvarNames <- c(#"DiagSF_V_BU_MISSING_NAMES" = "Diagnoser (ICD-10)",
   
 popCharTab_ft <- 
   norspis2::make_table_popchar(
-    RegData = data_ordinary_tom2021_only_end_ikkeavbrudd, 
+    RegData = data_ordinary_tom2021_only_end_ikkeavbrudd_BUP, 
     varsInTab = myvarString,
     varsNames = myvarNames,
     font_size_ft = 8,
@@ -1702,11 +1702,11 @@ myvarStringMiss <- c(quo(EDEQ60GlobalScore_miss), #variables you want to include
 
 
 tab <- 
-  norspis2::make_table_DQ_missing(RegData = data_ordinary_tom2020, 
+  norspis2::make_table_DQ_missing(RegData = data_ordinary_tom2020_BUP, 
                                   varsInMissTab = myvarStringMiss,
                                   #comparison
                                   comparison = TRUE,
-                                  RegDataComparison = data_ordinary_only2021) 
+                                  RegDataComparison = data_ordinary_only2021_BUP) 
 
 
 #Then variables which depend on bot start AND end registrations:
@@ -1715,11 +1715,11 @@ myvarStringMissStartEnd <- c(quo(EDEQ60GlobalScore_missStartEnd), #variables you
                              quo(MedBMI_start18.5_slutt18.5_miss))
 
 tab2 <- 
-  norspis2::make_table_DQ_missing(RegData = data_start_end_tom2020_onlyEndIkkeAvbrudd,  
+  norspis2::make_table_DQ_missing(RegData = data_start_end_tom2020_onlyEndIkkeAvbrudd_BUP,  
                        varsInMissTab = myvarStringMissStartEnd,
                        #comparison
                        comparison = TRUE,
-                       RegDataComparison = data_start_end_2021_onlyEndIkkeAvbrudd) 
+                       RegDataComparison = data_start_end_2021_onlyEndIkkeAvbrudd_BUP) 
 
 
 tab_merged <- rbind(tab,
@@ -1766,11 +1766,11 @@ myvarStringMiss <- c(#quo(EDEQ60GlobalScore_miss), #variables you want to includ
                      quo(EDEQ60GlobalScore_missEnd))
                      
 tab <- 
-  norspis2::make_table_DQ_missing(RegData = data_ordinary_tom2020, 
+  norspis2::make_table_DQ_missing(RegData = data_ordinary_tom2020_BUP, 
                                   varsInMissTab = myvarStringMiss,
                                   #comparison
                                   comparison = TRUE,
-                                  RegDataComparison = data_ordinary_only2021) 
+                                  RegDataComparison = data_ordinary_only2021_BUP) 
 
 
 #Then variables which depend on bot start AND end registrations:
@@ -1780,11 +1780,11 @@ myvarStringMissStartEnd <- c(quo(EDEQ60GlobalScore_missStartEnd) #variables you 
                              )
 
 tab2 <- 
-  norspis2::make_table_DQ_missing(RegData = data_start_end_tom2020_onlyEndIkkeAvbrudd,  
+  norspis2::make_table_DQ_missing(RegData = data_start_end_tom2020_onlyEndIkkeAvbrudd_BUP,  
                        varsInMissTab = myvarStringMissStartEnd,
                        #comparison
                        comparison = TRUE,
-                       RegDataComparison = data_start_end_2021_onlyEndIkkeAvbrudd) 
+                       RegDataComparison = data_start_end_2021_onlyEndIkkeAvbrudd_BUP) 
 #*1
 tab_merged1 <- rbind(tab,
                     tab2)
@@ -1794,11 +1794,11 @@ myvarStringMiss <- c(quo(CIA30GlobalScore_missStart),
                      quo(CIA30GlobalScore_missEnd))
                      
 tab <- 
-  norspis2::make_table_DQ_missing(RegData = data_ordinary_tom2020, 
+  norspis2::make_table_DQ_missing(RegData = data_ordinary_tom2020_BUP, 
                                   varsInMissTab = myvarStringMiss,
                                   #comparison
                                   comparison = TRUE,
-                                  RegDataComparison = data_ordinary_only2021) 
+                                  RegDataComparison = data_ordinary_only2021_BUP) 
 
 
 #Then variables which depend on bot start AND end registrations:
@@ -1808,11 +1808,11 @@ myvarStringMissStartEnd <- c(#quo(EDEQ60GlobalScore_missStartEnd), #variables yo
                              )
 
 tab2 <- 
-  norspis2::make_table_DQ_missing(RegData = data_start_end_tom2020_onlyEndIkkeAvbrudd,  
+  norspis2::make_table_DQ_missing(RegData = data_start_end_tom2020_onlyEndIkkeAvbrudd_BUP,  
                        varsInMissTab = myvarStringMissStartEnd,
                        #comparison
                        comparison = TRUE,
-                       RegDataComparison = data_start_end_2021_onlyEndIkkeAvbrudd) 
+                       RegDataComparison = data_start_end_2021_onlyEndIkkeAvbrudd_BUP) 
 #*2
 tab_merged2 <- rbind(tab,
                     tab2)
@@ -1823,11 +1823,11 @@ myvarStringMiss <- c(quo(MedBMI_missStart),
                      quo(MedBMI_missEnd))
                      
 tab <- 
-  norspis2::make_table_DQ_missing(RegData = data_ordinary_tom2020, 
+  norspis2::make_table_DQ_missing(RegData = data_ordinary_tom2020_BUP, 
                                   varsInMissTab = myvarStringMiss,
                                   #comparison
                                   comparison = TRUE,
-                                  RegDataComparison = data_ordinary_only2021) 
+                                  RegDataComparison = data_ordinary_only2021_BUP) 
 
 
 #Then variables which depend on bot start AND end registrations:
@@ -1837,11 +1837,11 @@ myvarStringMissStartEnd <- c(#quo(EDEQ60GlobalScore_missStartEnd), #variables yo
                              )
 
 tab2 <- 
-  norspis2::make_table_DQ_missing(RegData = data_start_end_tom2020_onlyEndIkkeAvbrudd,  
+  norspis2::make_table_DQ_missing(RegData = data_start_end_tom2020_onlyEndIkkeAvbrudd_BUP,  
                        varsInMissTab = myvarStringMissStartEnd,
                        #comparison
                        comparison = TRUE,
-                       RegDataComparison = data_start_end_2021_onlyEndIkkeAvbrudd) 
+                       RegDataComparison = data_start_end_2021_onlyEndIkkeAvbrudd_BUP) 
 #*3
 tab_merged3 <- rbind(tab,
                      tab2)
@@ -1853,11 +1853,11 @@ myvarStringMiss <- c(quo(PO09Utbytte_miss),
                      )
                      
 tab_4_5 <- 
-  norspis2::make_table_DQ_missing(RegData = data_ordinary_tom2020, 
+  norspis2::make_table_DQ_missing(RegData = data_ordinary_tom2020_BUP, 
                                   varsInMissTab = myvarStringMiss,
                                   #comparison
                                   comparison = TRUE,
-                                  RegDataComparison = data_ordinary_only2021) 
+                                  RegDataComparison = data_ordinary_only2021_BUP) 
 
 
 #1,2,3,4,5
@@ -1956,11 +1956,11 @@ myvarStringMiss <- c(#quo(EDEQ60GlobalScore_miss), #variables you want to includ
                      quo(PT05OrientertBrukerorg_miss))
                      
 tab <- 
-  norspis2::make_table_DQ_missing(RegData = data_ordinary_tom2020, 
+  norspis2::make_table_DQ_missing(RegData = data_ordinary_tom2020_BUP, 
                                   varsInMissTab = myvarStringMiss,
                                   #comparison
                                   comparison = TRUE,
-                                  RegDataComparison = data_ordinary_only2021) 
+                                  RegDataComparison = data_ordinary_only2021_BUP) 
 
 
 

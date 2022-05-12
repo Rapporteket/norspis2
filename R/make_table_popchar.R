@@ -42,11 +42,11 @@ make_table_popchar <- function(RegData = myFilteredData,
   output_tibble <- tibble() #just making an empty tibble where output of the "for loop" can go
 
   #Prepare three data sets/tables that go into final table:
-  #1. Full data (e.g. 2017-2020)
-  #2. Comparison1 (e.g. 2017-2019)
-  #3. Comparison2 (e.g. 2020)
+  #1. Full data (e.g. 2017-2021)
+  #2. Comparison1 (e.g. 2017-2020)
+  #3. Comparison2 (e.g. 2021)
 
-  #1. Full data (e.g. 2017-2020)
+  #1. Full data (e.g. 2017-2021)
   for(myvar in varsInTab) {
 
   #This makes a small summary table with counts for each category of the variable
@@ -104,13 +104,13 @@ make_table_popchar <- function(RegData = myFilteredData,
 
   if(comparison == TRUE){
 
-    #2. Comparison1 (e.g. 2017-2019)
+    #2. Comparison1 (e.g. 2017-2020)
 
 
     #first filter the data that will be comparison
     RegDataComparison1 <-
       RegData %>%
-      filter(Year>= 2000 & Year <=2019)
+      filter(Year>= 2000 & Year <=2020)
 
 
     output_tibble_comparison1 <- tibble() #just making an empty tibble where output of the "for loop" can go
@@ -184,12 +184,12 @@ make_table_popchar <- function(RegData = myFilteredData,
 
 
 
-    #3. Comparison2 (2020)
+    #3. Comparison2 (2021)
 
     #first filter the data that will be comparison
     RegDataComparison2 <-
       RegData %>%
-      filter(Year>= 2020 & Year <=2020)
+      filter(Year>= 2021 & Year <=2021)
 
 
     output_tibble_comparison2 <- tibble() #just making an empty tibble where output of the "for loop" can go
@@ -350,10 +350,10 @@ make_table_popchar <- function(RegData = myFilteredData,
   ft <- flextable::add_header(ft,
                               N = "Alle år",
                               `%` = "Alle år",
-                              N.compare1 = "T.o.m. 2019",
-                              `%.compare1` = "T.o.m. 2019",
-                              N.compare2 = "2020",
-                              `%.compare2` = "2020",
+                              N.compare1 = "T.o.m. 2020",
+                              `%.compare1` = "T.o.m. 2020",
+                              N.compare2 = "2021",
+                              `%.compare2` = "2021",
                               top = TRUE )
   # merge new headers rows horizontally when there are identical values
   ft <- flextable::merge_h(ft, part = "header")

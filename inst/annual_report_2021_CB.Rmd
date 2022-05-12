@@ -272,10 +272,10 @@ RegDataTOM2021 <- DL$RegData2 %>%
                     filter(HovedDato_FRMT<="2021-12-31", BasisRegStatus==1) 
 
 
-#unike forlÃ¸p alle Ã¥r sett under ett
+#unike forløp alle år sett under ett
 #length(unique(RegDataTOM2020$ForlopsID)) 
 
-#unike pasienter alle Ã¥r sett under ett
+#unike pasienter alle år sett under ett
 length(unique(RegDataTOM2021$PasientID)) #gives 622
 
 
@@ -571,7 +571,7 @@ tabBodo_perc_n <-
   tidyr::pivot_longer(c(2:length(.))) %>%
   tidyr::pivot_wider(names_from = AvdNavn, values_from = value)%>%
   mutate(bodo_n_numerator = round((bodo_n * bodo_perc)/100,1)) %>% 
-  filter(name!="Alle Ã¥r")
+  filter(name!="Alle år")
 
 prop.trend.test(x = tabBodo_perc_n$bodo_n_numerator,
                 n = tabBodo_perc_n$bodo_n#,
@@ -1106,7 +1106,7 @@ mylabQ <- vars("0"="Ikke i det hele tatt", #alternatively to vars, use "exprs(" 
               "1"="I liten grad",
               "2"="I noen grad",
               "3"="I stor grad",
-              "4"="I sv?rt stor grad")#labels
+              "4"="I svært stor grad")#labels
 mytitle <- '"Mener du at du på  noen måte ble feilbehandlet (etter det du selv kan bedømme)?"' 
 #Choose dataset to use (prepared earlier)
 myInDataQ <- RegData
@@ -1236,8 +1236,8 @@ ggplot(data_BUP_involvering, aes(x= PT,y=gj_sn*100, fill=as.factor(Year_custom))
                   panel.grid.minor.x = element_blank())+
   scale_y_continuous(breaks = seq(10,100,10))+
   scale_fill_discrete(name="År")+
-  scale_fill_manual(values = c("lightgrey",
-                               "lightblue"
+  scale_fill_manual(values = c("lightblue",
+                               "lightgrey"
                                ) , name = 'År')
 
 ggsave(filename = "pasienttilfredshet_samlet.png", 
@@ -1279,13 +1279,13 @@ ggsave(filename = "pasienttilfredshet_samlet.png",
                   quo(B06Hovedaktivitet_MISSING_NAMES),
                   quo(B07Hovedinntekt_MISSING_NAMES))
   
-  myvarNames <- c("PasientKjonn" = "KjÃ¸nn",
+  myvarNames <- c("PasientKjonn" = "Kjønn",
                   "PasientAlder_CAT_MISSING" =
                     "Alder",
                   "B01Sivilstatus_MISSING_NAMES"="Sivilstatus",
                   "B03Bosituasjon_MISSING_NAMES"="Bosituasjon",
                   "B02EgneBarn_MISSING_NAMES"="Egne barn",
-                  "B05FullfortUtd_MISSING_NAMES" = "Fullf?rt utdanning",
+                  "B05FullfortUtd_MISSING_NAMES" = "Fullført utdanning",
                   "B06Hovedaktivitet_MISSING_NAMES"="Hovedaktivitet",
                   "B07Hovedinntekt_MISSING_NAMES" = "Hovedinntekt")
 
@@ -1312,7 +1312,7 @@ ggsave(filename = "pasienttilfredshet_samlet.png",
   flextable::save_as_image(popCharTab_ft, path=paste0(filfolder, "sosiodemCharAlleAar2.png"))
   flextable::save_as_docx(
     "Tabell 3.1: Sosiodemografiske karakteristika ved de registrerte pasientene,
-under oppstart i behandling, for alle Ã¥r siden registerets oppstart frem til 
+under oppstart i behandling, for alle år siden registerets oppstart frem til 
 og med 2020. N angir antall gyldige observasjoner"= popCharTab_ft, 
                           path = paste0(filfolder, "sosiodemCharAlleAar2.docx"))
 
@@ -1349,10 +1349,10 @@ og med 2020. N angir antall gyldige observasjoner"= popCharTab_ft,
                   "B18PsykMishandl_CAT_MISSING"= "Psykisk mishandling",
                   "B19Overgrep_CAT_MISSING" = "Misbruk/overgrep",
                   "B20Mobbing_CAT_MISSING" = "Mobbing",
-                  "B21SelvskadTidl" = "Selvskading (>1 Ã¥r siden)",
-                  "B22SelvskadSisteAr" = "Selvskading siste Ã¥ret",
-                  "B23SelvmordFTidl" = "SelvmordforsÃ¸k (>1 Ã¥r siden)",
-                  "B24SelvmordFSisteAr" = "SelvmordforsÃ¸k siste Ã¥r",
+                  "B21SelvskadTidl" = "Selvskading (>1 år siden)",
+                  "B22SelvskadSisteAr" = "Selvskading siste året",
+                  "B23SelvmordFTidl" = "Selvmordforsøk (>1 år siden)",
+                  "B24SelvmordFSisteAr" = "Selvmordforsøk siste år",
                   "B25Avhengighet" = "Misbruk/avh.(rusmidler/medikamenter)")
 
   popCharTab_ft <- norspis2::make_table_popchar(
@@ -1404,8 +1404,8 @@ myvarNames <- c("DiagSF_V_BU_MISSING_NAMES" = "Diagnoser (ICD-10)"
                 # "MedBenzodiazepiner_CAT_MISSING" = "Benzodiazepiner",
                 # "MedNevroleptika_CAT_MISSING" = "Nevroleptika",
                 # "MedAnnenMedBeh_CAT_MISSING" = "Annen medikamentell beh.",
-                # "MedBlodprove_CAT_MISSING" = "Blodpr?ve siste m?ned",
-                # "MedBeintetthMaling_CAT_MISSING" = "Beintetthetsm?ling siste ?r" 
+                # "MedBlodprove_CAT_MISSING" = "Blodprøve siste måned",
+                # "MedBeintetthMaling_CAT_MISSING" = "Beintetthetsmåling siste år" 
                 )
 
 popCharTab_ft <- 
@@ -1470,8 +1470,8 @@ myvarNames <- c(#"DiagSF_V_BU_MISSING_NAMES" = "Diagnoser (ICD-10)",
                 # "MedBenzodiazepiner_CAT_MISSING" = "Benzodiazepiner",
                 # "MedNevroleptika_CAT_MISSING" = "Nevroleptika",
                 # "MedAnnenMedBeh_CAT_MISSING" = "Annen medikamentell beh.",
-                # "MedBlodprove_CAT_MISSING" = "Blodpr?ve siste m?ned",
-                # "MedBeintetthMaling_CAT_MISSING" = "Beintetthetsm?ling siste ?r"
+                # "MedBlodprove_CAT_MISSING" = "Blodprøve siste måned",
+                # "MedBeintetthMaling_CAT_MISSING" = "Beintetthetsmåling siste år"
                 )
 
 
@@ -1529,8 +1529,8 @@ myvarNames <- c(#"DiagSF_V_BU_MISSING_NAMES" = "Diagnoser (ICD-10)",
                 # "MedBenzodiazepiner_CAT_MISSING" = "Benzodiazepiner",
                 # "MedNevroleptika_CAT_MISSING" = "Nevroleptika",
                 # "MedAnnenMedBeh_CAT_MISSING" = "Annen medikamentell beh.",
-                # "MedBlodprove_CAT_MISSING" = "Blodpr?ve siste m?ned",
-                # "MedBeintetthMaling_CAT_MISSING" = "Beintetthetsm?ling siste ?r" 
+                # "MedBlodprove_CAT_MISSING" = "Blodprøve siste måned",
+                # "MedBeintetthMaling_CAT_MISSING" = "Beintetthetsmåling siste år" 
                 )
 
 popCharTab_ft <- 
@@ -1586,8 +1586,8 @@ myvarNames <- c(#"DiagSF_V_BU_MISSING_NAMES" = "Diagnoser (ICD-10)",
                  "MedBenzodiazepiner_CAT_MISSING" = "Benzodiazepiner",
                  "MedNevroleptika_CAT_MISSING" = "Nevroleptika",
                  "MedAnnenMedBeh_CAT_MISSING" = "Annen medikamentell beh."
-                # "MedBlodprove_CAT_MISSING" = "Blodpr?ve siste m?ned",
-                # "MedBeintetthMaling_CAT_MISSING" = "Beintetthetsm?ling siste ?r" 
+                # "MedBlodprove_CAT_MISSING" = "Blodprøve siste måned",
+                # "MedBeintetthMaling_CAT_MISSING" = "Beintetthetsmåling siste år" 
                 )
 
 popCharTab_ft <- norspis2::make_table_popchar(
@@ -1644,8 +1644,8 @@ myvarNames <- c(#"DiagSF_V_BU_MISSING_NAMES" = "Diagnoser (ICD-10)",
                  "MedBenzodiazepiner_CAT_MISSING" = "Benzodiazepiner",
                  "MedNevroleptika_CAT_MISSING" = "Nevroleptika",
                  "MedAnnenMedBeh_CAT_MISSING" = "Annen medikamentell beh."
-                # "MedBlodprove_CAT_MISSING" = "Blodpr?ve siste m?ned",
-                # "MedBeintetthMaling_CAT_MISSING" = "Beintetthetsm?ling siste ?r" 
+                # "MedBlodprove_CAT_MISSING" = "Blodprøve siste måned",
+                # "MedBeintetthMaling_CAT_MISSING" = "Beintetthetsmåling siste år" 
                 )
   
 popCharTab_ft <- 
@@ -2048,14 +2048,14 @@ ft
 <!--                                         'Helse Nord', -->
 <!--                                         'Helse Midt', -->
 <!--                                         'Helse Vest', -->
-<!--                                         'Helse SÃ¸r-Ãst', -->
-<!--                                         'Helse MÃ¸re og Romsdal', 'Helse Nord-TrÃ¸ndelag', 'St. Olavs Hospital', -->
+<!--                                         'Helse SørØst', -->
+<!--                                         'Helse Møre og Romsdal', 'Helse Nord-Trøndelag', 'St. Olavs Hospital', -->
 <!--                                         'Finnmarkssykehuset','Helgelandssykehuset', 'Nordlandssykehuset', -->
 <!--                                         'Universitetssykehuset Nord-Norge','Private behandlingssteder', -->
 <!--                                         'Akershus universitetssykehus', 'Oslo universitetssykehus', -->
 <!--                                         'Sykehuset i Vestfold', 'Sykehuset Innlandet', 'Sykehuset Telemark', -->
-<!--                                         'Sykehuset Ãstfold','SÃ¸rlandet Sykehus', 'Vestre Viken', 'Helse Bergen', -->
-<!--                                         'Helse Fonna', 'Helse FÃ¸rde', 'Helse Stavanger'), -->
+<!--                                         'Sykehuset Østfold','SØrlandet Sykehus', 'Vestre Viken', 'Helse Bergen', -->
+<!--                                         'Helse Fonna', 'Helse Førde', 'Helse Stavanger'), -->
 <!--                           chosen_string_var='null',#'egensk_datakval_kompl_dg2017_hfavd_OK', -->
 <!--                           chosen_color_var='egensk_tilslutning2017_hfavd_OK', -->
 <!--                           chosen_color_var2='egensk_tilslutning2018_hfavd_OK', -->
@@ -2068,14 +2068,14 @@ ft
 <!--                                         'Helse Nord', -->
 <!--                                         'Helse Midt', -->
 <!--                                         'Helse Vest', -->
-<!--                                         'Helse SÃ¸r-Ãst', -->
-<!--                                         'Helse MÃ¸re og Romsdal', 'Helse Nord-TrÃ¸ndelag', 'St. Olavs Hospital', -->
+<!--                                         'Helse SørØst', -->
+<!--                                         'Helse Møre og Romsdal', 'Helse Nord-Trøndelag', 'St. Olavs Hospital', -->
 <!--                                         'Finnmarkssykehuset','Helgelandssykehuset', 'Nordlandssykehuset', -->
 <!--                                         'Universitetssykehuset Nord-Norge','Private behandlingssteder', -->
 <!--                                         'Akershus universitetssykehus', 'Oslo universitetssykehus', -->
 <!--                                         'Sykehuset i Vestfold', 'Sykehuset Innlandet', 'Sykehuset Telemark', -->
-<!--                                         'Sykehuset Ãstfold','SÃ¸rlandet Sykehus', 'Vestre Viken', 'Helse Bergen', -->
-<!--                                         'Helse Fonna', 'Helse FÃ¸rde', 'Helse Stavanger'), -->
+<!--                                         'Sykehuset Østfold','Sørlandet Sykehus', 'Vestre Viken', 'Helse Bergen', -->
+<!--                                         'Helse Fonna', 'Helse Førde', 'Helse Stavanger'), -->
 <!--                           chosen_string_var='null',#'egensk_datakval_kompl_dg2017_hfavd_OK', -->
 <!--                           chosen_color_var='egensk_tilslutning2017_hfavd_OK', -->
 <!--                           chosen_color_var2='egensk_tilslutning2018_hfavd_OK', -->
@@ -2089,14 +2089,14 @@ ft
 <!-- #                                         'Helse Nord', -->
 <!-- #                                         'Helse Midt', -->
 <!-- #                                         'Helse Vest', -->
-<!-- #                                         'Helse SÃ¸r-Ãst', -->
-<!-- #                                         'Helse MÃ¸re og Romsdal', 'Helse Nord-TrÃ¸ndelag', 'St. Olavs Hospital', -->
+<!-- #                                         'Helse SørØst', -->
+<!-- #                                         'Helse Møre og Romsdal', 'Helse Nord-Trøndelag', 'St. Olavs Hospital', -->
 <!-- #                                         'Finnmarkssykehuset','Helgelandssykehuset', 'Nordlandssykehuset', -->
 <!-- #                                         'Universitetssykehuset Nord-Norge','Private behandlingssteder', -->
 <!-- #                                         'Akershus universitetssykehus', 'Oslo universitetssykehus', -->
 <!-- #                                         'Sykehuset i Vestfold', 'Sykehuset Innlandet', 'Sykehuset Telemark', -->
-<!-- #                                         'Sykehuset Ãstfold','SÃ¸rlandet Sykehus', 'Vestre Viken', 'Helse Bergen', -->
-<!-- #                                         'Helse Fonna', 'Helse FÃ¸rde', 'Helse Stavanger'), -->
+<!-- #                                         'Sykehuset Østfold','Sørlandet Sykehus', 'Vestre Viken', 'Helse Bergen', -->
+<!-- #                                         'Helse Fonna', 'Helse Førde', 'Helse Stavanger'), -->
 <!-- #                           chosen_string_var='null',#'egensk_datakval_kompl_dg2017_hfavd_OK', -->
 <!-- #                           chosen_color_var='egensk_tilslutning2017_hfavd_OK', -->
 <!-- #                           chosen_color_var2='egensk_tilslutning2018_hfavd_OK', -->

@@ -282,10 +282,10 @@ RegDataTOM2021 <- DL$RegData2 %>%
                     filter(HovedDato_FRMT<="2021-12-31", BasisRegStatus==1) 
 
 
-#unike forlÃ¸p alle Ã¥r sett under ett
+#unike forløp alle år sett under ett
 #length(unique(RegDataTOM2020$ForlopsID)) 
 
-#unike pasienter alle Ã¥r sett under ett
+#unike pasienter alle år sett under ett
 length(unique(RegDataTOM2021$PasientID)) #gives 622
 
 
@@ -580,7 +580,7 @@ tabBodo_perc_n <-
   tidyr::pivot_longer(c(2:length(.))) %>%
   tidyr::pivot_wider(names_from = AvdNavn, values_from = value)%>%
   mutate(bodo_n_numerator = round((bodo_n * bodo_perc)/100,1)) %>% 
-  filter(name!="Alle Ã¥r")
+  filter(name!="Alle år")
 
 prop.trend.test(x = tabBodo_perc_n$bodo_n_numerator,
                 n = tabBodo_perc_n$bodo_n#,
@@ -912,7 +912,7 @@ norspis2::make_figFig_unitCompar(tab3_VOP,
                                  showErrorBar2 = F,
                                  showComparisonPoints = T,
                                  fig_type_comparison = 'two_bars',
-                                 my_y_lab = "Gjennomsnittlig skÃ¥re",
+                                 my_y_lab = "Gjennomsnittlig skåre",
                                  
                                  my_title = "Tilgjengelighet..."
 )
@@ -968,7 +968,7 @@ norspis2::make_figFig_unitCompar(tab3_VOP,
                                  showErrorBar2 = F,
                                  showComparisonPoints = T,
                                  fig_type_comparison = 'two_bars',
-                                 my_y_lab = "Gjennomsnittlig skÃ¥re",
+                                 my_y_lab = "Gjennomsnittlig skåre",
                                  my_title = "Pasienttilfredshet..."
 )
 
@@ -1022,7 +1022,7 @@ norspis2::make_figFig_unitCompar(tab3_VOP,
                                  showErrorBar2 = F,
                                  showComparisonPoints = T,
                                  fig_type_comparison = 'two_bars',
-                                 my_y_lab = "Gjennomsnittlig skÃ¥re",
+                                 my_y_lab = "Gjennomsnittlig skåre",
                                  my_title = "Pasienterfaringer..."
 )
 
@@ -1076,7 +1076,7 @@ norspis2::make_figFig_unitCompar(tab3_VOP,
                                  showErrorBar2 = F,
                                  showComparisonPoints = T,
                                  fig_type_comparison = 'two_bars',
-                                 my_y_lab = "Gjennomsnittlig skÃ¥re",
+                                 my_y_lab = "Gjennomsnittlig skåre",
                                  my_title = "Pasientsikkerhet..."
 )
 
@@ -1115,7 +1115,7 @@ mylabQ <- vars("0"="Ikke i det hele tatt", #alternatively to vars, use "exprs(" 
               "1"="I liten grad",
               "2"="I noen grad",
               "3"="I stor grad",
-              "4"="I sv?rt stor grad")#labels
+              "4"="I svært stor grad")#labels
 mytitle <- '"Mener du at du på  noen måte ble feilbehandlet (etter det du selv kan bedømme)?"' 
 #Choose dataset to use (prepared earlier)
 myInDataQ <- RegData
@@ -1162,8 +1162,8 @@ Samlende svar fra skjemaet "pasienttilfredshet" utarbeidet av brukerorganisasjon
 #filter RegDataNatVal
 data_gjsn_VOP <- data_ordinary_tom2021_VOP %>% 
                         #first make a variable that we will group results by:
-                        mutate(Year_custom = case_when(Year == 2021 ~ "2021", 
-                                                      Year < 2021 ~ "T.o.m. 2020",
+                        mutate(Year_custom = case_when(Year == 2021 ~ "2021",
+                                                       Year < 2021 ~ "T.o.m. 2020",
                                                       #Year == 2021 ~ "2021",
                                                       TRUE ~ NA_character_  )) %>%  
                         filter(
@@ -1180,7 +1180,7 @@ data_gjsn_VOP <- data_ordinary_tom2021_VOP %>%
 
 data_counts_VOP <- data_ordinary_tom2021_VOP %>%
                       #first make a variable that we will group results by:
-                      mutate(Year_custom = case_when(Year == 2021 ~ "2021", 
+                      mutate(Year_custom = case_when( Year == 2021 ~ "2021",
                                                       Year < 2021 ~ "T.o.m. 2020",
                                                       #Year == 2021 ~ "2021",
                                                       TRUE ~ NA_character_  )) %>% 
@@ -1200,10 +1200,10 @@ data_counts_VOP <- data_ordinary_tom2021_VOP %>%
 data_VOP_involvering<- data_gjsn_VOP %>% #merge counts and percentages into one table, and rename values of PT
             full_join(data_counts_VOP)%>%
             mutate(PT = case_when(
-                              PT == "PT01" ~ "Familie/venner var ønsket involvert",
-                              PT == "PT02" ~ "Familie/venner ble involvert",
-                              PT == "PT04" ~ "Noen gang kontakt med \n ROS/SPISFO",
-                              PT == "PT05" ~ "Fikk informasjon ila. behandling om ROS/SPISFO"))
+                              PT == "PT01" ~ "Familie/venner var\n  ønsket involvert",
+                              PT == "PT02" ~ "Familie/venner ble\n involvert",
+                              PT == "PT04" ~ "Noen gang\n kontakt med\n ROS/SPISFO",
+                              PT == "PT05" ~ "Fikk informasjon\n ila. behandling \nom ROS/SPISFO"))
 
 ggplot(data_VOP_involvering, aes(x= PT,y=gj_sn*100, fill=as.factor(Year_custom)))+
   geom_col(position = "dodge")+
@@ -1245,8 +1245,8 @@ ggplot(data_VOP_involvering, aes(x= PT,y=gj_sn*100, fill=as.factor(Year_custom))
                   panel.grid.minor.x = element_blank())+
   scale_y_continuous(breaks = seq(10,100,10))+
   scale_fill_discrete(name="År")+
-  scale_fill_manual(values = c("lightgrey",
-                               "lightblue"
+  scale_fill_manual(values = c("lightblue",
+                               "lightgrey"
                                ) , name = 'År')
 
 ggsave(filename = "pasienttilfredshet_samlet.png", 
@@ -1321,7 +1321,7 @@ ggsave(filename = "pasienttilfredshet_samlet.png",
   flextable::save_as_image(popCharTab_ft, path=paste0("~/.ssh/norspisdata_aarsrapp2021_VOP/", "sosiodemCharAlleAar2.png"))
   flextable::save_as_docx(
     "Tabell 3.1: Sosiodemografiske karakteristika ved de registrerte pasientene,
-under oppstart i behandling, for alle Ã¥r siden registerets oppstart frem til 
+under oppstart i behandling, for alle r siden registerets oppstart frem til 
 og med 2020. N angir antall gyldige observasjoner"= popCharTab_ft, 
                           path = paste0("~/.ssh/norspisdata_aarsrapp2021_VOP/", "sosiodemCharAlleAar2.docx"))
 
@@ -1358,10 +1358,10 @@ og med 2020. N angir antall gyldige observasjoner"= popCharTab_ft,
                   "B18PsykMishandl_CAT_MISSING"= "Psykisk mishandling",
                   "B19Overgrep_CAT_MISSING" = "Misbruk/overgrep",
                   "B20Mobbing_CAT_MISSING" = "Mobbing",
-                  "B21SelvskadTidl" = "Selvskading (>1 Ã¥r siden)",
-                  "B22SelvskadSisteAr" = "Selvskading siste Ã¥ret",
-                  "B23SelvmordFTidl" = "SelvmordforsÃ¸k (>1 Ã¥r siden)",
-                  "B24SelvmordFSisteAr" = "SelvmordforsÃ¸k siste Ã¥r",
+                  "B21SelvskadTidl" = "Selvskading (>1 år siden)",
+                  "B22SelvskadSisteAr" = "Selvskading siste året",
+                  "B23SelvmordFTidl" = "Selvmordforsøk (>1 år siden)",
+                  "B24SelvmordFSisteAr" = "Selvmordforsøk siste år",
                   "B25Avhengighet" = "Misbruk/avh.(rusmidler/medikamenter)")
 
   popCharTab_ft <- norspis2::make_table_popchar(

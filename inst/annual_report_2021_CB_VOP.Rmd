@@ -1243,7 +1243,8 @@ ggplot(data_VOP_involvering, aes(x= PT,y=gj_sn*100, fill=as.factor(Year_custom))
   theme_minimal()+
   theme(panel.grid.major.x = element_blank(),
                   panel.grid.minor.x = element_blank())+
-  scale_y_continuous(breaks = seq(10,100,10))+
+   scale_y_continuous(limits = c(0,100),
+                     breaks=seq(0, 100, by=10))+
   scale_fill_discrete(name="År")+
   scale_fill_manual(values = c("lightblue",
                                "lightgrey"

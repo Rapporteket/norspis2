@@ -199,16 +199,21 @@ make_figFig_unitCompar <- function(
                                           perc.compare = "lightblue"),
                                labels = c("T.o.m. 2020",
                                           "2021"))+ #"#f3f1ee"
-
+#Mads sin funksjon:
     ggplot2::labs(y=my_y_lab, #my_proptable_hospitals$my_y_lab,#
                   title = my_title, #)+#colnames(my_proptable_hospitals[,4]))+
                   fill=" ")+
-    #my_figText$title)+
-    ggplot2::scale_y_continuous(
-      limits = c(min(my_proptable_hospitals_longer$CILower_percANDperc.compare),max(my_proptable_hospitals_longer$CIUpper_percANDperc.compare)), #c(0,105)
-      expand = ggplot2::expansion(mult=c(0,0.1)),breaks = seq(0,100,10)
-      #,labels = function(x) format(x, big.mark = ",", scientific = FALSE)
-      )+
+    #my_figText$title)+ #denne var hashtagget ut
+    # ggplot2::scale_y_continuous(
+      # limits = c(min(my_proptable_hospitals_longer$CILower_percANDperc.compare),max(my_proptable_hospitals_longer$CIUpper_percANDperc.compare)), #c(0,105)
+      # expand = ggplot2::expansion(mult=c(0,0.1)),breaks = seq(0,100, by=10)
+      #,labels = function(x) format(x, big.mark = ",", scientific = FALSE) #denne var hashtagget ut
+      # )+
+    #test carina:
+    ggplot2::scale_y_continuous(limits = c(0,100),
+                                breaks = seq(0,100, by=10))+
+    ggplot2::scale_x_continuous(limits = c(0,100),
+                                breaks = seq(0,100, by=10))+
     #above, in "expansion use "add" instead of "mult" to make expansion
     #absolute rather than relative(mult for multiplication)
     ggplot2::xlab(NULL)+
@@ -285,11 +290,16 @@ make_figFig_unitCompar <- function(
     ggplot2::labs(y=my_y_lab, #my_proptable_hospitals$my_y_lab,#
          title = my_title)+#colnames(my_proptable_hospitals[,4]))+
                            #my_figText$title)+
-    ggplot2::scale_y_continuous(
-      limits = c(min(my_proptable_hospitals$CILower),max(my_proptable_hospitals$CIUpper)), #c(0,105)
-      expand = ggplot2::expansion(mult=c(0,0.1)),breaks = seq(0,100,10)
+    #ggplot2::scale_y_continuous(
+     # limits = c(min(my_proptable_hospitals$CILower),max(my_proptable_hospitals$CIUpper)), #c(0,105)
+     # expand = ggplot2::expansion(mult=c(0,0.1)),breaks = seq(0,100,by=10)
       #,labels = function(x) format(x, big.mark = ",", scientific = FALSE)
-      )+
+      #)+
+    #test carina:
+    ggplot2::scale_y_continuous(limits = c(0,100),
+                                breaks = seq(0,100, by=10))+
+    ggplot2::scale_x_continuous(limits = c(0,100),
+                                breaks = seq(0,100, by=10))+
       #above, in "expansion use "add" instead of "mult" to make expansion
       #absolute rather than relative(mult for multiplication)
     ggplot2::xlab(NULL)+

@@ -65,11 +65,13 @@ if(comparison == FALSE){
          subtitle = paste0("N = ",sum(my_proptable$n), ""))+
     #caption = "NorSpis (2020)")+
 
-    ggplot2::scale_y_continuous(
-      limits = c(0,max(my_proptable$perc*100)),
-      expand = ggplot2::expansion(mult=c(0,0.1)),breaks = seq(0,100,10)
+    ggplot2::scale_y_continuous(limits = c(0,100),
+                         breaks=seq(0, 100, by=10))+
+
+      # limits = c(0,max(my_proptable$perc*100)),
+      # expand = ggplot2::expansion(mult=c(0,0.1)),breaks = seq(0,100,by=10)
       #,labels = function(x) format(x, big.mark = ",", scientific = FALSE)
-      )+
+      # )+
     ggplot2::labs(y="Andel pasienter(%)")+
     ggplot2::xlab(NULL)+
     tema +
@@ -179,11 +181,12 @@ if(comparison == TRUE){
                                     ""))+
     #caption = "NorSpis (2020)")+
 
-    ggplot2::scale_y_continuous(
-      limits = c(0,max(my_proptable_compare_merged_longer$value*100)),
-      expand = ggplot2::expansion(mult=c(0,0.1)),breaks = seq(0,100,10)
+    ggplot2::scale_y_continuous(limits = c(0,100),
+                                                   breaks=seq(0, 100, by=10))+
+      # limits = c(0,max(my_proptable_compare_merged_longer$value*100)),
+      # expand = ggplot2::expansion(mult=c(0,0.1)),breaks = seq(0,100,10)
       #,labels = function(x) format(x, big.mark = ",", scientific = FALSE)
-      )+
+      # )+
     ggplot2::labs(y="Andel pasienter(%)")+
     ggplot2::xlab(NULL)+
     tema +

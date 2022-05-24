@@ -42,11 +42,9 @@ library(norspis2)
 ```{r}
 library(dplyr)
 #------DATA norspis2
-RegData2 <- norspis2::fun1_1_import_data_FEA(path_data="F:/2021-09-13/", #disk and folder of data to import
-                                             date_data="2021-09-13")
+RegData2 <- norspis2::fun1_1_import_data_FEA()
 
-RegDataBeh2 <- norspis2::fun1_2_import_data_B(path_data="F:/2021-09-13/", #disk and folder of data to import
-                                              date_data="2021-09-13")
+RegDataBeh2 <- norspis2::fun1_2_import_data_B()
 #Five datasets (and outputted in a list):
 DL <- norspis2::fun2_dataList(myInData1 = RegData2, myInData2 = RegDataBeh2)
 #---DATA norspis2 (END)

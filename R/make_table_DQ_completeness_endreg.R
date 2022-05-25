@@ -27,7 +27,7 @@
 #' @examples
 
 make_table_DQ_completeness_endreg <- function(RegDataStartEnd =
-                                                DL$RegDataStartEnd2,
+                                                DL$RegDataStartEnd,
                                               userRole,
                                               reshID,
                                               dateFrom = "2012-01-01",

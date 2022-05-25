@@ -118,7 +118,9 @@ base_data2 <-
   #Make new date variable for year:
   #(see: https://cran.r-project.org/web/packages/tibbletime/vignettes/TT-04-use-with-dplyr.html)
   mutate(date_index_year = tibbletime::collapse_index(HovedDato.x,"yearly")) %>%
-  relocate(date_index_year)
+  relocate(date_index_year) %>%
+  mutate(BasisRegStatus.x = as.numeric(BasisRegStatus.x)) %>%
+  mutate(BasisRegStatus.y = as.numeric(BasisRegStatus.y))
   #        %>%
   # group_by(HovedDato.x)
 

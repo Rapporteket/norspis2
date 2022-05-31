@@ -240,7 +240,7 @@ perioden med rå kompletthet, estimert kompletthet og differansen mellom de.
 
 ```{r}
 completeness <- norspis2::make_table_DQ_completeness_endreg(dateFrom = "2021-01-01",
-                                                            dateTo = "2021-12-09",
+                                                            dateTo = "2021-12-31",
                                                             timeseries = F)
 completeness_raw <- completeness[[1]]
 
@@ -252,7 +252,7 @@ flextable::flextable(completeness_raw)
 
 ```{r}
 completeness <- norspis2::make_table_DQ_completeness_endreg(dateFrom = "2021-01-01",
-                                                            dateTo = "2021-12-09",
+                                                            dateTo = "2021-12-31",
                                                             timeseries = F)
 
 completeness_estimated <- completeness[[2]] 
@@ -265,7 +265,7 @@ flextable::flextable(completeness_estimated)
 
 ```{r}
 completeness <- norspis2::make_table_DQ_completeness_endreg(dateFrom = "2021-01-01",
-                                                            dateTo = "2021-12-09")
+                                                            dateTo = "2021-12-31")
 completeness_difference <- completeness[[3]]
 
 flextable::flextable(completeness_difference)
@@ -298,7 +298,7 @@ Her kan man se om det det har vært noen utvikling i komplettheten over tid.
 
 ```{r}
 completeness <- norspis2::make_table_DQ_completeness_endreg(dateFrom = "2012-01-01",
-                                                            dateTo = "2021-12-09",
+                                                            dateTo = "2021-12-31",
                                                             timeseries = T)
 completeness_raw <- completeness[[1]]
 
@@ -311,7 +311,7 @@ flextable::flextable(completeness_raw)
 
 ```{r}
 completeness <- norspis2::make_table_DQ_completeness_endreg(dateFrom = "2012-01-01",
-                                                            dateTo = "2021-12-09",
+                                                            dateTo = "2021-12-31",
                                                             timeseries = T)
 completeness_raw <- completeness[[2]]
 
@@ -361,7 +361,7 @@ de to metodene når vi ser på år for år. Her følger en tabell med
 forskjellen i prosentandel på kompletthetsmålet:
 ```{r}
 completeness <- norspis2::make_table_DQ_completeness_endreg(dateFrom = "2012-01-01",
-                                                            dateTo = "2021-12-09",
+                                                            dateTo = "2021-12-31",
                                                             timeseries = T)
 completeness_raw <- completeness[[3]]
 

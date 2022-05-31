@@ -23,6 +23,7 @@ knitr::opts_chunk$set(echo = FALSE,
 library(tidyverse)
 library(ggplot2)
 library(dplyr)
+library(norspis2)
 ```                 
 
 
@@ -850,6 +851,60 @@ ggsave(filename = "KI5_PROP_PT03Utfallsvurd.png",
 
 
 ```
+```{r}
+
+options(OutDec = ",") 
+
+#1)make table
+#Choose what to visualise
+myvarZ <- expr(PT03Utfallsvurd) #quo(PO10Pasientsikkerhet.x)
+mycatZ <- expr(c(0,1,2,3,4,5)) #the categories of the variables you want to bring into proportions calculations
+mylabZ <- vars("0"="Ikke i det hele tatt", #alternatively to vars, use "exprs(" from biobase??
+              "1"="Ikke noe problem\n lenger",
+              "2"="Klar bedring",
+              "3"="Noe bedring",
+              "4"= "Uendret",
+              "5"= "Forverring")#labels
+
+mytitle <- '"pasientvurdert bedring"' 
+#Choose dataset to use (prepared earlier)
+myInDataQ <- RegData
+
+my_proptable <- norspis2::make_figTable_variableDist(
+                  myvar=myvarZ,
+                  mycat=mycatZ,
+                  mylab=mylabZ,
+                  myInData = data_ordinary1_BUP)
+#comparison
+
+my_proptable_compare <- norspis2::make_figTable_variableDist(
+                  myvar=myvarZ,
+                  mycat=mycatZ,
+                  mylab=mylabZ,
+                  myInData = data_ordinary2_BUP)
+
+#2)make figure with the function that is made
+my_fig <- norspis2::make_figFig_variableDist(
+  my_proptable = my_proptable,
+  mytitle = mytitle,
+  #comparison
+  comparison = TRUE,
+  my_proptable_compare = my_proptable_compare
+  )
+
+#3)plot the figure:
+my_fig
+
+
+ggsave(filename = "PT03Utfallsvurd_fordelt_BUP.png", 
+       height = 5,
+       width = 8,
+       plot= last_plot(), 
+       path = "~/.ssh/norspisdata_aarsrapp2021") 
+
+
+```
+
 
 ```{r KI5-over-tid}
 KI5_time <- 

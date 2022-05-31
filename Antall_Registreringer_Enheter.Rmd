@@ -1,0 +1,137 @@
+---
+title: "NORSPIS_ant.reg_ant.enhet"
+author: "Carina Bach"
+date: "5/27/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+#global chunk settings:
+knitr::opts_chunk$set(echo = FALSE,  #that the `echo = FALSE` parameter was added 
+                                    #to the code chunk to prevent printing of
+                                    #the R code that generates the output
+                      warning = FALSE,
+                      message = FALSE,
+                      fig.height = 7,
+                      fig.width = 7)
+library(dplyr)
+library(ggplot2)
+library(tidyverse)
+
+
+```
+
+```{r}
+#setting comma as separator in output
+options(OutDec = ",") 
+```
+
+
+```{r load_data, warning=FALSE}
+# library(dplyr)
+if (!dir.exists("~/.ssh/norspisdata_aarsrapp2021/")) {
+  dir.create("~/.ssh/norspisdata_aarsrapp2021/")
+}
+#------DATA norspis2
+RegDataNatVal2 <- norspis2::fun1_1_import_data_FEA()
+
+RegDataBeh2 <- norspis2::fun1_2_import_data_B()
+#Five datasets (outputted in a list):
+DL <- norspis2::fun2_dataList(myInData1 = RegDataNatVal2, myInData2 = RegDataBeh2)
+#---DATA norspis2 (END)
+#-----DATA  for norspis functions
+#When we use norspis functions we use the call "RegData" (while we in norspis2 use DL$RegData12345)
+RegData <- RegDataNatVal2
+#---DATA norspis2 (END)
+
+```
+
+
+
+
+## Antall registreringer 
+
+```{r}
+## Totaloversikt (skal nok ikke bruke denne tabellen, men for Ã¥ triangulere)
+  
+  ##norspis2::make_table_DQ_regCount(RegData = RegDataNatValFiltered)[[1]]
+  
+#norspis2::make_table_DQ_regCount(RegData = RegDataNatValFiltered)[[2]]
+
+```
+
+
+
+
+```{r, results='hide'}
+### Startregistreringer
+  #START
+  #filter data for e.g. 2012-2021
+  RegDataNatValFiltered <- norspis2::fun3_1_filter_RegData(RegData = DL$RegDataNatVal2 ,
+                                                 regStatus = c(1),
+                                                 regType = c(1,2,3,4),#START
+                                                 dateFrom = "2012-01-01",
+                                                 dateTo = "2022-05-27",
+                                                 ageFrom = 0,
+                                                 ageTo = 200)
+
+  start <- norspis2::make_table_DQ_regCountYearly(RegDataNatValFiltered = RegDataNatValFiltered,
+                                         saveAsImage = T,
+                                         saveAsDoc = T,
+                                         pathToSaveTableFile = "~/.ssh/norspisdata_antall_registreringer_enheter/",
+                                         fileNameSuffix = "_2022_antall_startregistreringer"
+                                         )
+  
+  start[[2]]
+
+```
+
+```{r, results='hide'}
+#START (only "kun utredning")
+#filter data for e.g. 2012-2021
+RegDataNatValFiltered <- norspis2::fun3_1_filter_RegData(RegData = DL$RegDataNatVal2 ,
+                                               regStatus = c(1),
+                                               regType = c(1,2),#START
+                                               dateFrom = "2012-01-01",
+                                               dateTo = "2022-05-27",
+                                               ageFrom = 0,
+                                               ageTo = 200)
+start_utredning <- norspis2::make_table_DQ_regCountYearly(RegDataNatValFiltered = RegDataNatValFiltered,
+                                                          saveAsImage = T,
+                                                          saveAsDoc = T,
+                                                          pathToSaveTableFile = "~/.ssh/norspisdata_antall_registreringer_enheter/",
+                                                          fileNameSuffix = "_2022_antall_utredning_startregistreringer"
+)
+
+start_utredning[[2]] <- flextable::set_caption(start_utredning[[2]], caption = 'Antall startregistreringer ("kun utredning")')
+
+
+start_utredning[[2]]
+
+```
+
+
+```{r, results='hide'}
+### Sluttregistreringer
+
+  #SLUTT
+  #filter data for e.g. 2012-2020
+  RegDataNatValFiltered <- norspis2::fun3_1_filter_RegData(RegData = DL$RegDataNatVal2 ,
+                                                 regStatus = c(1),
+                                                 regType = c(5,6,98,99),#END
+                                                 dateFrom = "2012-01-01",
+                                                 dateTo = "2022-05-27",
+                                                 ageFrom = 0,
+                                                 ageTo = 200)
+
+  end <- norspis2::make_table_DQ_regCountYearly(RegDataNatValFiltered = RegDataNatValFiltered,
+                                         saveAsImage = T,
+                                         saveAsDoc = T,
+                                         pathToSaveTableFile = "~/.ssh/norspisdata_antall_registreringer_enheter//",
+                                         fileNameSuffix = "_2022_antall_sluttregistreringer"
+                                         )
+  end[[2]] <- flextable::set_caption(end[[2]], caption = "Antall sluttregistreringer")
+  
+  end[[2]]
+
+```

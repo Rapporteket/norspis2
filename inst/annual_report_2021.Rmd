@@ -30,8 +30,9 @@ options(OutDec = ",")
 
 ```{r load_data, warning=FALSE}
 # library(dplyr)
-if (!dir.exists("~/.ssh/norspisdata_aarsrapp2021/")) {
-  dir.create("~/.ssh/norspisdata_aarsrapp2021/")
+figfolder <- "~/.ssh/norspis/norspisdata_aarsrapp2021/"
+if (!dir.exists(figfolder)) {
+  dir.create(figfolder)
 }
 #------DATA norspis2
 RegDataNatVal2 <- norspis2::fun1_1_import_data_FEA()
@@ -79,7 +80,7 @@ RegData <- RegDataNatVal2
   start <- norspis2::make_table_DQ_regCountYearly(RegDataNatValFiltered = RegDataNatValFiltered,
                                          saveAsImage = T,
                                          saveAsDoc = T,
-                                         pathToSaveTableFile = "~/.ssh/norspisdata_aarsrapp2021/",
+                                         pathToSaveTableFile = figfolder,
                                          fileNameSuffix = "_2021_start"
                                          )
   
@@ -104,7 +105,7 @@ RegData <- RegDataNatVal2
   end <- norspis2::make_table_DQ_regCountYearly(RegDataNatValFiltered = RegDataNatValFiltered,
                                          saveAsImage = T,
                                          saveAsDoc = T,
-                                         pathToSaveTableFile = "~/.ssh/norspisdata_aarsrapp2021/",
+                                         pathToSaveTableFile = figfolder,
                                          fileNameSuffix = "_2021_slutt"
                                          )
   end[[2]] <- flextable::set_caption(end[[2]], caption = "Antall sluttregistreringer")
@@ -126,7 +127,7 @@ RegDataNatValFiltered <- norspis2::fun3_1_filter_RegData(RegData = DL$RegDataNat
 start_utredning <- norspis2::make_table_DQ_regCountYearly(RegDataNatValFiltered = RegDataNatValFiltered,
                                                           saveAsImage = T,
                                                           saveAsDoc = T,
-                                                          pathToSaveTableFile = "~/.ssh/norspisdata_aarsrapp2021/",
+                                                          pathToSaveTableFile = figfolder,
                                                           fileNameSuffix = "_2021_start"
 )
 
@@ -155,7 +156,7 @@ RegDataNatValFiltered <- norspis2::fun3_1_filter_RegData(RegData = DL$RegDataNat
 end_avbrudd <- norspis2::make_table_DQ_regCountYearly(RegDataNatValFiltered = RegDataNatValFiltered,
                                                       saveAsImage = T,
                                                       saveAsDoc = T,
-                                                      pathToSaveTableFile = "~/.ssh/norspisdata_aarsrapp2021/",
+                                                      pathToSaveTableFile = figfolder,
                                                       fileNameSuffix = "_2021_slutt"
                                        )
 end_avbrudd[[2]] <- flextable::set_caption(end_avbrudd[[2]], caption = "Antall sluttregistreringer (avbrudd)")
@@ -209,7 +210,7 @@ merged <-
 #https://stackoverflow.com/questions/32936226/aggregating-rows-for-multiple-columns-in-r
 
 ft <- flextable::flextable(merged)
-flextable::save_as_docx("nRegAllYears" = ft, path = paste0("~/.ssh/norspisdata_aarsrapp2021/", "nRegAllYears.docx"))
+flextable::save_as_docx("nRegAllYears" = ft, path = paste0(figfolder, "nRegAllYears.docx"))
 
 
 ```
@@ -261,7 +262,7 @@ merged <-
   rename(" " = "AvdNavn")
 
 ft <- flextable::flextable(merged)
-flextable::save_as_docx("nRegAllYearsEnd" = ft, path = paste0("~/.ssh/norspisdata_aarsrapp2021/", "nRegAllYearsEnd.docx"))
+flextable::save_as_docx("nRegAllYearsEnd" = ft, path = paste0(figfolder, "nRegAllYearsEnd.docx"))
 
 ```
 
@@ -292,7 +293,7 @@ unike_pasienter_per_aar <- RegDataTOM2021distinct %>%
 
 ft <- flextable::flextable(unike_pasienter_per_aar, theme_fun = theme_booktabs)
                          
-flextable::save_as_docx("nUniqiePatients" = ft, path = paste0("~/.ssh/norspisdata_aarsrapp2021/", "nUniquePatients.docx"))
+flextable::save_as_docx("nUniqiePatients" = ft, path = paste0(figfolder, "nUniquePatients.docx"))
 
 ```
 
@@ -580,7 +581,7 @@ ggsave(filename = "KI_EDEQ_endring_time.png",
 
 flextable::save_as_docx(
     "Tabell 3.1: Text"= KI1_time[[3]], 
-                          path = paste0("~/.ssh/norspisdata_aarsrapp2021/", "KI_EDEQ_endring_time.docx"))
+                          path = paste0(figfolder, "KI_EDEQ_endring_time.docx"))
 
 
 ```
@@ -701,7 +702,7 @@ ggsave(filename = "KI_CIA_endring_time.png",
 
 flextable::save_as_docx(
     "Tabell 3.1: Text"= KI2_time[[3]], 
-                          path = paste0("~/.ssh/norspisdata_aarsrapp2021/", "KI_CIA_endring_time.docx"))
+                          path = paste0(figfolder, "KI_CIA_endring_time.docx"))
 
 ```
 
@@ -780,7 +781,7 @@ ggsave(filename = "KI3_undervektsendring_time.png",
 
 flextable::save_as_docx(
     "Tabell 3.1: Text"= KI3_time[[3]], 
-                          path = paste0("~/.ssh/norspisdata_aarsrapp2021/", "KI_undervektsendring_time.docx"))
+                          path = paste0(figfolder, "KI_undervektsendring_time.docx"))
 
 
 ```
@@ -859,7 +860,7 @@ flextable::save_as_docx(
 # 
 # flextable::save_as_docx(
 #     "Tabell 3.1: Text"= KI4_time[[3]], 
-#                           path = paste0("~/.ssh/norspisdata_aarsrapp2021/", "KI4_PROP_PO09Utbytte_time.docx"))
+#                           path = paste0(figfolder, "KI4_PROP_PO09Utbytte_time.docx"))
 
 ```
 
@@ -940,7 +941,7 @@ ggsave(filename = "KI5_PROP_PT03Utfallsvurd_time.png",
 
 flextable::save_as_docx(
     "Tabell 3.1: Text"= KI5_time[[3]], 
-                          path = paste0("~/.ssh/norspisdata_aarsrapp2021/", "KI5_PROP_PT03Utfallsvurd_time.docx"))
+                          path = paste0(figfolder, "KI5_PROP_PT03Utfallsvurd_time.docx"))
 
 ```
 
@@ -1376,12 +1377,12 @@ ggsave(filename = "pasienttilfredshet_samlet.png",
 # #To preview word.doc
 #  print(ft, preview="docx")
 # # #To print:
-  flextable::save_as_image(popCharTab_ft, path=paste0("~/.ssh/norspisdata_aarsrapp2021/", "sosiodemCharAlleAar2.png"))
+  flextable::save_as_image(popCharTab_ft, path=paste0(figfolder, "sosiodemCharAlleAar2.png"))
   flextable::save_as_docx(
     "Tabell 3.1: Sosiodemografiske karakteristika ved de registrerte pasientene,
 under oppstart i behandling, for alle år siden registerets oppstart frem til 
 og med 2020. N angir antall gyldige observasjoner"= popCharTab_ft, 
-                          path = paste0("~/.ssh/norspisdata_aarsrapp2021/", "sosiodemCharAlleAar2.docx"))
+                          path = paste0(figfolder, "sosiodemCharAlleAar2.docx"))
 
 
 ```
@@ -1442,7 +1443,7 @@ popCharTab_ft
 #  print(ft, preview="docx")
 # # #To print:
 
-  flextable::save_as_docx("sosiodemCharAlleAar" = popCharTab_ft, path = paste0("~/.ssh/norspisdata_aarsrapp2021/", "negativeEvents.docx"))
+  flextable::save_as_docx("sosiodemCharAlleAar" = popCharTab_ft, path = paste0(figfolder, "negativeEvents.docx"))
 
 
 ```
@@ -1496,8 +1497,8 @@ popCharTab_ft
 # #To preview
 #  print(ft, preview="docx")
 # # #To print:
-flextable::save_as_image(popCharTab_ft, path="~/.ssh/norspisdata_aarsrapp2021/sosiodemCharAlleAar.png")
-flextable::save_as_docx("diagnoser" = popCharTab_ft, path = paste0("~/.ssh/norspisdata_aarsrapp2021/", "diagnoses.docx"))
+flextable::save_as_image(popCharTab_ft, path=paste0(figfolder, "sosiodemCharAlleAar.png"))
+flextable::save_as_docx("diagnoser" = popCharTab_ft, path = paste0(figfolder, "diagnoses.docx"))
 
 
 ```
@@ -1564,7 +1565,7 @@ popCharTab_ft
 #  print(ft, preview="docx")
 # # #To print:
 
-  flextable::save_as_docx("sosiodemCharAlleAar" = popCharTab_ft, path = paste0("~/.ssh/norspisdata_aarsrapp2021/", "bmiStart.docx"))
+  flextable::save_as_docx("sosiodemCharAlleAar" = popCharTab_ft, path = paste0(figfolder, "bmiStart.docx"))
 
 
 ```
@@ -1621,7 +1622,7 @@ popCharTab_ft
 #  print(ft, preview="docx")
 # # #To print:
 
-flextable::save_as_docx("sosiodemCharAlleAar" = popCharTab_ft, path = paste0("~/.ssh/norspisdata_aarsrapp2021/", "bmiEnd.docx"))
+flextable::save_as_docx("sosiodemCharAlleAar" = popCharTab_ft, path = paste0(figfolder, "bmiEnd.docx"))
 
 ```
 
@@ -1679,7 +1680,7 @@ popCharTab_ft
 #  print(ft, preview="docx")
 # # #To print:
 
-flextable::save_as_docx("sosiodemCharAlleAar" = popCharTab_ft, path = paste0("~/.ssh/norspisdata_aarsrapp2021/", "psychofarmacaStart.docx"))
+flextable::save_as_docx("sosiodemCharAlleAar" = popCharTab_ft, path = paste0(figfolder, "psychofarmacaStart.docx"))
 
 ```
 
@@ -1739,7 +1740,7 @@ popCharTab_ft
 #  print(ft, preview="docx")
 # # #To print:
 
-flextable::save_as_docx("sosiodemCharAlleAar" = popCharTab_ft, path = paste0("~/.ssh/norspisdata_aarsrapp2021/", "psychofarmacaEnd.docx"))
+flextable::save_as_docx("sosiodemCharAlleAar" = popCharTab_ft, path = paste0(figfolder, "psychofarmacaEnd.docx"))
 
 ```
 
@@ -1820,7 +1821,7 @@ ft <- flextable::fit_to_width(ft, max_width = 7.5)
 
 ft
 
- flextable::save_as_docx("variabelkompletthet2021" = ft, path = paste0("~/.ssh/norspisdata_aarsrapp2021/", "variabelkompletthet2021.docx"))
+ flextable::save_as_docx("variabelkompletthet2021" = ft, path = paste0(figfolder, "variabelkompletthet2021.docx"))
 
 ```
 
@@ -2003,7 +2004,7 @@ ft <- flextable::fontsize(ft, size= 8, part = "all")
 
 ft
 
- flextable::save_as_docx("variabelkompletthet_KI_2021" = ft, path = paste0("~/.ssh/norspisdata_aarsrapp2021/", "variabelkompletthet_KI_2021.docx"))
+ flextable::save_as_docx("variabelkompletthet_KI_2021" = ft, path = paste0(figfolder, "variabelkompletthet_KI_2021.docx"))
 
 
 ```
@@ -2099,7 +2100,7 @@ ft <- flextable::fontsize(ft, size= 8, part = "all")
 
 ft
 
- flextable::save_as_docx("variabelkompletthet_PasErf_og_PT_2021" = ft, path = paste0("~/.ssh/norspisdata_aarsrapp2021/", "variabelkompletthet_PasErf_og_PT_2021.docx"))
+ flextable::save_as_docx("variabelkompletthet_PasErf_og_PT_2021" = ft, path = paste0(figfolder, "variabelkompletthet_PasErf_og_PT_2021.docx"))
 
 
 
@@ -2170,13 +2171,13 @@ ft
 <!-- #                           chosen_color_var3='egensk_tilslutning2020_hfavd_OK', -->
 <!-- #                           chosen_table_type='flextable') -->
 
-<!-- kableExtra::save_kable(x = table_BU_spec_kable_html, file = paste0("~/.ssh/norspisdata_aarsrapp2021/", "table_BU_spec.jpeg")) -->
+<!-- kableExtra::save_kable(x = table_BU_spec_kable_html, file = paste0(figfolder, "table_BU_spec.jpeg")) -->
 
 <!-- #preview -->
 <!-- print(table_BU_spec, preview="docx") -->
 
 <!-- flextable::save_as_docx("table_BU_spec" = table_BU_spec,  -->
-<!--                         path = "~/.ssh/norspisdata_aarsrapp2021/table_BU_spec.docx" -->
+<!--                         path = paste0(figfolder, "table_BU_spec.docx") -->
 <!--                         ) -->
 
 <!-- table_BU_spec -->

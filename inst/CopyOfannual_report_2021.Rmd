@@ -490,7 +490,11 @@ tab2 <- norspis2::make_figTable_unitCompar(
 
 #merge columns for perc into tab1
 #(only keeping rows from 1 by left_join):
+<<<<<<< HEAD
 tab3 <- right_join(tab1,
+=======
+tab3 <- full_join(tab1,
+>>>>>>> 36840f851fa863f621e483592dfbe7dce73db792
                   tab2, 
                   by="AvdNavnNavn",
                   #add sufix only to merged data

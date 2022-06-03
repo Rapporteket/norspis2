@@ -72,27 +72,12 @@ make_figFig_unitCompar <- function(
   if(sort_on_comparison_group_instead == TRUE){
     #SORT:
     #remember that plot will sort by AvdNavn ,so we must reorder this factor
-    my_proptable_hospitals$AvdNavn <-
-      my_proptable_hospitals$AvdNavn %>%
-      forcats::fct_reorder(my_proptable_hospitals$n.compare,
-                           .desc=F) %>%
-      forcats::fct_reorder(my_proptable_hospitals$perc.compare,
-                           .desc=F)%>%#T for the other order
-      forcats::fct_reorder(!is.na(my_proptable_hospitals$n),
-                           .desc=T)%>%
-      forcats::fct_reorder(!is.na(my_proptable_hospitals$n.compare),
-                           .desc=F)
 
+    my_proptable_hospitals <- my_proptable_hospitals[order(my_proptable_hospitals$perc.compare,
+                                                           my_proptable_hospitals$perc,
+                                                           decreasing = F, na.last = F), ]
+    my_proptable_hospitals$AvdNavn <- factor(my_proptable_hospitals$AvdNavn, levels = my_proptable_hospitals$AvdNavn)
 
-    #also sort table (but I think this is just for visual inspection, since
-    #plot will sort on factor level order of AvdNavn either way)
-    my_proptable_hospitals <- my_proptable_hospitals%>%
-      dplyr::arrange(n.compare) %>%
-      dplyr::arrange(perc.compare)
-
-    # my_proptable_hospitals <- my_proptable_hospitals %>%
-    #    arrange(!is.na(perc.compare), perc.compare, n.compare)
-    #
    }
 
   #Add confidence intervals to table (formula for proportions used)

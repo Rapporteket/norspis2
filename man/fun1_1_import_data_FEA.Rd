@@ -4,15 +4,7 @@
 \alias{fun1_1_import_data_FEA}
 \title{Import data locally (and convert it to a tibble for convinience - easier to work with in the console than a data.frame)}
 \usage{
-fun1_1_import_data_FEA(
-  path_data = "F:/2020-28-12_data-til-utvikling/",
-  date_data = "2020-12-28"
-)
-}
-\arguments{
-\item{path_data}{path of you data (F,E, and A - named NorSpis_ForlopsOversikt_datadump_DATE, NorSpis_EnkeltLeddNum_datadump_DATE and NorSpis_AlleScorer_datadump_DATE}
-
-\item{date_data}{date on the format "2020-12-31" (the names of your data files will end in with date current download set up from Rapporteket)}
+fun1_1_import_data_FEA()
 }
 \value{
 a tibble with the data (invisible)

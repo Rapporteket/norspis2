@@ -17,7 +17,9 @@ fun3_2_filter_RegDataStartEnd(
   ageFrom.x = 0,
   ageTo.x = 200,
   ageFrom.y = 0,
-  ageTo.y = 200
+  ageTo.y = 200,
+  AvdAlder = 99,
+  BUP = 99
 )
 }
 \arguments{

@@ -511,7 +511,7 @@ tab2_VOP <- norspis2::make_figTable_unitCompar(
 
 #merge columns for perc into tab1
 #(only keeping rows from 1 by left_join):
-tab3_VOP <- left_join(tab1_VOP,
+tab3_VOP <- right_join(tab1_VOP,
                   tab2_VOP, 
                   by="AvdNavnNavn",
                   #add sufix only to merged data

@@ -5,18 +5,19 @@
 \title{Plot time trends of quality indicators}
 \usage{
 make_figFig_timetrend(
-  my_data,
-  data_type = "start_end",
-  variable01,
+  my_data = DL$RegDataNatVal2,
+  data_type = "regular",
+  variable01 = "PasOppErfaring",
   variable_type_0_100 = FALSE,
   add_fill = F,
   do_facet_wrap = TRUE,
   show_legend = TRUE,
-  show_national_mean = FALSE
+  show_national_mean = FALSE,
+  dateTo = "2021-12-31"
 )
 }
 \arguments{
-\item{data_type}{Choices: "start-end" and "regular"}
+\item{data_type}{Choices: "start_end" and "regular"}
 
 \item{variable01}{}
 

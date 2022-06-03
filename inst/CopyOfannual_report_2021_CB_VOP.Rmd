@@ -301,6 +301,7 @@ unike_pasienter_per_aar <- RegDataTOM2021distinct %>%
 
 ft <- flextable::flextable(unike_pasienter_per_aar, theme_fun = theme_booktabs)
                          
+
 flextable::save_as_docx("nUniqiePatients" = ft, path = paste0("~/.ssh/norspisdata_aarsrapp2021_VOP/", "nUniquePatients.docx"))
 
 ```
@@ -497,7 +498,7 @@ dat2_end_VOP <- norspis2::fun3_1_filter_RegData(RegData = DL$RegDataNatVal2,
                                         regStatus = 1)
 
 ```
-KI1 - EDE-Q BUP
+KI1 - EDE-Q VOP
 ```{r KI1, fig.height=7}
 
 #tables to plot
@@ -510,8 +511,8 @@ tab2_VOP <- norspis2::make_figTable_unitCompar(
   myInvar01 = "EDEQ60GlobalScore_CHANGE_PROP")
 
 #merge columns for perc into tab1
-#(only keeping rows from 1 by left_join):
-tab3_VOP <- left_join(tab1_VOP,
+#(only keeping rows from 1 by full_join):
+tab3_VOP <- full_join(tab1_VOP,
                   tab2_VOP, 
                   by="AvdNavnNavn",
                   #add sufix only to merged data
@@ -617,8 +618,8 @@ tab2_VOP <- norspis2::make_figTable_unitCompar(
   myInvar01 = "CIA30GlobalScore_RCI_01")
 
 #merge columns for perc into tab1
-#(only keeping rows from 1 by left_join):
-tab3_VOP <- left_join(tab1_VOP,
+#(only keeping rows from 1 by full_join):
+tab3_VOP <- full_join(tab1_VOP,
                   tab2_VOP, 
                   by="AvdNavnNavn",
                   #add sufix only to merged data
@@ -735,8 +736,8 @@ tab2_VOP <- norspis2::make_figTable_unitCompar(
   myInvar01 = "MedBMI_start18.5_slutt18.5")
 
 #merge columns for perc into tab1
-#(only keeping rows from 1 by left_join):
-tab3_VOP <- left_join(tab1_VOP,
+#(only keeping rows from 1 by full_join):
+tab3_VOP <- full_join(tab1_VOP,
                   tab2_VOP, 
                   by="AvdNavnNavn",
                   #add sufix only to merged data
@@ -818,8 +819,8 @@ tab2_VOP <- norspis2::make_figTable_unitCompar(
   myInvar01 = "PROP_PT03Utfallsvurd")
 
 #merge columns for perc into tab1
-#(only keeping rows from 1 by left_join):
-tab3_VOP <- left_join(tab1_VOP,tab2_VOP, by="AvdNavnNavn",
+#(only keeping rows from 1 by full_join):
+tab3_VOP <- full_join(tab1_VOP,tab2_VOP, by="AvdNavnNavn",
                   #add sufix only to merged data
                   suffix = c("",".compare"))
 
@@ -860,6 +861,63 @@ ggsave(filename = "KI5_PROP_PT03Utfallsvurd.png",
 
 ```
 
+```{r}
+
+options(OutDec = ",") 
+
+#1)make table
+#Choose what to visualise
+myvarZ <- expr(PT03Utfallsvurd) #quo(PO10Pasientsikkerhet.x)
+mycatZ <- expr(c(0,1,2,3,4,5)) #the categories of the variables you want to bring into proportions calculations
+mylabZ <- vars("0"="Ikke i det hele tatt", #alternatively to vars, use "exprs(" from biobase??
+              "1"="Ikke noe problem\n lenger",
+              "2"="Klar bedring",
+              "3"="Noe bedring",
+              "4"= "Uendret",
+              "5"= "Forverring")#labels
+
+mytitle <- '"pasientvurdert bedring"' 
+#Choose dataset to use (prepared earlier)
+myInDataQ <- RegData
+
+my_proptable <- norspis2::make_figTable_variableDist(
+                  myvar=myvarZ,
+                  mycat=mycatZ,
+                  mylab=mylabZ,
+                  myInData = data_ordinary1_VOP)
+#comparison
+
+my_proptable_compare <- norspis2::make_figTable_variableDist(
+                  myvar=myvarZ,
+                  mycat=mycatZ,
+                  mylab=mylabZ,
+                  myInData = data_ordinary2_VOP)
+
+#2)make figure with the function that is made
+my_fig <- norspis2::make_figFig_variableDist(
+  my_proptable = my_proptable,
+  mytitle = mytitle,
+  #comparison
+  comparison = TRUE,
+  my_proptable_compare = my_proptable_compare
+  )
+
+#3)plot the figure:
+my_fig
+
+
+ggsave(filename = "PT03Utfallsvurd_fordelt.png", 
+       height = 5,
+       width = 8,
+       plot= last_plot(), 
+       path = "~/.ssh/norspisdata_aarsrapp2021_VOP") 
+
+
+```
+
+
+
+
 ```{r KI5-over-tid}
 KI5_time <- 
   norspis2::make_figFig_timetrend(
@@ -899,8 +957,8 @@ tab2_VOP <- norspis2::make_figTable_unitCompar(
   myInvar01 = "PasOppTilgjengelighet")
 
 #merge columns for perc into tab1
-#(only keeping rows from 1 by left_join):
-tab3_VOP <- left_join(tab1_VOP,tab2_VOP, by="AvdNavnNavn",
+#(only keeping rows from 1 by full_join):
+tab3_VOP <- full_join(tab1_VOP,tab2_VOP, by="AvdNavnNavn",
                   #add sufix only to merged data
                   suffix = c("",".compare"))
 
@@ -955,8 +1013,8 @@ tab2_VOP <- norspis2::make_figTable_unitCompar(
   myInvar01 = "PasOppTilfredshet")
 
 #merge columns for perc into tab1
-#(only keeping rows from 1 by left_join):
-tab3_VOP <- left_join(tab1_VOP,tab2_VOP, by="AvdNavnNavn",
+#(only keeping rows from 1 by full_join):
+tab3_VOP <- full_join(tab1_VOP,tab2_VOP, by="AvdNavnNavn",
                   #add sufix only to merged data
                   suffix = c("",".compare"))
 
@@ -1009,8 +1067,8 @@ tab2_VOP <- norspis2::make_figTable_unitCompar(
   myInvar01 = "PasOppErfaring")
 
 #merge columns for perc into tab1
-#(only keeping rows from 1 by left_join):
-tab3_VOP <- left_join(tab1_VOP,tab2_VOP, by="AvdNavnNavn",
+#(only keeping rows from 1 by full_join):
+tab3_VOP <- full_join(tab1_VOP,tab2_VOP, by="AvdNavnNavn",
                   #add sufix only to merged data
                   suffix = c("",".compare"))
 
@@ -1063,8 +1121,8 @@ tab2_VOP <- norspis2::make_figTable_unitCompar(
   myInvar01 = "PasOppSikkerhet")#"PROP_PO10Pasientsikkerhet")
 
 #merge columns for perc into tab1
-#(only keeping rows from 1 by left_join):
-tab3_VOP <- left_join(tab1_VOP,tab2_VOP, by="AvdNavnNavn",
+#(only keeping rows from 1 by full_join):
+tab3_VOP <- full_join(tab1_VOP,tab2_VOP, by="AvdNavnNavn",
                   #add sufix only to merged data
                   suffix = c("",".compare"))
 
@@ -2173,8 +2231,8 @@ time_cdf(365)
 <!-- #   myInvar01 = "PROP_PO09Utbytte") -->
 <!-- #  -->
 <!-- # #merge columns for perc into tab1 -->
-<!-- # #(only keeping rows from 1 by left_join): -->
-<!-- # tab3 <- left_join(tab1,tab2, by="AvdNavnNavn", -->
+<!-- # #(only keeping rows from 1 by full_join): -->
+<!-- # tab3 <- full_join(tab1,tab2, by="AvdNavnNavn", -->
 <!-- #                   #add sufix only to merged data -->
 <!-- #                   suffix = c("",".compare")) -->
 <!-- #  -->

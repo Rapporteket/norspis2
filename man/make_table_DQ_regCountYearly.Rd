@@ -8,6 +8,7 @@ make_table_DQ_regCountYearly(
   RegDataNatValFiltered,
   saveAsImage = F,
   saveAsDoc = F,
+  width_first_column = 2,
   pathToSaveTableFile = "F:/",
   fileNameSuffix = "_2021"
 )

@@ -11,7 +11,9 @@ fun3_1_filter_RegData(
   dateFrom = "2012-01-01",
   dateTo = "2100-12-31",
   ageFrom = 0,
-  ageTo = 200
+  ageTo = 200,
+  BUP = 99,
+  AvdAlder = 99
 )
 }
 \arguments{

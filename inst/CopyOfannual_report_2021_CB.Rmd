@@ -501,8 +501,8 @@ tab2_BUP <- norspis2::make_figTable_unitCompar(
   myInvar01 = "EDEQ60GlobalScore_CHANGE_PROP")
 
 #merge columns for perc into tab1
-#(only keeping rows from 1 by left_join):
-tab3_BUP <- left_join(tab1_BUP,
+#(only keeping rows from 1 by full_join):
+tab3_BUP <- full_join(tab1_BUP,
                   tab2_BUP, 
                   by="AvdNavnNavn",
                   #add sufix only to merged data
@@ -608,8 +608,8 @@ tab2_BUP <- norspis2::make_figTable_unitCompar(
   myInvar01 = "CIA30GlobalScore_RCI_01")
 
 #merge columns for perc into tab1
-#(only keeping rows from 1 by left_join):
-tab3_BUP <- left_join(tab1_BUP,
+#(only keeping rows from 1 by full_join):
+tab3_BUP <- full_join(tab1_BUP,
                   tab2_BUP, 
                   by="AvdNavnNavn",
                   #add sufix only to merged data
@@ -726,8 +726,8 @@ tab2_BUP <- norspis2::make_figTable_unitCompar(
   myInvar01 = "MedBMI_start18.5_slutt18.5")
 
 #merge columns for perc into tab1
-#(only keeping rows from 1 by left_join):
-tab3_BUP <- left_join(tab1_BUP,
+#(only keeping rows from 1 by full_join):
+tab3_BUP <- full_join(tab1_BUP,
                   tab2_BUP, 
                   by="AvdNavnNavn",
                   #add sufix only to merged data
@@ -809,8 +809,8 @@ tab2_BUP <- norspis2::make_figTable_unitCompar(
   myInvar01 = "PROP_PT03Utfallsvurd")
 
 #merge columns for perc into tab1
-#(only keeping rows from 1 by left_join):
-tab3_BUP <- left_join(tab1_BUP,tab2_BUP, by="AvdNavnNavn",
+#(only keeping rows from 1 by full_join):
+tab3_BUP <- full_join(tab1_BUP,tab2_BUP, by="AvdNavnNavn",
                   #add sufix only to merged data
                   suffix = c("",".compare"))
 
@@ -890,8 +890,8 @@ tab2_BUP <- norspis2::make_figTable_unitCompar(
   myInvar01 = "PasOppTilgjengelighet")
 
 #merge columns for perc into tab1
-#(only keeping rows from 1 by left_join):
-tab3_BUP <- left_join(tab1_BUP,tab2_BUP, by="AvdNavnNavn",
+#(only keeping rows from 1 by full_join):
+tab3_BUP <- full_join(tab1_BUP,tab2_BUP, by="AvdNavnNavn",
                   #add sufix only to merged data
                   suffix = c("",".compare"))
 
@@ -946,8 +946,8 @@ tab2_BUP <- norspis2::make_figTable_unitCompar(
   myInvar01 = "PasOppTilfredshet")
 
 #merge columns for perc into tab1
-#(only keeping rows from 1 by left_join):
-tab3_BUP <- left_join(tab1_BUP,tab2_BUP, by="AvdNavnNavn",
+#(only keeping rows from 1 by full_join):
+tab3_BUP <- full_join(tab1_BUP,tab2_BUP, by="AvdNavnNavn",
                   #add sufix only to merged data
                   suffix = c("",".compare"))
 
@@ -1000,8 +1000,8 @@ tab2_BUP <- norspis2::make_figTable_unitCompar(
   myInvar01 = "PasOppErfaring")
 
 #merge columns for perc into tab1
-#(only keeping rows from 1 by left_join):
-tab3_BUP <- left_join(tab1_BUP,tab2_BUP, by="AvdNavnNavn",
+#(only keeping rows from 1 by full_join):
+tab3_BUP <- full_join(tab1_BUP,tab2_BUP, by="AvdNavnNavn",
                   #add sufix only to merged data
                   suffix = c("",".compare"))
 
@@ -1054,8 +1054,8 @@ tab2_BUP <- norspis2::make_figTable_unitCompar(
   myInvar01 = "PasOppSikkerhet")#"PROP_PO10Pasientsikkerhet")
 
 #merge columns for perc into tab1
-#(only keeping rows from 1 by left_join):
-tab3_BUP <- left_join(tab1_BUP,tab2_BUP, by="AvdNavnNavn",
+#(only keeping rows from 1 by full_join):
+tab3_BUP <- full_join(tab1_BUP,tab2_BUP, by="AvdNavnNavn",
                   #add sufix only to merged data
                   suffix = c("",".compare"))
 
@@ -2164,8 +2164,8 @@ time_cdf(365)
 <!-- #   myInvar01 = "PROP_PO09Utbytte") -->
 <!-- #  -->
 <!-- # #merge columns for perc into tab1 -->
-<!-- # #(only keeping rows from 1 by left_join): -->
-<!-- # tab3 <- left_join(tab1,tab2, by="AvdNavnNavn", -->
+<!-- # #(only keeping rows from 1 by full_join): -->
+<!-- # tab3 <- full_join(tab1,tab2, by="AvdNavnNavn", -->
 <!-- #                   #add sufix only to merged data -->
 <!-- #                   suffix = c("",".compare")) -->
 <!-- #  -->

@@ -31,8 +31,8 @@ make_table_popchar <- function(RegData = myFilteredData,
                                #format ft
                                row_height_ft= 0.25,
                                font_size_ft=8,
-                               lollipop_max_ft = 10,
-                               lollipop_min_ft = -10
+                               lollipop_max_ft = 20,
+                               lollipop_min_ft = -20
 
 
 

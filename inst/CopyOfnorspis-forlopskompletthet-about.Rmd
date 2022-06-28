@@ -57,18 +57,22 @@ RegData <- RegData2
 
 DL$RegData2 <-DL$RegData2 %>% filter(DL$RegData2$HovedDato <= "2021-12-31" | is.na(DL$RegData2$HovedDato))
 DL$RegData2 <- DL$RegData2 %>% filter(DL$RegData2$HovedDato_FRMT<=" 2021-12-31" | is.na(DL$RegData2$HovedDato_FRMT))
+
 DL$RegDataBeh2 <- DL$RegDataBeh2%>% filter(DL$RegDataBeh2$HovedDato <= "2021-12-31" | is.na(DL$RegDataBeh2$HovedDato))
+
 DL$RegDataNatVal2 <- DL$RegDataNatVal2 %>% filter(DL$RegDataNatVal2$HovedDato <= "2021-12-31"| is.na(DL$RegDataNatVal2$HovedDato))
 DL$RegDataNatVal2<- DL$RegDataNatVal2 %>% filter(DL$RegDataNatVal2$HovedDato_FRMT <= "2021-12-31" |is.na(DL$RegDataNatVal2$HovedDato_FRMT))
+
 DL$RegDataStartEnd2 <- DL$RegDataStartEnd2 %>% filter(DL$RegDataStartEnd2$HovedDato.x <= "2021-12-31" |is.na(DL$RegDataStartEnd2$HovedDato.x))
 DL$RegDataStartEnd2<- DL$RegDataStartEnd2 %>% filter(DL$RegDataStartEnd2$HovedDato.y <= "2021-12-31"|is.na(DL$RegDataStartEnd2$HovedDato.y))
 DL$RegDataStartEnd2<- DL$RegDataStartEnd2 %>% filter(DL$RegDataStartEnd2$HovedDato_FRMT.x <= "2021-12-31" |is.na(DL$RegDataStartEnd2$HovedDato_FRMT.x))
 DL$RegDataStartEnd2 <- DL$RegDataStartEnd2 %>% filter(DL$RegDataStartEnd2$HovedDato_FRMT.y <= "2021-12-31" |is.na(DL$RegDataStartEnd2$HovedDato_FRMT.y))
+
 DL$RegDataStartEndNatVal2 <-DL$RegDataStartEndNatVal2%>% filter(DL$RegDataStartEndNatVal2$HovedDato.x <= "2021-12-31" |is.na(DL$RegDataStartEndNatVal2$HovedDato.x))
 DL$RegDataStartEndNatVal2<- DL$RegDataStartEndNatVal2 %>% filter(DL$RegDataStartEndNatVal2$HovedDato.y <= "2021-12-31"|is.na(DL$RegDataStartEndNatVal2$HovedDato.y))
 DL$RegDataStartEndNatVal2<- DL$RegDataStartEndNatVal2%>% filter(DL$RegDataStartEndNatVal2$HovedDato_FRMT.x <= "2021-12-31" |is.na(DL$RegDataStartEndNatVal2$HovedDato_FRMT.x))
-
 DL$RegDataStartEndNatVal2<- DL$RegDataStartEndNatVal2%>% filter(DL$RegDataStartEndNatVal2$HovedDato_FRMT.y <= "2021-12-31"|is.na(DL$RegDataStartEndNatVal2$HovedDato_FRMT.y))
+
 RegData <- RegData %>% filter(RegData$HovedDato <= "2021-12-31"| is.na(RegData$HovedDato))
 ```
 

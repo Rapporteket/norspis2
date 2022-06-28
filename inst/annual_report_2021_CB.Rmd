@@ -1533,6 +1533,7 @@ myvarNames <- c(#"DiagSF_V_BU_MISSING_NAMES" = "Diagnoser (ICD-10)",
                 )
 
 
+
 popCharTab_ft <- 
   norspis2::make_table_popchar(
     RegData = data_ordinary_tom2021_only_start_BUP, 
@@ -1540,8 +1541,8 @@ popCharTab_ft <-
     varsNames = myvarNames,
     font_size_ft = 8,
     row_height_ft = 0.2,
-    lollipop_max_ft = 15,
-    lollipop_min_ft = -15,
+    lollipop_max_ft = 20,
+    lollipop_min_ft = -20,
     dont_visualize_mangler = FALSE,
     #comparison:
     comparison = TRUE
@@ -1565,6 +1566,7 @@ BMI ved slutt
 ```{r}
 #running the function make_popCharTab
 #Choose variables to present in table
+
 myvarString <- c(#quo(DiagSF_V_BU_MISSING_NAMES),
                   #quo(DiagVSF_MISSING_NAMES),
                   #quo(DiagBUAkse1_MISSING_NAMES),
@@ -1598,8 +1600,8 @@ popCharTab_ft <-
     varsNames = myvarNames,
     font_size_ft = 8,
     row_height_ft = 0.2,
-    lollipop_max_ft = 15,
-    lollipop_min_ft = -15,
+    lollipop_max_ft = 20,
+    lollipop_min_ft = -20,
     dont_visualize_mangler = FALSE,
     #comparison:
     comparison = TRUE#,
@@ -1654,8 +1656,8 @@ popCharTab_ft <- norspis2::make_table_popchar(
   varsNames = myvarNames,
   font_size_ft = 8,
   row_height_ft = 0.5,
-  lollipop_max_ft = 15,
-  lollipop_min_ft = -15,
+  lollipop_max_ft = 20,
+  lollipop_min_ft = -20,
   dont_visualize_nei = TRUE,
   dont_visualize_mangler = TRUE,
   mergevalues_2nd_column = FALSE,
@@ -1713,8 +1715,8 @@ popCharTab_ft <-
     varsNames = myvarNames,
     font_size_ft = 8,
     row_height_ft = 0.5,
-    lollipop_max_ft = 15,
-    lollipop_min_ft = -15,
+    lollipop_max_ft = 20,
+    lollipop_min_ft = -20,
     mergevalues_2nd_column = FALSE,
     dont_visualize_nei = TRUE,
     dont_visualize_mangler = F,

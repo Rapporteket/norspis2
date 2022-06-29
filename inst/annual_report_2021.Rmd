@@ -30,14 +30,13 @@ options(OutDec = ",")
 
 ```{r load_data, warning=FALSE}
 # library(dplyr)
-<<<<<<< HEAD
+
 if (!dir.exists("~/.ssh/norspisdata_nydata_ingen_skille_aarsrapport2021/")) {
   dir.create("~/.ssh/norspisdata_nydata_ingen_skille_aarsrapport2021/")
-=======
+}
 figfolder <- "~/.ssh/norspis/norspisdata_aarsrapp2021/"
 if (!dir.exists(figfolder)) {
   dir.create(figfolder)
->>>>>>> 36840f851fa863f621e483592dfbe7dce73db792
 }
 #------DATA norspis2
 RegDataNatVal2 <- norspis2::fun1_1_import_data_FEA()
@@ -85,11 +84,7 @@ RegData <- RegDataNatVal2
   start <- norspis2::make_table_DQ_regCountYearly(RegDataNatValFiltered = RegDataNatValFiltered,
                                          saveAsImage = T,
                                          saveAsDoc = T,
-<<<<<<< HEAD
-                                         pathToSaveTableFile = "~/.ssh/norspisdata_nydata_ingen_skille_aarsrapport2021/",
-=======
                                          pathToSaveTableFile = figfolder,
->>>>>>> 36840f851fa863f621e483592dfbe7dce73db792
                                          fileNameSuffix = "_2021_start"
                                          )
   
@@ -114,11 +109,7 @@ RegData <- RegDataNatVal2
   end <- norspis2::make_table_DQ_regCountYearly(RegDataNatValFiltered = RegDataNatValFiltered,
                                          saveAsImage = T,
                                          saveAsDoc = T,
-<<<<<<< HEAD
-                                         pathToSaveTableFile = "~/.ssh/norspisdata_nydata_ingen_skille_aarsrapport2021/",
-=======
                                          pathToSaveTableFile = figfolder,
->>>>>>> 36840f851fa863f621e483592dfbe7dce73db792
                                          fileNameSuffix = "_2021_slutt"
                                          )
   end[[2]] <- flextable::set_caption(end[[2]], caption = "Antall sluttregistreringer")
@@ -140,11 +131,7 @@ RegDataNatValFiltered <- norspis2::fun3_1_filter_RegData(RegData = DL$RegDataNat
 start_utredning <- norspis2::make_table_DQ_regCountYearly(RegDataNatValFiltered = RegDataNatValFiltered,
                                                           saveAsImage = T,
                                                           saveAsDoc = T,
-<<<<<<< HEAD
-                                                          pathToSaveTableFile = "~/.ssh/norspisdata_nydata_ingen_skille_aarsrapport2021/",
-=======
                                                           pathToSaveTableFile = figfolder,
->>>>>>> 36840f851fa863f621e483592dfbe7dce73db792
                                                           fileNameSuffix = "_2021_start"
 )
 
@@ -173,11 +160,7 @@ RegDataNatValFiltered <- norspis2::fun3_1_filter_RegData(RegData = DL$RegDataNat
 end_avbrudd <- norspis2::make_table_DQ_regCountYearly(RegDataNatValFiltered = RegDataNatValFiltered,
                                                       saveAsImage = T,
                                                       saveAsDoc = T,
-<<<<<<< HEAD
-                                                      pathToSaveTableFile = "~/.ssh/norspisdata_nydata_ingen_skille_aarsrapport2021/",
-=======
                                                       pathToSaveTableFile = figfolder,
->>>>>>> 36840f851fa863f621e483592dfbe7dce73db792
                                                       fileNameSuffix = "_2021_slutt"
                                        )
 end_avbrudd[[2]] <- flextable::set_caption(end_avbrudd[[2]], caption = "Antall sluttregistreringer (avbrudd)")
@@ -231,11 +214,9 @@ merged <-
 #https://stackoverflow.com/questions/32936226/aggregating-rows-for-multiple-columns-in-r
 
 ft <- flextable::flextable(merged)
-<<<<<<< HEAD
-flextable::save_as_docx("nRegAllYears" = ft, path = paste0("~/.ssh/norspisdata_nydata_ingen_skille_aarsrapport2021/", "nRegAllYears.docx"))
-=======
+
 flextable::save_as_docx("nRegAllYears" = ft, path = paste0(figfolder, "nRegAllYears.docx"))
->>>>>>> 36840f851fa863f621e483592dfbe7dce73db792
+
 
 
 ```
@@ -287,11 +268,9 @@ merged <-
   rename(" " = "AvdNavn")
 
 ft <- flextable::flextable(merged)
-<<<<<<< HEAD
-flextable::save_as_docx("nRegAllYearsEnd" = ft, path = paste0("~/.ssh/norspisdata_nydata_ingen_skille_aarsrapport2021/", "nRegAllYearsEnd.docx"))
-=======
+
 flextable::save_as_docx("nRegAllYearsEnd" = ft, path = paste0(figfolder, "nRegAllYearsEnd.docx"))
->>>>>>> 36840f851fa863f621e483592dfbe7dce73db792
+
 
 ```
 
@@ -322,11 +301,9 @@ unike_pasienter_per_aar <- RegDataTOM2021distinct %>%
 
 ft <- flextable::flextable(unike_pasienter_per_aar, theme_fun = theme_booktabs)
                          
-<<<<<<< HEAD
-flextable::save_as_docx("nUniqiePatients" = ft, path = paste0("~/.ssh/norspisdata_nydata_ingen_skille_aarsrapport2021/", "nUniquePatients.docx"))
-=======
+
 flextable::save_as_docx("nUniqiePatients" = ft, path = paste0(figfolder, "nUniquePatients.docx"))
->>>>>>> 36840f851fa863f621e483592dfbe7dce73db792
+
 
 ```
 
@@ -555,7 +532,12 @@ ggsave(filename = "KI_EDEQ_endring.png",
        height = 6,
        width = 6,
        plot= last_plot(), 
-       path = "~/.ssh/norspisdata_aarsrapp2021")
+       path = figfolder)
+
+
+
+
+
 
 fig
 
@@ -609,16 +591,13 @@ ggsave(filename = "KI_EDEQ_endring_time.png",
        height = 6,
        width = 6,
        plot= last_plot(), 
-       path = "~/.ssh/norspisdata_aarsrapp2021") 
+       path = figfolder) 
 
 
 flextable::save_as_docx(
     "Tabell 3.1: Text"= KI1_time[[3]], 
-<<<<<<< HEAD
-                          path = paste0("~/.ssh/norspisdata_nydata_ingen_skille_aarsrapport2021/", "KI_EDEQ_endring_time.docx"))
-=======
-                          path = paste0(figfolder, "KI_EDEQ_endring_time.docx"))
->>>>>>> 36840f851fa863f621e483592dfbe7dce73db792
+     path = paste0(figfolder, "KI_EDEQ_endring_time.docx"))
+
 
 
 ```
@@ -688,7 +667,7 @@ ggsave(filename = "KI2_CIA_endring.png",
        height = 6,
        width = 6,
        plot= last_plot(), 
-       path = "~/.ssh/norspisdata_aarsrapp2021") 
+       path = figfolder) 
 
 
 
@@ -735,15 +714,12 @@ ggsave(filename = "KI_CIA_endring_time.png",
        height = 6,
        width = 6,
        plot= last_plot(), 
-       path = "~/.ssh/norspisdata_aarsrapp2021") 
+       path = figfolder) 
 
 flextable::save_as_docx(
     "Tabell 3.1: Text"= KI2_time[[3]], 
-<<<<<<< HEAD
-                          path = paste0("~/.ssh/norspisdata_nydata_ingen_skille_aarsrapport2021/", "KI_CIA_endring_time.docx"))
-=======
                           path = paste0(figfolder, "KI_CIA_endring_time.docx"))
->>>>>>> 36840f851fa863f621e483592dfbe7dce73db792
+
 
 ```
 
@@ -793,7 +769,7 @@ ggsave(filename = "KI3_undervektsreduksjon.png",
        height = 6,
        width = 6,
        plot= last_plot(), 
-       path = "~/.ssh/norspisdata_aarsrapp2021") 
+       path = figfolder) 
 
 ```
 
@@ -815,18 +791,15 @@ ggsave(filename = "KI3_undervektsendring_time.png",
        height = 6,
        width = 6,
        plot= last_plot(), 
-       path = "~/.ssh/norspisdata_aarsrapp2021") 
+       path = figfolder) 
 
 
 
 
 flextable::save_as_docx(
     "Tabell 3.1: Text"= KI3_time[[3]], 
-<<<<<<< HEAD
-                          path = paste0("~/.ssh/norspisdata_nydata_ingen_skille_aarsrapport2021/", "KI_undervektsendring_time.docx"))
-=======
                           path = paste0(figfolder, "KI_undervektsendring_time.docx"))
->>>>>>> 36840f851fa863f621e483592dfbe7dce73db792
+
 
 
 ```
@@ -905,11 +878,8 @@ flextable::save_as_docx(
 # 
 # flextable::save_as_docx(
 #     "Tabell 3.1: Text"= KI4_time[[3]], 
-<<<<<<< HEAD
-#                           path = paste0("~/.ssh/norspisdata_nydata_ingen_skille_aarsrapport2021/", "KI4_PROP_PO09Utbytte_time.docx"))
-=======
 #                           path = paste0(figfolder, "KI4_PROP_PO09Utbytte_time.docx"))
->>>>>>> 36840f851fa863f621e483592dfbe7dce73db792
+
 
 ```
 
@@ -962,7 +932,7 @@ ggsave(filename = "KI5_PROP_PT03Utfallsvurd.png",
        height = 6,
        width = 6,
        plot= last_plot(), 
-       path = "~/.ssh/norspisdata_aarsrapp2021") 
+       path = figfolder) 
 
 
 
@@ -986,15 +956,12 @@ ggsave(filename = "KI5_PROP_PT03Utfallsvurd_time.png",
        height = 6,
        width = 6,
        plot= last_plot(), 
-       path = "~/.ssh/norspisdata_aarsrapp2021") 
+       path = figfolder) 
 
 flextable::save_as_docx(
     "Tabell 3.1: Text"= KI5_time[[3]], 
-<<<<<<< HEAD
-                          path = paste0("~/.ssh/norspisdata_nydata_ingen_skille_aarsrapport2021/", "KI5_PROP_PT03Utfallsvurd_time.docx"))
-=======
-                          path = paste0(figfolder, "KI5_PROP_PT03Utfallsvurd_time.docx"))
->>>>>>> 36840f851fa863f621e483592dfbe7dce73db792
+            path = paste0(figfolder, "KI5_PROP_PT03Utfallsvurd_time.docx"))
+
 
 ```
 
@@ -1033,7 +1000,7 @@ ggsave(filename = "PasOppTilgjengelighet.png",
        height = 6,
        width = 6,
        plot= last_plot(), 
-       path = "~/.ssh/norspisdata_aarsrapp2021") 
+       path = figfolder) 
 
 
                            
@@ -1088,7 +1055,7 @@ ggsave(filename = "PasOppTilfredshet.png",
        height = 6,
        width = 6,
        plot= last_plot(), 
-       path = "~/.ssh/norspisdata_aarsrapp2021") 
+       path = figfolder) 
 
 
 ```
@@ -1142,12 +1109,14 @@ ggsave(filename = "PasOppErfaring.png",
        height = 6,
        width = 6,
        plot= last_plot(), 
-       path = "~/.ssh/norspisdata_aarsrapp2021") 
+       path = figfolder) 
 
 
 
 
 ```
+
+
 ```{r indeks3-over-tid}
 
 paserf_indeks3_erfaring_time <- norspis2::make_figFig_timetrend(
@@ -1196,7 +1165,7 @@ ggsave(filename = "PROP_PO10Pasientsikkerhet.png",
        height = 6,
        width = 6,
        plot= last_plot(), 
-       path = "~/.ssh/norspisdata_aarsrapp2021") 
+       path = figfolder) 
                             
 ```
 
@@ -1227,8 +1196,8 @@ mylabQ <- vars("0"="Ikke i det hele tatt", #alternatively to vars, use "exprs(" 
               "1"="I liten grad",
               "2"="I noen grad",
               "3"="I stor grad",
-              "4"="I sv?rt stor grad")#labels
-mytitle <- '"Mener du at du på noen måte ble feilbehandlet \n (etter det du selv kan bedÃ¦mme)?"' 
+              "4"="I svært stor grad")#labels
+mytitle <- '"Mener du at du på noen måte ble feilbehandlet \n (etter det du selv kan bedømme)?"' 
 #Choose dataset to use (prepared earlier)
 myInDataQ <- RegData
 
@@ -1262,7 +1231,7 @@ ggsave(filename = "PO10Pasientsikkerhet.png",
        height = 5,
        width = 8,
        plot= last_plot(), 
-       path = "~/.ssh/norspisdata_aarsrapp2021") 
+       path = figfolder) 
 
 
 ```
@@ -1359,13 +1328,13 @@ ggplot(data, aes(x= PT,y=gj_sn*100, fill=as.factor(Year_custom)))+
   scale_fill_discrete(name="Ãr")+
   scale_fill_manual(values = c("lightgrey",
                                "lightblue"
-                               ) , name = 'Ãr')
+                               ) , name = 'År')
 
 ggsave(filename = "pasienttilfredshet_samlet.png", 
        height = 5,
        width = 8,
        plot= last_plot(), 
-       path = "~/.ssh/norspisdata_aarsrapp2021") 
+       path = figfolder) 
 
 
 ```
@@ -1430,20 +1399,12 @@ ggsave(filename = "pasienttilfredshet_samlet.png",
 # #To preview word.doc
 #  print(ft, preview="docx")
 # # #To print:
-<<<<<<< HEAD
-  flextable::save_as_image(popCharTab_ft, path=paste0("~/.ssh/norspisdata_nydata_ingen_skille_aarsrapport2021/", "sosiodemCharAlleAar2.png"))
-=======
   flextable::save_as_image(popCharTab_ft, path=paste0(figfolder, "sosiodemCharAlleAar2.png"))
->>>>>>> 36840f851fa863f621e483592dfbe7dce73db792
   flextable::save_as_docx(
     "Tabell 3.1: Sosiodemografiske karakteristika ved de registrerte pasientene,
 under oppstart i behandling, for alle år siden registerets oppstart frem til 
 og med 2020. N angir antall gyldige observasjoner"= popCharTab_ft, 
-<<<<<<< HEAD
-                          path = paste0("~/.ssh/norspisdata_nydata_ingen_skille_aarsrapport2021/", "sosiodemCharAlleAar2.docx"))
-=======
                           path = paste0(figfolder, "sosiodemCharAlleAar2.docx"))
->>>>>>> 36840f851fa863f621e483592dfbe7dce73db792
 
 
 ```
@@ -1504,11 +1465,7 @@ popCharTab_ft
 #  print(ft, preview="docx")
 # # #To print:
 
-<<<<<<< HEAD
-  flextable::save_as_docx("sosiodemCharAlleAar" = popCharTab_ft, path = paste0("~/.ssh/norspisdata_nydata_ingen_skille_aarsrapport2021/", "negativeEvents.docx"))
-=======
   flextable::save_as_docx("sosiodemCharAlleAar" = popCharTab_ft, path = paste0(figfolder, "negativeEvents.docx"))
->>>>>>> 36840f851fa863f621e483592dfbe7dce73db792
 
 
 ```
@@ -1562,13 +1519,9 @@ popCharTab_ft
 # #To preview
 #  print(ft, preview="docx")
 # # #To print:
-<<<<<<< HEAD
-flextable::save_as_image(popCharTab_ft, path="~/.ssh/norspisdata_aarsrapp2021/sosiodemCharAlleAar.png")
-flextable::save_as_docx("diagnoser" = popCharTab_ft, path = paste0("~/.ssh/norspisdata_nydata_ingen_skille_aarsrapport2021/", "diagnoses.docx"))
-=======
+
 flextable::save_as_image(popCharTab_ft, path=paste0(figfolder, "sosiodemCharAlleAar.png"))
 flextable::save_as_docx("diagnoser" = popCharTab_ft, path = paste0(figfolder, "diagnoses.docx"))
->>>>>>> 36840f851fa863f621e483592dfbe7dce73db792
 
 
 ```
@@ -1635,11 +1588,7 @@ popCharTab_ft
 #  print(ft, preview="docx")
 # # #To print:
 
-<<<<<<< HEAD
-  flextable::save_as_docx("sosiodemCharAlleAar" = popCharTab_ft, path = paste0("~/.ssh/norspisdata_nydata_ingen_skille_aarsrapport2021/", "bmiStart.docx"))
-=======
   flextable::save_as_docx("sosiodemCharAlleAar" = popCharTab_ft, path = paste0(figfolder, "bmiStart.docx"))
->>>>>>> 36840f851fa863f621e483592dfbe7dce73db792
 
 
 ```
@@ -1696,11 +1645,9 @@ popCharTab_ft
 #  print(ft, preview="docx")
 # # #To print:
 
-<<<<<<< HEAD
-flextable::save_as_docx("sosiodemCharAlleAar" = popCharTab_ft, path = paste0("~/.ssh/norspisdata_nydata_ingen_skille_aarsrapport2021/", "bmiEnd.docx"))
-=======
+
 flextable::save_as_docx("sosiodemCharAlleAar" = popCharTab_ft, path = paste0(figfolder, "bmiEnd.docx"))
->>>>>>> 36840f851fa863f621e483592dfbe7dce73db792
+
 
 ```
 
@@ -1758,11 +1705,8 @@ popCharTab_ft
 #  print(ft, preview="docx")
 # # #To print:
 
-<<<<<<< HEAD
-flextable::save_as_docx("sosiodemCharAlleAar" = popCharTab_ft, path = paste0("~/.ssh/norspisdata_nydata_ingen_skille_aarsrapport2021/", "psychofarmacaStart.docx"))
-=======
 flextable::save_as_docx("sosiodemCharAlleAar" = popCharTab_ft, path = paste0(figfolder, "psychofarmacaStart.docx"))
->>>>>>> 36840f851fa863f621e483592dfbe7dce73db792
+
 
 ```
 
@@ -1822,11 +1766,8 @@ popCharTab_ft
 #  print(ft, preview="docx")
 # # #To print:
 
-<<<<<<< HEAD
-flextable::save_as_docx("sosiodemCharAlleAar" = popCharTab_ft, path = paste0("~/.ssh/norspisdata_nydata_ingen_skille_aarsrapport2021/", "psychofarmacaEnd.docx"))
-=======
 flextable::save_as_docx("sosiodemCharAlleAar" = popCharTab_ft, path = paste0(figfolder, "psychofarmacaEnd.docx"))
->>>>>>> 36840f851fa863f621e483592dfbe7dce73db792
+
 
 ```
 
@@ -1907,11 +1848,8 @@ ft <- flextable::fit_to_width(ft, max_width = 7.5)
 
 ft
 
-<<<<<<< HEAD
- flextable::save_as_docx("variabelkompletthet2021" = ft, path = paste0("~/.ssh/norspisdata_nydata_ingen_skille_aarsrapport2021/", "variabelkompletthet2021.docx"))
-=======
  flextable::save_as_docx("variabelkompletthet2021" = ft, path = paste0(figfolder, "variabelkompletthet2021.docx"))
->>>>>>> 36840f851fa863f621e483592dfbe7dce73db792
+
 
 ```
 
@@ -2094,11 +2032,9 @@ ft <- flextable::fontsize(ft, size= 8, part = "all")
 
 ft
 
-<<<<<<< HEAD
- flextable::save_as_docx("variabelkompletthet_KI_2021" = ft, path = paste0("~/.ssh/norspisdata_nydata_ingen_skille_aarsrapport2021/", "variabelkompletthet_KI_2021.docx"))
-=======
+
  flextable::save_as_docx("variabelkompletthet_KI_2021" = ft, path = paste0(figfolder, "variabelkompletthet_KI_2021.docx"))
->>>>>>> 36840f851fa863f621e483592dfbe7dce73db792
+
 
 
 ```
@@ -2194,11 +2130,9 @@ ft <- flextable::fontsize(ft, size= 8, part = "all")
 
 ft
 
-<<<<<<< HEAD
- flextable::save_as_docx("variabelkompletthet_PasErf_og_PT_2021" = ft, path = paste0("~/.ssh/norspisdata_nydata_ingen_skille_aarsrapport2021/", "variabelkompletthet_PasErf_og_PT_2021.docx"))
-=======
+
  flextable::save_as_docx("variabelkompletthet_PasErf_og_PT_2021" = ft, path = paste0(figfolder, "variabelkompletthet_PasErf_og_PT_2021.docx"))
->>>>>>> 36840f851fa863f621e483592dfbe7dce73db792
+
 
 
 

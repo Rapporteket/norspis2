@@ -1,0 +1,162 @@
+---
+title: "antall reg"
+author: "Carina Bach"
+date: "6/15/2022"
+output:
+  html_document: default
+  pdf_document: default
+  word_document: default
+---
+
+
+First; determine the global settings for the code chunk and load packages:
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,      
+                      warning = FALSE,
+                      message = FALSE,
+                      fig.width = 7,
+                      fig.height = 7)
+# echo = F - parameter that is added to the code chunk to prevent printing the 
+#code that generate the plot.
+
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+```                 
+
+
+Secondly; decide which folder the output is stored in (ssh/norspisdara_aarsrapp2021), as well as loading data
+through functions fun1_1_import_data_FEA and fun1_2_import_data_B which is then names RegDataNatVal2 and RegDataBeh2. 
+
+```{r load_data, warning=FALSE}
+"~/.ssh/antall_reg/" <- "~/.ssh/antall_reg/"
+if (!dir.exists("~/.ssh/antall_reg/")) {
+  dir.create("~/.ssh/antall_reg/")
+}
+#import data - forlopsoversikt, enkeltledd and alle scorer and name it 
+#RegDataNatVal2
+RegDataNatVal2 <- norspis2::fun1_1_import_data_FEA()
+
+
+#import data - behandlingnum
+RegDataBeh2 <- norspis2::fun1_2_import_data_B()
+
+
+#Five datasets (outputted in a list):
+DL <- norspis2::fun2_dataList(myInData1 = RegDataNatVal2, myInData2 = RegDataBeh2)
+#---DATA norspis2 (END)
+#-----DATA  for norspis functions
+#When we use norspis functions we use the call "RegData" (while we in norspis2 use DL$RegData12345)
+RegData <- RegDataNatVal2
+#---DATA norspis2 (END)
+
+```
+
+3: amount of startreg. from 2012 until 2021 divided by unit - this has to be devided between 
+BUP & VOP! based on RegDataNatValFiltred. its called start. 
+
+```{r, results='hide'}
+### Startregistreringer
+  #START
+  #filter data for e.g. 2012-2021
+  RegDataNatValFiltered <- norspis2::fun3_1_filter_RegData(RegData = DL$RegDataNatVal2,
+                                                 regStatus = c(1),
+                                                 regType = c(1,2,3,4),#START
+                                                 dateFrom = "2012-01-01",
+                                                 dateTo = "2022-06-15",
+                                                 ageFrom = 0,
+                                                 ageTo = 200)
+
+  start <- norspis2::make_table_DQ_regCountYearly(RegDataNatValFiltered = RegDataNatValFiltered,
+                                         saveAsImage = T,
+                                         saveAsDoc = T,
+                                         pathToSaveTableFile = "~/.ssh/antall_reg/",
+                                         fileNameSuffix = "_2022_start"
+                                         )
+   start[[2]]
+```
+
+4: amount of end.reg divided by unit from 2012-2021. - this has to be divided between BUP and VOP. 
+based on RegDataNatValFiltred. Its is called end. 
+
+
+```{r, results='hide'}
+### Sluttregistreringer
+
+  #SLUTT
+  #filter data for e.g. 2012-2020
+  RegDataNatValFiltered <- norspis2::fun3_1_filter_RegData(RegData = DL$RegDataNatVal2 ,
+                                                 regStatus = c(1),
+                                                 regType = c(5,6,98,99),#END
+                                                 dateFrom = "2012-01-01",
+                                                 dateTo = "2022-06-15",
+                                                 ageFrom = 0,
+                                                 ageTo = 200)
+
+  end <- norspis2::make_table_DQ_regCountYearly(RegDataNatValFiltered = RegDataNatValFiltered,
+                                         saveAsImage = T,
+                                         saveAsDoc = T,
+                                         pathToSaveTableFile = "~/.ssh/antall_reg/",
+                                         fileNameSuffix = "_2022_slutt"
+                                         )
+  end[[2]] <- flextable::set_caption(end[[2]], caption = "Antall sluttregistreringer")
+  
+  end[[2]]
+
+```
+
+5: amount of only utredning (START) - filtred from 2012 to 2021. baed on RegDatNatValFiltred. 
+
+```{r, results='hide'}
+#START (only "kun utredning")
+#filter data for e.g. 2012-2021
+RegDataNatValFiltered <- norspis2::fun3_1_filter_RegData(RegData = DL$RegDataNatVal2 ,
+                                               regStatus = c(1),
+                                               regType = c(1,2),#START
+                                               dateFrom = "2012-01-01",
+                                               dateTo = "2021-12-31",
+                                               ageFrom = 0,
+                                               ageTo = 200)
+start_utredning <- norspis2::make_table_DQ_regCountYearly(RegDataNatValFiltered = RegDataNatValFiltered,
+                                                          saveAsImage = T,
+                                                          saveAsDoc = T,
+                                                          pathToSaveTableFile = "~/.ssh/norspisdata_nydata_BUP_aarsrapport2021/",
+                                                          fileNameSuffix = "_2021_start"
+)
+
+start_utredning[[2]] <- flextable::set_caption(start_utredning[[2]], caption = 'Antall startregistreringer ("kun utredning")')
+
+
+start_utredning[[2]]
+
+```
+
+
+
+6: amount of only avbrudd (END) - filtred from 2012 to 2021. based on RegDatNatValFiltred. Skille mellom BUP OG VOP! 
+
+```{r, results='hide'}
+#SLUTT (only "avbrudd")
+
+#"avbrudd"
+#filter data , time periode, regType
+RegDataNatValFiltered <- norspis2::fun3_1_filter_RegData(RegData = DL$RegDataNatVal2 ,
+                                               regStatus = c(1),
+                                               regType = c(98,99),#END
+                                               dateFrom = "2012-01-01",
+                                               dateTo = "2021-12-31",
+                                               ageFrom = 0,
+                                               ageTo = 200)
+
+end_avbrudd <- norspis2::make_table_DQ_regCountYearly(RegDataNatValFiltered = RegDataNatValFiltered,
+                                                      saveAsImage = T,
+                                                      saveAsDoc = T,
+                                                      pathToSaveTableFile = "~/.ssh/norspisdata_nydata_BUP_aarsrapport2021/",
+                                                      fileNameSuffix = "_2021_slutt"
+                                       )
+end_avbrudd[[2]] <- flextable::set_caption(end_avbrudd[[2]], caption = "Antall sluttregistreringer (avbrudd)")
+ 
+end_avbrudd[[2]]
+
+```

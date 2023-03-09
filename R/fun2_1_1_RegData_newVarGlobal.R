@@ -28,8 +28,8 @@ fun2_1_1_RegData_newVarGlobal <- function(myInData){
   myInData$AvdNavn[myInData$AvdNavn==4207041] <- 'AHUS: EFS Spes.Døgn.V.'
   myInData$AvdNavn[myInData$AvdNavn==4209009] <- 'SIV: Spes.Pol.BU.'
   myInData$AvdNavn[myInData$AvdNavn==4210562] <- 'NLSH: Spes.Pol.BU.'
-  myInData$AvdNavn[myInData$AvdNavn==4210626] <- 'HSYK: Allm.Pol.BU.'
-  myInData$AvdNavn[myInData$AvdNavn==4210825] <-  'HSYK: Allm.Pol.V.'
+  myInData$AvdNavn[myInData$AvdNavn==4210626] <- 'HSYK: Allm.Pol.BU.Mosjøen'
+  myInData$AvdNavn[myInData$AvdNavn==4210825] <-  'HSYK: Allm.Pol.V.Mosjøen'
   myInData$AvdNavn[myInData$AvdNavn==107026] <- 'HB: Reg.V.'
   myInData$AvdNavn[myInData$AvdNavn==4210303] <- 'ST.OLAVS: Spes.Pol.V.'
   myInData$AvdNavn[myInData$AvdNavn==4207697] <- 'HNT: MHOBY.V.'
@@ -38,6 +38,9 @@ fun2_1_1_RegData_newVarGlobal <- function(myInData){
   myInData$AvdNavn[myInData$AvdNavn==104364] <-'SIV: Spis.Pol.V.'
   myInData$AvdNavn[myInData$AvdNavn==4208300] <-'SIHF: Spes.Døgn.V.'
   myInData$AvdNavn[myInData$AvdNavn==4208548] <-'Diakonsyk: Allm.Pol.V.'
+  myInData$AvdNavn[myInData$AvdNavn==102152] <-'HSYK: Allm.Pol.V. Sandnessjøen'
+  myInData$AvdNavn[myInData$AvdNavn==102154]<-'HSYK: Allm.Pol.BU. Sandnessjøen'
+  myInData$AvdNavn[myInData$AvdNavn==105008] <-'SSHF: Allm.Pol.V.'
 
 
   # Hospital department CATEGORY
@@ -63,6 +66,9 @@ fun2_1_1_RegData_newVarGlobal <- function(myInData){
   myInData$AvdKategori[myInData$AvdKategori==104364] <-'Spes.Pol.'
   myInData$AvdKategori[myInData$AvdKategori==4208300] <-'Spes.Døgn.'
   myInData$AvdKategori[myInData$AvdKategori==4208548] <-'Allm.Pol.'
+  myInData$AvdKategori[myInData$AvdKategori==102152] <- 'Allm.Pol.'
+  myInData$AvdKategori[myInData$AvdKategori==102154] <-'Allm.Pol.'
+  myInData$AvdKategori[myInData$AvdKategori==105008] <- 'Allm.Pol.'
 
 
   # Hospital department AGE CATEGORY
@@ -90,6 +96,9 @@ fun2_1_1_RegData_newVarGlobal <- function(myInData){
   myInData$AvdAlder[myInData$AvdAlder==104364] <-'VOP'
   myInData$AvdAlder[myInData$AvdAlder==4208300] <-'VOP'
   myInData$AvdAlder[myInData$AvdAlder==4208548] <-'VOP'
+  myInData$AvdAlder[myInData$AvdAlder==102152] <- 'VOP'
+  myInData$AvdAlder[myInData$AvdAlder==102154]<-'BUP'
+  myInData$AvdAlder[myInData$AvdAlder==105008] <-'VOP'
 
   myInData
 }

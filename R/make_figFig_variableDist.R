@@ -1,4 +1,4 @@
-#' Function to make simple figure with distribution of a variable's values (nationally)
+#' bFunction to make simple figure with distribution of a variable's values (nationally)
 #'
 #' Note: This function's name when writing aarsrapport 2019 (in 2020) was: make_propfig
 #'
@@ -144,7 +144,7 @@ if(comparison == TRUE){
                       ) +
     ggplot2::scale_fill_manual(values = c(perc="#e4e0da",
                                           perc.compare = "lightblue"),
-                               labels = c("T.o.m. 2019", "2020"))+ #"#f3f1ee"
+                               labels = c("T.o.m. 2021", "2022"))+ #"#f3f1ee"
     ggplot2::geom_text(
       ggplot2::aes(y= value*100,
                    label=scales::percent(value,

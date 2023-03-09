@@ -182,8 +182,8 @@ make_figFig_unitCompar <- function(
                        stat =  "identity")+
     ggplot2::scale_fill_manual(values = c(perc="#e4e0da",
                                           perc.compare = "lightblue"),
-                               labels = c("T.o.m. 2020",
-                                          "2021"))+ #"#f3f1ee"
+                               labels = c("T.o.m. 2021",
+                                          "2022"))+ #"#f3f1ee"
 #Mads sin funksjon:
     ggplot2::labs(y=my_y_lab, #my_proptable_hospitals$my_y_lab,#
                   title = my_title, #)+#colnames(my_proptable_hospitals[,4]))+

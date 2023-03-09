@@ -26,7 +26,7 @@ make_figFig_timetrend <- function(my_data = DL$RegDataNatVal2,
                                   do_facet_wrap = TRUE,
                                   show_legend = TRUE,
                                   show_national_mean = FALSE,
-                                  dateTo = "2021-12-31"
+                                  dateTo = "2022-12-31"
                                   ){
 
 

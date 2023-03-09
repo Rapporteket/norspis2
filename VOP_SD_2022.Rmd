@@ -1,0 +1,1286 @@
+---
+title: "VOP_SD_2022"
+author: "Carina Bach"
+date: "3/6/2023"
+output:
+  html_document: default
+  pdf_document: default
+  word_document: default
+---
+
+<!-- ##First; determine the global settings for the code chunk and load packages: -->
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,      
+                      warning = FALSE,
+                      message = FALSE,
+                      fig.width = 7,
+                      fig.height = 7)
+# echo = F - parameter that is added to the code chunk to prevent printing the 
+#code that generate the plot.
+
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+```                 
+
+
+<!-- ##Secondly; decide which folder the output is stored in (ssh/norspisdara_aarsrapp2021), as well as loading data -->
+<!-- ##through functions fun1_1_import_data_FEA and fun1_2_import_data_B which is then names RegDataNatVal2 and RegDataBeh2.  -->
+
+```{r load_data, warning=FALSE}
+if (!dir.exists("~/.ssh/2022norspisdata_sosiodemografisk_VOP/")) {
+  dir.create("~/.ssh/2022norspisdata_sosiodemografisk_VOP/")
+}
+#import data - forlopsoversikt, enkeltledd and alle scorer and name it 
+#RegDataNatVal2
+RegDataNatVal2 <- norspis2::fun1_1_import_data_FEA()
+
+
+#import data - behandlingnum
+RegDataBeh2 <- norspis2::fun1_2_import_data_B()
+
+
+#Five datasets (outputted in a list):
+DL <- norspis2::fun2_dataList(myInData1 = RegDataNatVal2, myInData2 = RegDataBeh2)
+#---DATA norspis2 (END)
+#-----DATA  for norspis functions
+#When we use norspis functions we use the call "RegData" (while we in norspis2 use DL$RegData12345)
+RegData <- RegDataNatVal2
+#---DATA norspis2 (END)
+
+```
+
+<!-- 3: amount of startreg. from 2012 until 2021 divided by unit - this has to be devided between  -->
+<!-- BUP & VOP! based on RegDataNatValFiltred. its called start.  -->
+
+#Antall startreg. fra 2012-2021 (NB! Ikke fordelt på BUP OG VOP)#
+```{r, results='hide'}
+### Startregistreringer
+  #START
+  #filter data for e.g. 2012-2021
+  RegDataNatValFiltered <- norspis2::fun3_1_filter_RegData(RegData = DL$RegDataNatVal2,
+                                                 regStatus = c(1),
+                                                 regType = c(1,2,3,4),#START
+                                                 dateFrom = "2012-01-01",
+                                                 dateTo = "2022-12-31",
+                                                 ageFrom = 0,
+                                                 ageTo = 200)
+
+  start <- norspis2::make_table_DQ_regCountYearly(RegDataNatValFiltered = RegDataNatValFiltered,
+                                         saveAsImage = T,
+                                         saveAsDoc = T,
+                                         pathToSaveTableFile = "~/.ssh/2022norspisdata_sosiodemografisk_VOP/",
+                                         fileNameSuffix = "_2022_start"
+                                         )
+   start[[2]]
+```
+
+<!-- 4: amount of end.reg divided by unit from 2012-2021. - this has to be divided between BUP and VOP.  -->
+<!-- based on RegDataNatValFiltred. Its is called end.  -->
+
+##Antall Sluttreg. fra 2012-2021 (NB!IKKE SKILT PÅ BUP OG VOP)
+```{r, results='hide'}
+### Sluttregistreringer
+
+  #SLUTT
+  #filter data for e.g. 2012-2020
+  RegDataNatValFiltered <- norspis2::fun3_1_filter_RegData(RegData = DL$RegDataNatVal2 ,
+                                                 regStatus = c(1),
+                                                 regType = c(5,6,98,99),#END
+                                                 dateFrom = "2012-01-01",
+                                                 dateTo = "2022-12-31",
+                                                 ageFrom = 0,
+                                                 ageTo = 200)
+
+  end <- norspis2::make_table_DQ_regCountYearly(RegDataNatValFiltered = RegDataNatValFiltered,
+                                         saveAsImage = T,
+                                         saveAsDoc = T,
+                                         pathToSaveTableFile = "~/.ssh/2022norspisdata_sosiodemografisk_VOP/",
+                                         fileNameSuffix = "_2022_slutt"
+                                         )
+  end[[2]] <- flextable::set_caption(end[[2]], caption = "Antall sluttregistreringer")
+  
+  end[[2]]
+
+```
+
+5: amount of only utredning (START) - filtred from 2012 to 2021. baed on RegDatNatValFiltred. 
+
+```{r, results='hide'}
+#START (only "kun utredning")
+#filter data for e.g. 2012-2021
+RegDataNatValFiltered <- norspis2::fun3_1_filter_RegData(RegData = DL$RegDataNatVal2 ,
+                                               regStatus = c(1),
+                                               regType = c(1,2),#START
+                                               dateFrom = "2012-01-01",
+                                               dateTo = "2022-12-31",
+                                               ageFrom = 0,
+                                               ageTo = 200)
+start_utredning <- norspis2::make_table_DQ_regCountYearly(RegDataNatValFiltered = RegDataNatValFiltered,
+                                                          saveAsImage = T,
+                                                          saveAsDoc = T,
+                                                          pathToSaveTableFile = "~/.ssh/2022norspisdata_sosiodemografisk_VOP/",
+                                                          fileNameSuffix = "_2022_start"
+)
+
+start_utredning[[2]] <- flextable::set_caption(start_utredning[[2]], caption = 'Antall startregistreringer ("kun utredning")')
+
+
+start_utredning[[2]]
+
+```
+
+
+
+<!-- 6: amount of only avbrudd (END) - filtred from 2012 to 2021. based on RegDatNatValFiltred. Skille mellom BUP OG VOP!  -->
+##Antall kun avbrudd fra 2012-2021 (NB! IKKE SKILT PÅ BUP OG VOP)
+```{r, results='hide'}
+#SLUTT (only "avbrudd")
+
+#"avbrudd"
+#filter data , time periode, regType
+RegDataNatValFiltered <- norspis2::fun3_1_filter_RegData(RegData = DL$RegDataNatVal2 ,
+                                               regStatus = c(1),
+                                               regType = c(98,99),#END
+                                               dateFrom = "2012-01-01",
+                                               dateTo = "2022-12-31",
+                                               ageFrom = 0,
+                                               ageTo = 200)
+
+end_avbrudd <- norspis2::make_table_DQ_regCountYearly(RegDataNatValFiltered = RegDataNatValFiltered,
+                                                      saveAsImage = T,
+                                                      saveAsDoc = T,
+                                                      pathToSaveTableFile = "~/.ssh/2022norspisdata_sosiodemografisk_VOP/",
+                                                      fileNameSuffix = "_2022_slutt"
+                                       )
+end_avbrudd[[2]] <- flextable::set_caption(end_avbrudd[[2]], caption = "Antall sluttregistreringer (avbrudd)")
+ 
+end_avbrudd[[2]]
+
+```
+
+<!-- 7: ???? Start -->
+
+```{r}
+#merge the two diffferent start data from above (start data for "kun utredning" and all start data)
+#https://stackoverflow.com/questions/27167151/merge-combine-columns-with-same-name-but-incomplete-data
+
+#use the data start and end from above)
+# start[[1]] <- start[[1]] %>% 
+#   rename("AvdNavn" = colnames(start[[1]][1]))%>%
+#   rowwise()%>%
+#   mutate("<=2017" = sum(`2017`, na.rm=TRUE))%>%#sum three first y.
+#   relocate("<=2017",.after="AvdNavn")%>%
+#   select(-c(`2017`))%>%#remove columns
+#   mutate_all(as.character)%>%
+#   mutate_all(coalesce,"-")#this replaces all NAs with "-"
+
+start[[1]] <- start[[1]] %>% 
+  rename("AvdNavn" = colnames(start[[1]][1]))%>%
+  rowwise()%>%
+  mutate("<=2017" = sum(`2015`,`2016`,`2017`, na.rm=TRUE))%>%#sum three first y.
+  relocate("<=2017",.after="AvdNavn")%>%
+  select(-c(`2015`,`2016`,`2017`))%>%#remove columns
+  mutate_all(as.character)%>%
+  mutate_all(coalesce,"-")#this replaces all NAs with "-"
+
+
+
+start_utredning[[1]] <- start_utredning[[1]] %>% 
+  rename("AvdNavn" = colnames(start_utredning[[1]][1])) %>% #add name
+  mutate_all(as.character) %>%
+  mutate_all(coalesce,"-") %>% #this replaces all NAs with "-"
+  mutate(across(1:(ncol(start_utredning[[1]])-1), ~ paste0("(",.x ,")")))%>%  #add brackets
+  rename(">=2017" =`2017`)
+
+merged <- start_utredning[[1]] %>%
+            full_join(start[[1]], by = intersect(colnames(start[[1]]), colnames(start_utredning[[1]]))) %>%
+            relocate(colnames(start[[1]]))%>% #correct order of columns
+            group_by(colnames(AvdNavn)) %>%
+            mutate_all(coalesce,"-") #this replaces all NAs with "-"
+            #summarize_all(na.omit)
+
+merged <- 
+  merged %>%
+  dplyr::group_by(AvdNavn) %>%
+  #dplyr::mutate(paste(across(), collapse = " "))
+  dplyr::summarise_each(funs(paste(., collapse = " ")))%>%
+  #some - had not been changed to (-) becuase they were created during merging:
+  mutate(across(.fns = ~replace(., . == "-", "(-) -")))%>%
+  mutate(across(.fns = ~replace(., . == "- -", "(-) -")))%>%
+  #To get total last(arrange by an and ordered factor):
+  arrange(factor(AvdNavn, levels = c(unlist(.[.$AvdNavn !="Total",1], use.names=FALSE) , "Total")))#, desc(AvdNavn))
+#<-gotten to by combining the two following answers:
+#https://stackoverflow.com/questions/49225596/merge-multiple-rows-into-one-using-r
+#https://stackoverflow.com/questions/32936226/aggregating-rows-for-multiple-columns-in-r
+
+ft <- flextable::flextable(merged)
+flextable::save_as_docx("nRegAllYears" = ft, path = paste0("~/.ssh/2022norspisdata_sosiodemografisk_VOP/", "nRegAllYears.docx"))
+
+
+```
+
+<!-- ##8: ??? End -->
+
+```{r}
+#merge the two diffferent start data from above (start data for "kun utredning" and all start data)
+#https://stackoverflow.com/questions/27167151/merge-combine-columns-with-same-name-but-incomplete-data
+
+#use the data start and end from above)
+end_mod <- end[[1]] %>% 
+  rename("AvdNavn" = colnames(end[[1]][1]))%>%
+  rowwise()%>%
+  mutate(">=2017" = sum(`2017`, na.rm=TRUE))%>%#sum three first y.
+  relocate(">=2017",.after="AvdNavn")%>%
+  select(-c(`2017`))%>%#remove columns
+  mutate_all(as.character)%>%
+  mutate_all(coalesce,"-")#this replaces all NAs with "-"
+
+
+end_avbrudd_mod <- end_avbrudd[[1]] %>% 
+  rename("AvdNavn" = colnames(end_avbrudd[[1]][1])) %>% #add name
+  mutate_all(as.character) %>%
+  mutate_all(coalesce,"-") %>% #this replaces all NAs with "-"
+  #add brackets:
+  mutate(across(1:(ncol(end_avbrudd[[1]])-1), ~ paste0("(",.x ,")")))%>% 
+  rename(">=2017" =`2017`)
+
+merged <- end_avbrudd_mod %>%
+            full_join(end_mod, by = intersect(colnames(end_mod), colnames(end_avbrudd_mod))) %>%
+            relocate(colnames(end_mod))%>% #correct order of columns
+            group_by(colnames(AvdNavn)) %>%
+            mutate_all(coalesce,"-") #this replaces all NAs with "-"
+            #summarize_all(na.omit)
+
+merged <- 
+  merged %>%
+  dplyr::group_by(AvdNavn) %>%
+  #dplyr::mutate(paste(across(), collapse = " "))
+  dplyr::summarise_each(funs(paste(., collapse = " ")))%>%
+  #some - had not been changed to (-) becuase they were created during merging:
+  mutate(across(.fns = ~replace(., . == "-", "(-) -")))%>%
+  mutate(across(.fns = ~replace(., . == "- -", "(-) -")))%>%
+  #To get total last(arrange by an and ordered factor):
+  arrange(factor(AvdNavn, levels = c(unlist(.[.$AvdNavn !="Total",1], use.names=FALSE) , "Total")))%>%#, desc(AvdNavn))
+#<-gotten to by combining the two following answers:
+#https://stackoverflow.com/questions/49225596/merge-multiple-rows-into-one-using-r
+#https://stackoverflow.com/questions/32936226/aggregating-rows-for-multiple-columns-in-r
+  rename(" " = "AvdNavn")
+
+ft <- flextable::flextable(merged)
+flextable::save_as_docx("nRegAllYearsEnd" = ft, path = paste0("~/.ssh/2022norspisdata_sosiodemografisk_VOP/", "nRegAllYearsEnd.docx"))
+
+```
+
+
+
+<!-- 9: amount of unique patients divided by year  -->
+##Antall unike pasienter fordelt på år##
+```{r}
+RegDataTOM2022 <- DL$RegData2 %>% 
+                    filter(HovedDato_FRMT<="2022-12-31", BasisRegStatus==1) 
+
+
+#unike forløp alle år sett under ett
+#length(unique(RegDataTOM2020$ForlopsID)) 
+
+#unike pasienter alle år sett under ett
+length(unique(RegDataTOM2022$PasientID)) #gives 622
+
+
+# keep the unique PasientID with the first start date/registrationg (by use of arrange first):
+  RegDataTOM2022distinct <- RegDataTOM2022%>% 
+                        arrange(PasientID, HovedDato_FRMT) %>%# Together with distinct below: to sort and keep olderst end registration
+                        select(PasientID,ForlopsID,HovedDato_FRMT, Year) %>% 
+                        distinct(PasientID, .keep_all = TRUE) 
+
+unike_pasienter_per_aar <- RegDataTOM2022distinct %>%
+                            group_by(Year) %>%
+                            count(!is.na((PasientID)))
+
+ft <- flextable::flextable(unike_pasienter_per_aar, theme_fun = theme_booktabs)
+                         
+flextable::save_as_docx("nUniqiePatients" = ft, path = paste0("~/.ssh/2022norspisdata_sosiodemografisk_VOP/", "nUniquePatients.docx"))
+
+```
+
+
+Kvalitetsindikatorer som benytter både start/end-data: EDE-Q, CIA & Undervekt VOP
+```{r KI-data-KI1-KI3}
+#Her, KI som benytter StartEnd data (ikke kun End data) - tre stykk: EDEQ, CIA og bortfall av undervekt
+
+#data
+data_VOP <- DL$RegDataStartEndNatVal2
+
+dat1_VOP <- norspis2::fun3_2_filter_RegDataStartEnd(RegData = data_VOP,
+                                        dateFrom.y =
+                                          "2012-01-01",
+                                        dateTo.y =
+                                          "2021-12-31",
+                                        AvdAlder=0,
+                                        BasisRegStatus.y = 1) #only complete reg
+
+#filter data for comparison point
+dat2_VOP <- norspis2::fun3_2_filter_RegDataStartEnd(RegData = data_VOP,
+                                                dateFrom.y  =
+                                                  "2022-01-01",
+                                                dateTo.y =
+                                                  "2022-12-31",
+                                                AvdAlder=0,
+                                                BasisRegStatus.y = 1)
+
+#NOT national values, but start_end, 
+#for data quality table (for completeness of KI 1-3 which relies on start_end data)
+data_start_end_VOP <- DL$RegDataStartEnd2
+
+data_start_end_tom2021_onlyEndIkkeAvbrudd_VOP <- 
+  norspis2::fun3_2_filter_RegDataStartEnd(RegData = data_start_end_VOP,
+                                          dateFrom.y =
+                                            "2012-01-01",
+                                          dateTo.y =
+                                            "2021-12-31",
+                                          AvdAlder=0,
+                                          BasisRegStatus.y = 1) %>%#only complete reg
+  filter(RegRegtype.y %in% c(5,6))
+
+#filter data for comparison point
+data_start_end_2022_onlyEndIkkeAvbrudd_VOP <- 
+  norspis2::fun3_2_filter_RegDataStartEnd(RegData = data_start_end_VOP,
+                                          dateFrom.y  =
+                                            "2022-01-01",
+                                          dateTo.y =
+                                            "2022-12-31",
+                                          AvdAlder=0,
+                                          BasisRegStatus.y = 1) %>%
+  filter(RegRegtype.y %in% c(5,6))
+
+
+```
+
+```{r}
+#data til figurerer som ikke benytter StartEnd-data
+data_ordinary_VOP <- DL$RegData2 
+
+data_ordinary_tom2021_VOP <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary_VOP,
+                                        dateFrom =
+                                          "2012-01-01",
+                                        dateTo =
+                                          "2021-12-31",
+                                        AvdAlder=0,
+                                        regStatus = 1) #only complete reg
+
+data_ordinary_tom2022_VOP <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary_VOP,
+                                        dateFrom =
+                                          "2012-01-01",
+                                        dateTo =
+                                          "2022-12-31",
+                                        AvdAlder=0,
+                                        regStatus = 1) #only complete reg
+
+data_ordinary_tom2022_only_start_VOP <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary_VOP,
+                                        regType = c(1,2,3,4), #<-                           
+                                        dateFrom =
+                                          "2012-01-01",
+                                        dateTo =
+                                          "2022-12-31",
+                                        AvdAlder=0,
+                                        regStatus = 1) #only complete reg
+
+data_ordinary_tom2022_only_end_VOP <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary_VOP,
+                                        regType = c(5,6,98,99), #<-                           
+                                        dateFrom =
+                                          "2012-01-01",
+                                        dateTo =
+                                          "2022-12-31",
+                                        AvdAlder=0, 
+                                        regStatus = 1) #only complete reg
+
+data_ordinary_tom2022_only_end_ikkeavbrudd_VOP <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary_VOP,
+                                        regType = c(5,6), #<-                           
+                                        dateFrom =
+                                          "2012-01-01",
+                                        dateTo =
+                                          "2022-12-31",
+                                        AvdAlder=0, 
+                                        regStatus = 1) #only complete reg
+
+data_ordinary_tom202_only_end_avbrudd_utred_VOP <- 
+  norspis2::fun3_1_filter_RegData(RegData = data_ordinary_VOP,
+                                        regType = c(1,2,5,6,98,99), #<-                           
+                                        dateFrom =
+                                          "2012-01-01",
+                                        dateTo =
+                                          "2021-12-31",
+                                        AvdAlder=0, 
+                                        regStatus = 1) #only complete reg
+
+data_ordinary_only2021_only_end.slutt_and_start.utred_VOP <- 
+  norspis2::fun3_1_filter_RegData(RegData = data_ordinary_VOP,
+                                        regType = c(1,2,5,6), #<-
+                                        dateFrom =
+                                          "2021-01-01",
+                                        dateTo =
+                                          "2021-12-31",
+                                        AvdAlder=0, 
+                                        regStatus = 1) #only complete reg
+
+data_ordinary_only2021_VOP <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary_VOP,
+                                        dateFrom =
+                                          "2021-01-01",
+                                        dateTo =
+                                          "2021-12-31",
+                                        AvdAlder=0, 
+                                        regStatus = 1) #only complete reg
+
+data_ordinary_only2021_only_start_VOP <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary_VOP,
+                                        regType = c(1,2,3,4), #<-
+                                        dateFrom =
+                                          "2021-01-01",
+                                        dateTo =
+                                          "2021-12-31",
+                                        AvdAlder=0, 
+                                        regStatus = 1) #only complete reg
+
+data_ordinary_only2021_only_end_ikkeavbrudd_VOP <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary_VOP,
+                                        regType = c(5,6), #<-
+                                        dateFrom =
+                                          "2021-01-01",
+                                        dateTo =
+                                          "2021-12-31",
+                                        AvdAlder=0, 
+                                        regStatus = 1) #only complete reg
+
+
+
+
+data_ordinary1_VOP <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary_VOP,
+                                        dateFrom =
+                                          "2012-01-01",
+                                        dateTo =
+                                          "2020-12-31",
+                                        AvdAlder=0, 
+                                        regStatus = 1) #only complete reg
+
+data_ordinary2_VOP <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary_VOP,
+                                                dateFrom  =
+                                                  "2021-01-01",
+                                                dateTo =
+                                                  "2021-12-31",
+                                                AvdAlder=0, 
+                                                regStatus = 1)
+
+
+```
+
+```{r KI-data-KI4-KI5}
+#Her, KI som benytter kun End data) 
+  #- to KI: pasientrapportert utfall og utbytte
+  #- de fire indeksene: Tilgjengelighet, pasientsikkerhet, pasienterfaringer, pasienttilfredshet
+
+#data
+data_VOP <- DL$RegDataNatVal2
+
+dat1_end_VOP <- norspis2::fun3_1_filter_RegData(RegData = DL$RegDataNatVal2,
+                                        dateFrom =
+                                          "2012-01-01",
+                                        dateTo =
+                                          "2020-12-31",
+                                        AvdAlder=0,
+                                        regStatus = 1)#only complete reg
+#filter data for comparison point
+dat2_end_VOP <- norspis2::fun3_1_filter_RegData(RegData = DL$RegDataNatVal2,
+                                        dateFrom  =
+                                          "2021-01-01",
+                                        dateTo =
+                                          "2021-12-31",
+                                        AvdAlder=0, 
+                                        regStatus = 1)
+
+```
+
+```{r, eval=FALSE}
+#first just filter some data to go into table
+#myInData=RegData
+# myFilteredData <- make29_data_filtered(RegData = DL$RegData2,
+#                                        regStatus = c(1),
+#                                        regType = c(1,2,3,4),
+#                                        dateFrom = "2012-01-01",
+#                                        dateTo = "2020-12-31",
+#                                        ageFrom = 0,
+#                                        ageTo = 200)
+
+
+
+#running the function make_popCharTab
+#Choose variables to present in table
+
+
+  myvarString <- c(quo(PasientKjonn),
+                    quo(PasientAlder_CAT_MISSING),
+                   quo(B01Sivilstatus_MISSING_NAMES), #set all the variables you want to include. The quo is needed beacuse we use !! in the function
+                  quo(B03Bosituasjon_MISSING_NAMES),
+                  quo(B02EgneBarn_MISSING_NAMES),
+                  quo(B05FullfortUtd_MISSING_NAMES),
+                  quo(B06Hovedaktivitet_MISSING_NAMES),
+                  quo(B07Hovedinntekt_MISSING_NAMES))
+  
+  myvarNames <- c("PasientKjonn" = "KjÃ¸nn",
+                  "PasientAlder_CAT_MISSING" =
+                    "Alder",
+                  "B01Sivilstatus_MISSING_NAMES"="Sivilstatus",
+                  "B03Bosituasjon_MISSING_NAMES"="Bosituasjon",
+                  "B02EgneBarn_MISSING_NAMES"="Egne barn",
+                  "B05FullfortUtd_MISSING_NAMES" = "Fullf?rt utdanning",
+                  "B06Hovedaktivitet_MISSING_NAMES"="Hovedaktivitet",
+                  "B07Hovedinntekt_MISSING_NAMES" = "Hovedinntekt")
+
+#changing the names to appear in table:
+  
+
+  popCharTab_ft <- norspis2::make_table_popchar(
+                              RegData = data_ordinary_tom2021_only_start_VOP, 
+                              varsInTab = myvarString,
+                              varsNames = myvarNames,
+                              #exclude:
+                              dont_visualize_mangler = TRUE,
+                              #comparison:
+                              comparison = TRUE,
+                              #formats ft:
+                              row_height_ft = 0.20,
+                              font_size_ft = 8)
+
+#Preview/output in rmd:
+  popCharTab_ft
+# #To preview word.doc
+#  print(ft, preview="docx")
+# # #To print:
+  flextable::save_as_image(popCharTab_ft, path=paste0("~/.ssh/2022norspisdata_sosiodemografisk_VOP/", "sosiodemCharAlleAar2.png"))
+  flextable::save_as_docx(
+    "Tabell 3.1: Sosiodemografiske karakteristika ved de registrerte pasientene,
+under oppstart i behandling, for alle r siden registerets oppstart frem til 
+og med 2020. N angir antall gyldige observasjoner"= popCharTab_ft, 
+                          path = paste0("~/.ssh/2022norspisdata_sosiodemografisk_VOP/", "sosiodemCharAlleAar2.docx"))
+
+
+```
+
+
+```{r}
+#first just filter some data to go into table
+#myInData=RegData
+# myFilteredData <- make29_data_filtered(RegData = DL$RegData2,
+#                                        regStatus = c(1),
+#                                        regType = c(1,2,3,4),
+#                                        dateFrom = "2012-01-01",
+#                                        dateTo = "2020-12-31",
+#                                        ageFrom = 0,
+#                                        ageTo = 200)
+
+
+
+#running the function make_popCharTab
+#Choose variables to present in table
+  myvarString <- c(quo(B17FysMishandl_CAT_MISSING),
+                  quo(B18PsykMishandl_CAT_MISSING),
+                  quo(B19Overgrep_CAT_MISSING),
+                  quo(B20Mobbing_CAT_MISSING),
+                  quo(B21SelvskadTidl),
+                  quo(B22SelvskadSisteAr),
+                  quo(B23SelvmordFTidl),#,
+                  quo(B24SelvmordFSisteAr),
+                  quo(B25Avhengighet))
+
+  myvarNames <- c("B17FysMishandl_CAT_MISSING" = "Fysisk mishandling",
+                  "B18PsykMishandl_CAT_MISSING"= "Psykisk mishandling",
+                  "B19Overgrep_CAT_MISSING" = "Misbruk/overgrep",
+                  "B20Mobbing_CAT_MISSING" = "Mobbing",
+                  "B21SelvskadTidl" = "Selvskading (>1 år siden)",
+                  "B22SelvskadSisteAr" = "Selvskading siste året",
+                  "B23SelvmordFTidl" = "Selvmordforsøk (>1 år siden)",
+                  "B24SelvmordFSisteAr" = "Selvmordforsøk siste år",
+                  "B25Avhengighet" = "Misbruk/avh.(rusmidler/medikamenter)")
+
+  popCharTab_ft <- norspis2::make_table_popchar(
+                              RegData = data_ordinary_tom2021_only_start_VOP, 
+                              varsInTab = myvarString,
+                              varsNames = myvarNames,
+                              dont_visualize_nei = TRUE,
+                              dont_visualize_mangler = TRUE,
+                              mergevalues_2nd_column = FALSE,
+                              #comparison:
+                              comparison = TRUE,
+                              #formats ft:
+                              row_height_ft = 0.20,
+                              font_size_ft = 8
+                              )
+
+popCharTab_ft
+
+# #To preview
+#  print(ft, preview="docx")
+# # #To print:
+
+  flextable::save_as_docx("sosiodemCharAlleAar" = popCharTab_ft, path = paste0("~/.ssh/2022norspisdata_sosiodemografisk_VOP/", "negativeEvents.docx"))
+
+
+```
+
+Diagnoser
+```{r}
+#Choose variables to present in table
+myvarString <- c(quo(DiagSF_V_BU_MISSING_NAMES))
+                  #quo(DiagVSF_MISSING_NAMES),
+                  #quo(DiagBUAkse1_MISSING_NAMES),
+                  #quo(DiagDSM5Hoved_V_BU_MISSING_NAMES))
+                  #quo(DiagVDSM5Hoved_MISSING_NAMES),#,
+                  #quo(DiagVSomatiske_CAT_MISSING),
+                  #quo(MedBMI_CAT_MISSING),
+                  #quo(MedBlodprove_CAT_MISSING),
+                  #quo(MedBeintetthMaling_CAT_MISSING))
+myvarNames <- c("DiagSF_V_BU_MISSING_NAMES" = "Diagnoser (ICD-10)"
+                #"DiagVSF_MISSING_NAMES" = "Diagnoser (voksne)",
+                #"DiagDSM5Hoved_V_BU_MISSING_NAMES" = "Diagnoser (DSM-5)"
+                #"DiagVDSM5Hoved_MISSING_NAMES"= "Diagnoser (DSM5)",
+                #"MedBMI_CAT_MISSING" = "BMI",
+                #"DiagVSomatiske_CAT_MISSING" = "Relevante somatiske diag.",
+                # "DiagBUAkse1_MISSING_NAMES" = "Diagnoser (barn/unge)",
+                # "MedPsykofarmaka_CAT_MISSING" = "Psykofarmakologisk behandling",
+                # "MedAntidepressiva_CAT_MISSING" = "Antidepressiva",
+                # "MedBenzodiazepiner_CAT_MISSING" = "Benzodiazepiner",
+                # "MedNevroleptika_CAT_MISSING" = "Nevroleptika",
+                # "MedAnnenMedBeh_CAT_MISSING" = "Annen medikamentell beh.",
+                # "MedBlodprove_CAT_MISSING" = "Blodpr?ve siste m?ned",
+                # "MedBeintetthMaling_CAT_MISSING" = "Beintetthetsm?ling siste ?r" 
+                )
+
+popCharTab_ft <- 
+  norspis2::make_table_popchar(
+    RegData = data_ordinary_tom2021_only_end_avbrudd_utred_VOP, 
+    varsInTab = myvarString,
+    varsNames = myvarNames,
+    dont_visualize_mangler = F,
+    mergevalues_2nd_column = TRUE,
+    #comparison:
+    comparison = TRUE,
+    #RegDataComparison = data_ordinary_only2021_only_end.slutt_and_start.utred 
+    #formats ft:
+    row_height_ft = 0.20,
+    font_size_ft = 8)
+
+
+
+popCharTab_ft
+
+# #To preview
+#  print(ft, preview="docx")
+# # #To print:
+flextable::save_as_image(popCharTab_ft, path="~/.ssh/2022norspisdata_sosiodemografisk_VOP/sosiodemCharAlleAar.png")
+flextable::save_as_docx("diagnoser" = popCharTab_ft, path = paste0("~/.ssh/2022norspisdata_sosiodemografisk_VOP/", "diagnoses.docx"))
+
+
+```
+
+BMI ved start
+```{r}
+#first just filter some data to go into table
+#myInData=RegData
+# myFilteredData <- make29_data_filtered(RegData = DL$RegData2,
+#                                        regStatus = c(1),
+#                                        regType = c(1,2,3,4),
+#                                        dateFrom = "2012-01-01",
+#                                        dateTo = "2020-12-31",
+#                                        ageFrom = 0,
+#                                        ageTo = 200)
+
+#running the function make_popCharTab
+#Choose variables to present in table
+myvarString <- c(#quo(DiagSF_V_BU_MISSING_NAMES),
+                  #quo(DiagVSF_MISSING_NAMES),
+                  #quo(DiagBUAkse1_MISSING_NAMES),
+                  #quo(DiagDSM5Hoved_V_BU_MISSING_NAMES))
+                  #quo(DiagVDSM5Hoved_MISSING_NAMES),#,
+                  #quo(DiagVSomatiske_CAT_MISSING),
+                  quo(MedBMI_CAT_MISSING))
+                  #quo(MedBlodprove_CAT_MISSING),
+                  #quo(MedBeintetthMaling_CAT_MISSING))
+myvarNames <- c(#"DiagSF_V_BU_MISSING_NAMES" = "Diagnoser (ICD-10)",
+                #"DiagVSF_MISSING_NAMES" = "Diagnoser (voksne)",
+                #"DiagDSM5Hoved_V_BU_MISSING_NAMES" = "Diagnoser (DSM-5)"
+                #"DiagVDSM5Hoved_MISSING_NAMES"= "Diagnoser (DSM5)",
+                "MedBMI_CAT_MISSING" = "BMI"
+                #"DiagVSomatiske_CAT_MISSING" = "Relevante somatiske diag.",
+                # "DiagBUAkse1_MISSING_NAMES" = "Diagnoser (barn/unge)",
+                # "MedPsykofarmaka_CAT_MISSING" = "Psykofarmakologisk behandling",
+                # "MedAntidepressiva_CAT_MISSING" = "Antidepressiva",
+                # "MedBenzodiazepiner_CAT_MISSING" = "Benzodiazepiner",
+                # "MedNevroleptika_CAT_MISSING" = "Nevroleptika",
+                # "MedAnnenMedBeh_CAT_MISSING" = "Annen medikamentell beh.",
+                # "MedBlodprove_CAT_MISSING" = "Blodpr?ve siste m?ned",
+                # "MedBeintetthMaling_CAT_MISSING" = "Beintetthetsm?ling siste ?r"
+                )
+
+
+popCharTab_ft <- 
+  norspis2::make_table_popchar(
+    RegData = data_ordinary_tom2021_only_start_VOP, 
+    varsInTab = myvarString,
+    varsNames = myvarNames,
+    font_size_ft = 8,
+    row_height_ft = 0.2,
+    lollipop_max_ft = 20,
+    lollipop_min_ft = -20,
+    dont_visualize_mangler = FALSE,
+    #comparison:
+    comparison = TRUE
+  )                     
+  
+  
+
+popCharTab_ft
+
+# #To preview
+#  print(ft, preview="docx")
+# # #To print:
+
+  flextable::save_as_docx("sosiodemCharAlleAar" = popCharTab_ft, path = paste0("~/.ssh/2022norspisdata_sosiodemografisk_VOP/", "bmiStart.docx"))
+
+
+```
+
+BMI ved slutt
+
+```{r}
+#running the function make_popCharTab
+#Choose variables to present in table
+myvarString <- c(#quo(DiagSF_V_BU_MISSING_NAMES),
+                  #quo(DiagVSF_MISSING_NAMES),
+                  #quo(DiagBUAkse1_MISSING_NAMES),
+                  #quo(DiagDSM5Hoved_V_BU_MISSING_NAMES))
+                  #quo(DiagVDSM5Hoved_MISSING_NAMES),#,
+                  #quo(DiagVSomatiske_CAT_MISSING),
+                  quo(MedBMI_CAT_MISSING))
+                  #quo(MedBlodprove_CAT_MISSING),
+                  #quo(MedBeintetthMaling_CAT_MISSING))
+
+myvarNames <- c(#"DiagSF_V_BU_MISSING_NAMES" = "Diagnoser (ICD-10)",
+                #"DiagVSF_MISSING_NAMES" = "Diagnoser (voksne)",
+                #"DiagDSM5Hoved_V_BU_MISSING_NAMES" = "Diagnoser (DSM-5)"
+                #"DiagVDSM5Hoved_MISSING_NAMES"= "Diagnoser (DSM5)",
+                "MedBMI_CAT_MISSING" = "BMI"
+                #"DiagVSomatiske_CAT_MISSING" = "Relevante somatiske diag.",
+                # "DiagBUAkse1_MISSING_NAMES" = "Diagnoser (barn/unge)",
+                # "MedPsykofarmaka_CAT_MISSING" = "Psykofarmakologisk behandling",
+                # "MedAntidepressiva_CAT_MISSING" = "Antidepressiva",
+                # "MedBenzodiazepiner_CAT_MISSING" = "Benzodiazepiner",
+                # "MedNevroleptika_CAT_MISSING" = "Nevroleptika",
+                # "MedAnnenMedBeh_CAT_MISSING" = "Annen medikamentell beh.",
+                # "MedBlodprove_CAT_MISSING" = "Blodpr?ve siste m?ned",
+                # "MedBeintetthMaling_CAT_MISSING" = "Beintetthetsm?ling siste ?r" 
+                )
+
+popCharTab_ft <- 
+  norspis2::make_table_popchar(
+    RegData = data_ordinary_tom2021_only_end_ikkeavbrudd_VOP, 
+    varsInTab = myvarString,
+    varsNames = myvarNames,
+    font_size_ft = 8,
+    row_height_ft = 0.2,
+    lollipop_max_ft = 20,
+    lollipop_min_ft = -20,
+    dont_visualize_mangler = FALSE,
+    #comparison:
+    comparison = TRUE#,
+    #RegDataComparison = data_ordinary_only2021_only_end_ikkeavbrudd 
+  )
+
+popCharTab_ft
+
+# #To preview
+#  print(ft, preview="docx")
+# # #To print:
+
+flextable::save_as_docx("sosiodemCharAlleAar" = popCharTab_ft, path = paste0("~/.ssh/2022norspisdata_sosiodemografisk_VOP/", "bmiEnd.docx"))
+
+```
+
+# Medikamentell behandling ved start
+
+```{r}
+#running the function make_popCharTab
+#Choose variables to present in table
+myvarString <- c(quo(MedPsykofarmaka_CAT_MISSING),
+                  quo(MedAntidepressiva_CAT_MISSING),
+                  quo(MedBenzodiazepiner_CAT_MISSING),
+                  quo(MedNevroleptika_CAT_MISSING),
+                  quo(MedAnnenMedBeh_CAT_MISSING))
+                  #quo(DiagVDSM5Hoved_MISSING_NAMES),#,
+                  #quo(DiagVSomatiske_CAT_MISSING),
+                  #quo(MedBMI_CAT_MISSING),
+                  #quo(MedBlodprove_CAT_MISSING),
+                  #quo(MedBeintetthMaling_CAT_MISSING))
+
+myvarNames <- c(#"DiagSF_V_BU_MISSING_NAMES" = "Diagnoser (ICD-10)",
+                #"DiagVSF_MISSING_NAMES" = "Diagnoser (voksne)",
+                #"DiagDSM5Hoved_V_BU_MISSING_NAMES" = "Diagnoser (DSM-5)"
+                #"DiagVDSM5Hoved_MISSING_NAMES"= "Diagnoser (DSM5)",
+                #"MedBMI_CAT_MISSING" = "BMI",
+                #"DiagVSomatiske_CAT_MISSING" = "Relevante somatiske diag.",
+                # "DiagBUAkse1_MISSING_NAMES" = "Diagnoser (barn/unge)",
+                 "MedPsykofarmaka_CAT_MISSING" = "Psykofarmakologisk behandling",
+                 "MedAntidepressiva_CAT_MISSING" = "Antidepressiva",
+                 "MedBenzodiazepiner_CAT_MISSING" = "Benzodiazepiner",
+                 "MedNevroleptika_CAT_MISSING" = "Nevroleptika",
+                 "MedAnnenMedBeh_CAT_MISSING" = "Annen medikamentell beh."
+                # "MedBlodprove_CAT_MISSING" = "Blodpr?ve siste m?ned",
+                # "MedBeintetthMaling_CAT_MISSING" = "Beintetthetsm?ling siste ?r" 
+                )
+
+popCharTab_ft <- norspis2::make_table_popchar(
+  RegData = data_ordinary_tom2021_only_start_VOP, 
+  varsInTab = myvarString,
+  varsNames = myvarNames,
+  font_size_ft = 8,
+  row_height_ft = 0.5,
+  lollipop_max_ft = 20,
+  lollipop_min_ft = -20,
+  dont_visualize_nei = TRUE,
+  dont_visualize_mangler = TRUE,
+  mergevalues_2nd_column = FALSE,
+  #comparison:
+  comparison = TRUE#,
+  #RegDataComparison = data_ordinary_only2021_only_start 
+)
+
+popCharTab_ft
+
+# #To preview
+#  print(ft, preview="docx")
+# # #To print:
+
+flextable::save_as_docx("sosiodemCharAlleAar" = popCharTab_ft, path = paste0("~/.ssh/2022norspisdata_sosiodemografisk_VOP/", "psychofarmacaStart.docx"))
+
+```
+
+# Medikamentell behandling ved slutt
+
+```{r}
+#running the function make_popCharTab
+#Choose variables to present in table
+myvarString <- c(quo(MedPsykofarmaka_CAT_MISSING),
+                  quo(MedAntidepressiva_CAT_MISSING),
+                  quo(MedBenzodiazepiner_CAT_MISSING),
+                  quo(MedNevroleptika_CAT_MISSING),
+                  quo(MedAnnenMedBeh_CAT_MISSING))
+                  #quo(DiagVDSM5Hoved_MISSING_NAMES),#,
+                  #quo(DiagVSomatiske_CAT_MISSING),
+                  #quo(MedBMI_CAT_MISSING),
+                  #quo(MedBlodprove_CAT_MISSING),
+                  #quo(MedBeintetthMaling_CAT_MISSING))
+
+myvarNames <- c(#"DiagSF_V_BU_MISSING_NAMES" = "Diagnoser (ICD-10)",
+                #"DiagVSF_MISSING_NAMES" = "Diagnoser (voksne)",
+                #"DiagDSM5Hoved_V_BU_MISSING_NAMES" = "Diagnoser (DSM-5)"
+                #"DiagVDSM5Hoved_MISSING_NAMES"= "Diagnoser (DSM5)",
+                #"MedBMI_CAT_MISSING" = "BMI",
+                #"DiagVSomatiske_CAT_MISSING" = "Relevante somatiske diag.",
+                # "DiagBUAkse1_MISSING_NAMES" = "Diagnoser (barn/unge)",
+                 "MedPsykofarmaka_CAT_MISSING" = "Psykofarmakologisk behandling",
+                 "MedAntidepressiva_CAT_MISSING" = "Antidepressiva",
+                 "MedBenzodiazepiner_CAT_MISSING" = "Benzodiazepiner",
+                 "MedNevroleptika_CAT_MISSING" = "Nevroleptika",
+                 "MedAnnenMedBeh_CAT_MISSING" = "Annen medikamentell beh."
+                # "MedBlodprove_CAT_MISSING" = "Blodpr?ve siste m?ned",
+                # "MedBeintetthMaling_CAT_MISSING" = "Beintetthetsm?ling siste ?r" 
+                )
+  
+popCharTab_ft <- 
+  norspis2::make_table_popchar(
+    RegData = data_ordinary_tom2021_only_end_ikkeavbrudd_VOP, 
+    varsInTab = myvarString,
+    varsNames = myvarNames,
+    font_size_ft = 8,
+    row_height_ft = 0.5,
+    lollipop_max_ft = 20,
+    lollipop_min_ft = -20,
+    mergevalues_2nd_column = FALSE,
+    dont_visualize_nei = TRUE,
+    dont_visualize_mangler = F,
+    #comparison:
+    comparison = TRUE#,
+    #RegDataComparison = data_ordinary_only2021_only_end_ikkeavbrudd 
+  )
+
+
+popCharTab_ft
+
+# #To preview
+#  print(ft, preview="docx")
+# # #To print:
+
+flextable::save_as_docx("sosiodemCharAlleAar" = popCharTab_ft, path = paste0("~/.ssh/2022norspisdata_sosiodemografisk_VOP/", "psychofarmacaEnd.docx"))
+
+```
+
+Tabell med variabelkompletthet (missing)
+```{r}
+
+#First variables where we use ordinary data (not start_end data)
+myvarStringMiss <- c(quo(EDEQ60GlobalScore_miss), #variables you want to include in missing table
+                     quo(EDEQ60GlobalScore_missStart),
+                     quo(EDEQ60GlobalScore_missEnd),
+                     quo(CIA30GlobalScore_miss),
+                     quo(CIA30GlobalScore_missStart),
+                     quo(CIA30GlobalScore_missEnd),
+                     quo(MedBMI_miss),
+                     quo(MedBMI_missStart),
+                     quo(MedBMI_missEnd),
+                     quo(PT03Utfallsvurd_miss),
+                     quo(PO09Utbytte_miss),
+                     quo(PasOppTilfredshet_miss),
+                     quo(PasOppErfaring_miss),
+                     quo(PasOppTilgjengelighet_miss),
+                     quo(PasOppSikkerhet_miss),
+                     quo(PT01OnsketInvolv_miss),
+                     quo(PT02BleInvolv_miss),
+                     quo(PT04KontaktBrukerorg_miss),
+                     quo(PT05OrientertBrukerorg_miss))
+                     #quo(BehTiltak))
+
+
+tab <- 
+  norspis2::make_table_DQ_missing(RegData = data_ordinary_tom2020_VOP, 
+                                  varsInMissTab = myvarStringMiss,
+                                  #comparison
+                                  comparison = TRUE,
+                                  RegDataComparison = data_ordinary_only2021_VOP) 
+
+
+#Then variables which depend on bot start AND end registrations:
+myvarStringMissStartEnd <- c(quo(EDEQ60GlobalScore_missStartEnd), #variables you want to include in missing table
+                             quo(CIA30GlobalScore_missStartEnd),
+                             quo(MedBMI_start18.5_slutt18.5_miss))
+
+tab2 <- 
+  norspis2::make_table_DQ_missing(RegData = data_start_end_tom2020_onlyEndIkkeAvbrudd_VOP,  
+                       varsInMissTab = myvarStringMissStartEnd,
+                       #comparison
+                       comparison = TRUE,
+                       RegDataComparison = data_start_end_2021_onlyEndIkkeAvbrudd_VOP) 
+
+
+tab_merged <- rbind(tab,
+                    tab2)
+
+
+tab_selected <- 
+  tab_merged %>%
+  select(-c("NotNA",
+            "Null",
+            "Totalt",
+            "NotNA.compare",
+            "Null.compare",
+            "Totalt.compare"))
+
+
+
+ft <- flextable::flextable(tab_selected)
+
+ft <- flextable::compose(ft, j = 10, #minibar
+                         value = flextable::as_paragraph(
+                           flextable::lollipop(value = `Kompletthet.diff`,
+                                               max = -min(`Kompletthet.diff`, na.rm = T),
+                                               min = (min(`Kompletthet.diff`, na.rm = T)))
+                           #barcol = "lightblue")
+                         ),
+                         part = "body")
+ft <- flextable::width(ft, j=1, width = 3)
+ft <- flextable::fit_to_width(ft, max_width = 7.5)
+
+ft
+
+ flextable::save_as_docx("variabelkompletthet2021" = ft, path = paste0("~/.ssh/2022norspisdata_sosiodemografisk_VOP/", "variabelkompletthet2021.docx"))
+
+```
+
+Kompletthet for KI-ene alene
+```{r}
+
+#KI1
+#First variables where we use ordinary data (not start_end data)
+myvarStringMiss <- c(#quo(EDEQ60GlobalScore_miss), #variables you want to include in missing table
+                     quo(EDEQ60GlobalScore_missStart),
+                     quo(EDEQ60GlobalScore_missEnd))
+                     
+tab <- 
+  norspis2::make_table_DQ_missing(RegData = data_ordinary_tom2020_VOP, 
+                                  varsInMissTab = myvarStringMiss,
+                                  #comparison
+                                  comparison = TRUE,
+                                  RegDataComparison = data_ordinary_only2021_VOP) 
+
+
+#Then variables which depend on bot start AND end registrations:
+myvarStringMissStartEnd <- c(quo(EDEQ60GlobalScore_missStartEnd) #variables you want to include in missing table
+                             #quo(CIA30GlobalScore_missStartEnd),
+                             #quo(MedBMI_start18.5_slutt18.5_miss)
+                             )
+
+tab2 <- 
+  norspis2::make_table_DQ_missing(RegData = data_start_end_tom2020_onlyEndIkkeAvbrudd_VOP,  
+                       varsInMissTab = myvarStringMissStartEnd,
+                       #comparison
+                       comparison = TRUE,
+                       RegDataComparison = data_start_end_2021_onlyEndIkkeAvbrudd_VOP) 
+#*1
+tab_merged1 <- rbind(tab,
+                    tab2)
+
+#KI2
+myvarStringMiss <- c(quo(CIA30GlobalScore_missStart),
+                     quo(CIA30GlobalScore_missEnd))
+                     
+tab <- 
+  norspis2::make_table_DQ_missing(RegData = data_ordinary_tom2020_VOP, 
+                                  varsInMissTab = myvarStringMiss,
+                                  #comparison
+                                  comparison = TRUE,
+                                  RegDataComparison = data_ordinary_only2021_VOP) 
+
+
+#Then variables which depend on bot start AND end registrations:
+myvarStringMissStartEnd <- c(#quo(EDEQ60GlobalScore_missStartEnd), #variables you want to include in missing table
+                             quo(CIA30GlobalScore_missStartEnd)
+                             #quo(MedBMI_start18.5_slutt18.5_miss)
+                             )
+
+tab2 <- 
+  norspis2::make_table_DQ_missing(RegData = data_start_end_tom2020_onlyEndIkkeAvbrudd_VOP,  
+                       varsInMissTab = myvarStringMissStartEnd,
+                       #comparison
+                       comparison = TRUE,
+                       RegDataComparison = data_start_end_2021_onlyEndIkkeAvbrudd_VOP) 
+#*2
+tab_merged2 <- rbind(tab,
+                    tab2)
+
+
+#KI3
+myvarStringMiss <- c(quo(MedBMI_missStart),
+                     quo(MedBMI_missEnd))
+                     
+tab <- 
+  norspis2::make_table_DQ_missing(RegData = data_ordinary_tom2020_VOP, 
+                                  varsInMissTab = myvarStringMiss,
+                                  #comparison
+                                  comparison = TRUE,
+                                  RegDataComparison = data_ordinary_only2021_VOP) 
+
+
+#Then variables which depend on bot start AND end registrations:
+myvarStringMissStartEnd <- c(#quo(EDEQ60GlobalScore_missStartEnd), #variables you want to include in missing table
+                             #quo(CIA30GlobalScore_missStartEnd)
+                             quo(MedBMI_start18.5_slutt18.5_miss)
+                             )
+
+tab2 <- 
+  norspis2::make_table_DQ_missing(RegData = data_start_end_tom2020_onlyEndIkkeAvbrudd_VOP,  
+                       varsInMissTab = myvarStringMissStartEnd,
+                       #comparison
+                       comparison = TRUE,
+                       RegDataComparison = data_start_end_2021_onlyEndIkkeAvbrudd_VOP) 
+#*3
+tab_merged3 <- rbind(tab,
+                     tab2)
+
+
+#KI4 og KI5
+myvarStringMiss <- c(quo(PO09Utbytte_miss),
+                     quo(PT03Utfallsvurd_miss)
+                     )
+                     
+tab_4_5 <- 
+  norspis2::make_table_DQ_missing(RegData = data_ordinary_tom2020_VOP, 
+                                  varsInMissTab = myvarStringMiss,
+                                  #comparison
+                                  comparison = TRUE,
+                                  RegDataComparison = data_ordinary_only2021_VOP) 
+
+
+#1,2,3,4,5
+tab_merged_all <- 
+  rbind(
+    tab_merged1,
+    tab_merged2,
+    tab_merged3,
+    tab_4_5)
+
+tab_selected <- 
+  tab_merged_all %>%
+  select(-c("NotNA",
+            "Null",
+            "Totalt",
+            "NotNA.compare",
+            "Null.compare",
+            "Totalt.compare"))%>%
+  select(-c("Valide",
+            "Valide.compare"))%>%
+  rename("NA" = "NA_",
+         "NA " = "NA_.compare",
+         "N" = "NA_pluss_Valide",
+         "N " = "NA_pluss_Valide.compare",
+         "Kompletthet "="Kompletthet.compare",
+        "Differanse"  = "Kompletthet.diff"
+         )
+
+
+
+ft <- flextable::flextable(tab_selected)
+
+ft <- flextable::compose(ft, j = 8, #minibar
+                         value = flextable::as_paragraph(
+                           flextable::lollipop(value = `Differanse`,
+                                               max = -min(`Differanse`, na.rm = T),
+                                               min = (min(`Differanse`, na.rm = T)))
+                           #barcol = "lightblue")
+                         ),
+                         part = "body")
+#size ann such
+ft <- flextable::width(ft, j=1, width = 2)
+ft <- flextable::width(ft, j=8, width = 2)
+ft <- flextable::fit_to_width(ft, max_width = 7)
+ft <- flextable::fontsize(ft, size= 8, part = "all")
+ft <- flextable::height(ft, height = 0.22, part = "body")
+
+# Borders and lines
+# add extra table header row on top:
+ft <- flextable::add_header(ft,
+                            `NA` = "T.o.m. 2020",
+                            `N` = "T.o.m. 2020",
+                            `Kompletthet` = "T.o.m. 2020",
+                            `NA ` = "2021",
+                            `N ` = "2021",
+                            `Kompletthet ` = "2021",
+                            top = TRUE )
+# merge new headers rows horizontally when there are identical values
+ft <- flextable::merge_h(ft, part = "header")
+#lines/borders
+border_type <- officer::fp_border(color = "black", style = "solid", width = 1.25)
+ft <- flextable::border_remove(ft)
+ft <- flextable::hline_top(ft, j = NULL,
+                           border = border_type,
+                           part = "header")
+ft <- flextable::hline(ft, i = 2,
+                       border = border_type,
+                       part = "header")
+ft <- flextable::hline_bottom(ft,
+                              border = border_type,
+                              part = "body")
+ft <- flextable::fontsize(ft, size= 8, part = "all")
+
+
+
+ft
+
+ flextable::save_as_docx("variabelkompletthet_KI_2021" = ft, path = paste0("~/.ssh/2022norspisdata_sosiodemografisk_VOP/", "variabelkompletthet_KI_2021.docx"))
+
+
+```
+
+Komplettet PT og PasErf
+```{r}
+
+#KI1
+#First variables where we use ordinary data (not start_end data)
+myvarStringMiss <- c(#quo(EDEQ60GlobalScore_miss), #variables you want to include in missing table
+                     quo(PasOppTilfredshet_miss),
+                     quo(PasOppErfaring_miss),
+                     quo(PasOppTilgjengelighet_miss),
+                     quo(PasOppSikkerhet_miss),
+                     quo(PT01OnsketInvolv_miss),
+                     quo(PT02BleInvolv_miss),
+                     quo(PT04KontaktBrukerorg_miss),
+                     quo(PT05OrientertBrukerorg_miss))
+                     
+tab <- 
+  norspis2::make_table_DQ_missing(RegData = data_ordinary_tom2020_VOP, 
+                                  varsInMissTab = myvarStringMiss,
+                                  #comparison
+                                  comparison = TRUE,
+                                  RegDataComparison = data_ordinary_only2021_VOP) 
+
+
+
+tab_selected <- 
+  tab %>%
+  select(-c("NotNA",
+            "Null",
+            "Totalt",
+            "NotNA.compare",
+            "Null.compare",
+            "Totalt.compare"))%>%
+  select(-c("Valide",
+            "Valide.compare"))%>%
+  rename("NA" = "NA_",
+         "NA " = "NA_.compare",
+         "N" = "NA_pluss_Valide",
+         "N " = "NA_pluss_Valide.compare",
+         "Kompletthet "="Kompletthet.compare",
+        "Differanse"  = "Kompletthet.diff"
+         )
+
+
+
+ft <- flextable::flextable(tab_selected)
+
+ft <- flextable::compose(ft, j = 8, #minibar
+                         value = flextable::as_paragraph(
+                           flextable::lollipop(value = `Differanse`,
+                                               max = -min(`Differanse`, na.rm = T),
+                                               min = (min(`Differanse`, na.rm = T)))
+                           #barcol = "lightblue")
+                         ),
+                         part = "body")
+#size ann such
+ft <- flextable::width(ft, j=1, width = 2)
+ft <- flextable::width(ft, j=8, width = 2)
+ft <- flextable::fit_to_width(ft, max_width = 7)
+ft <- flextable::fontsize(ft, size= 8, part = "all")
+ft <- flextable::height(ft, height = 0.22, part = "body")
+
+# Borders and lines
+# add extra table header row on top:
+ft <- flextable::add_header(ft,
+                            `NA` = "T.o.m. 2020",
+                            `N` = "T.o.m. 2020",
+                            `Kompletthet` = "T.o.m. 2020",
+                            `NA ` = "2021",
+                            `N ` = "2021",
+                            `Kompletthet ` = "2021",
+                            top = TRUE )
+# merge new headers rows horizontally when there are identical values
+ft <- flextable::merge_h(ft, part = "header")
+#lines/borders
+border_type <- officer::fp_border(color = "black", style = "solid", width = 1.25)
+ft <- flextable::border_remove(ft)
+ft <- flextable::hline_top(ft, j = NULL,
+                           border = border_type,
+                           part = "header")
+ft <- flextable::hline(ft, i = 2,
+                       border = border_type,
+                       part = "header")
+ft <- flextable::hline_bottom(ft,
+                              border = border_type,
+                              part = "body")
+ft <- flextable::fontsize(ft, size= 8, part = "all")
+
+
+
+ft
+
+ flextable::save_as_docx("variabelkompletthet_PasErf_og_PT_2021" = ft, path = paste0("~/.ssh/2022norspisdata_sosiodemografisk_VOP/", "variabelkompletthet_PasErf_og_PT_2021.docx"))
+
+
+
+
+
+```

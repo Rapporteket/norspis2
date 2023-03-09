@@ -110,7 +110,7 @@ make_table_popchar <- function(RegData = myFilteredData,
     #first filter the data that will be comparison
     RegDataComparison1 <-
       RegData %>%
-      filter(Year>= 2000 & Year <=2020)
+      filter(Year>= 2000 & Year <=2021)
 
 
     output_tibble_comparison1 <- tibble() #just making an empty tibble where output of the "for loop" can go
@@ -189,7 +189,7 @@ make_table_popchar <- function(RegData = myFilteredData,
     #first filter the data that will be comparison
     RegDataComparison2 <-
       RegData %>%
-      filter(Year>= 2021 & Year <=2021)
+      filter(Year>= 2022 & Year <=2022)
 
 
     output_tibble_comparison2 <- tibble() #just making an empty tibble where output of the "for loop" can go
@@ -344,16 +344,16 @@ make_table_popchar <- function(RegData = myFilteredData,
   ft <- flextable::height_all(ft, height = row_height_ft, part = "all")
   ft <- flextable::hrule(ft, rule = "exact")
   ft <- flextable::fontsize(ft, size = 8)
-
+b
   # Borders and lines
   # add extra table header row on top:
   ft <- flextable::add_header(ft,
                               N = "Alle år",
                               `%` = "Alle år",
-                              N.compare1 = "T.o.m. 2020",
-                              `%.compare1` = "T.o.m. 2020",
-                              N.compare2 = "2021",
-                              `%.compare2` = "2021",
+                              N.compare1 = "T.o.m. 2021",
+                              `%.compare1` = "T.o.m. 2021",
+                              N.compare2 = "2022",
+                              `%.compare2` = "2022",
                               top = TRUE )
   # merge new headers rows horizontally when there are identical values
   ft <- flextable::merge_h(ft, part = "header")

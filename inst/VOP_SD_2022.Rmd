@@ -404,7 +404,7 @@ data_ordinary_tom2022_only_end_ikkeavbrudd_VOP <- norspis2::fun3_1_filter_RegDat
                                         AvdAlder=0, 
                                         regStatus = 1) #only complete reg
 
-data_ordinary_tom202_only_end_avbrudd_utred_VOP <- 
+data_ordinary_tom2021_only_end_avbrudd_utred_VOP <- 
   norspis2::fun3_1_filter_RegData(RegData = data_ordinary_VOP,
                                         regType = c(1,2,5,6,98,99), #<-                           
                                         dateFrom =
@@ -414,39 +414,39 @@ data_ordinary_tom202_only_end_avbrudd_utred_VOP <-
                                         AvdAlder=0, 
                                         regStatus = 1) #only complete reg
 
-data_ordinary_only2021_only_end.slutt_and_start.utred_VOP <- 
+data_ordinary_only2022_only_end.slutt_and_start.utred_VOP <- 
   norspis2::fun3_1_filter_RegData(RegData = data_ordinary_VOP,
                                         regType = c(1,2,5,6), #<-
                                         dateFrom =
-                                          "2021-01-01",
+                                          "2022-01-01",
                                         dateTo =
-                                          "2021-12-31",
+                                          "2022-12-31",
                                         AvdAlder=0, 
                                         regStatus = 1) #only complete reg
 
-data_ordinary_only2021_VOP <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary_VOP,
+data_ordinary_only2022_VOP <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary_VOP,
                                         dateFrom =
-                                          "2021-01-01",
+                                          "2022-01-01",
                                         dateTo =
-                                          "2021-12-31",
+                                          "2022-12-31",
                                         AvdAlder=0, 
                                         regStatus = 1) #only complete reg
 
-data_ordinary_only2021_only_start_VOP <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary_VOP,
+data_ordinary_only2022_only_start_VOP <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary_VOP,
                                         regType = c(1,2,3,4), #<-
                                         dateFrom =
-                                          "2021-01-01",
+                                          "2022-01-01",
                                         dateTo =
-                                          "2021-12-31",
+                                          "2022-12-31",
                                         AvdAlder=0, 
                                         regStatus = 1) #only complete reg
 
-data_ordinary_only2021_only_end_ikkeavbrudd_VOP <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary_VOP,
+data_ordinary_only2022_only_end_ikkeavbrudd_VOP <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary_VOP,
                                         regType = c(5,6), #<-
                                         dateFrom =
-                                          "2021-01-01",
+                                          "2022-01-01",
                                         dateTo =
-                                          "2021-12-31",
+                                          "2022-12-31",
                                         AvdAlder=0, 
                                         regStatus = 1) #only complete reg
 
@@ -457,15 +457,15 @@ data_ordinary1_VOP <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary_VO
                                         dateFrom =
                                           "2012-01-01",
                                         dateTo =
-                                          "2020-12-31",
+                                          "2021-12-31",
                                         AvdAlder=0, 
                                         regStatus = 1) #only complete reg
 
 data_ordinary2_VOP <- norspis2::fun3_1_filter_RegData(RegData = data_ordinary_VOP,
                                                 dateFrom  =
-                                                  "2021-01-01",
+                                                  "2022-01-01",
                                                 dateTo =
-                                                  "2021-12-31",
+                                                  "2022-12-31",
                                                 AvdAlder=0, 
                                                 regStatus = 1)
 
@@ -538,7 +538,7 @@ dat2_end_VOP <- norspis2::fun3_1_filter_RegData(RegData = DL$RegDataNatVal2,
   
 
   popCharTab_ft <- norspis2::make_table_popchar(
-                              RegData = data_ordinary_tom2021_only_start_VOP, 
+                              RegData = data_ordinary_tom2022_only_start_VOP, 
                               varsInTab = myvarString,
                               varsNames = myvarNames,
                               #exclude:
@@ -601,7 +601,7 @@ og med 2020. N angir antall gyldige observasjoner"= popCharTab_ft,
                   "B25Avhengighet" = "Misbruk/avh.(rusmidler/medikamenter)")
 
   popCharTab_ft <- norspis2::make_table_popchar(
-                              RegData = data_ordinary_tom2021_only_start_VOP, 
+                              RegData = data_ordinary_tom2022_only_start_VOP, 
                               varsInTab = myvarString,
                               varsNames = myvarNames,
                               dont_visualize_nei = TRUE,
@@ -655,7 +655,7 @@ myvarNames <- c("DiagSF_V_BU_MISSING_NAMES" = "Diagnoser (ICD-10)"
 
 popCharTab_ft <- 
   norspis2::make_table_popchar(
-    RegData = data_ordinary_tom2021_only_end_avbrudd_utred_VOP, 
+    RegData = data_ordinary_tom2022_only_end_avbrudd_utred_VOP, 
     varsInTab = myvarString,
     varsNames = myvarNames,
     dont_visualize_mangler = F,
@@ -722,7 +722,7 @@ myvarNames <- c(#"DiagSF_V_BU_MISSING_NAMES" = "Diagnoser (ICD-10)",
 
 popCharTab_ft <- 
   norspis2::make_table_popchar(
-    RegData = data_ordinary_tom2021_only_start_VOP, 
+    RegData = data_ordinary_tom2022_only_start_VOP, 
     varsInTab = myvarString,
     varsNames = myvarNames,
     font_size_ft = 8,
@@ -780,7 +780,7 @@ myvarNames <- c(#"DiagSF_V_BU_MISSING_NAMES" = "Diagnoser (ICD-10)",
 
 popCharTab_ft <- 
   norspis2::make_table_popchar(
-    RegData = data_ordinary_tom2021_only_end_ikkeavbrudd_VOP, 
+    RegData = data_ordinary_tom2022_only_end_ikkeavbrudd_VOP, 
     varsInTab = myvarString,
     varsNames = myvarNames,
     font_size_ft = 8,
@@ -836,7 +836,7 @@ myvarNames <- c(#"DiagSF_V_BU_MISSING_NAMES" = "Diagnoser (ICD-10)",
                 )
 
 popCharTab_ft <- norspis2::make_table_popchar(
-  RegData = data_ordinary_tom2021_only_start_VOP, 
+  RegData = data_ordinary_tom2022_only_start_VOP, 
   varsInTab = myvarString,
   varsNames = myvarNames,
   font_size_ft = 8,
@@ -895,7 +895,7 @@ myvarNames <- c(#"DiagSF_V_BU_MISSING_NAMES" = "Diagnoser (ICD-10)",
   
 popCharTab_ft <- 
   norspis2::make_table_popchar(
-    RegData = data_ordinary_tom2021_only_end_ikkeavbrudd_VOP, 
+    RegData = data_ordinary_tom2022_only_end_ikkeavbrudd_VOP, 
     varsInTab = myvarString,
     varsNames = myvarNames,
     font_size_ft = 8,
@@ -948,11 +948,11 @@ myvarStringMiss <- c(quo(EDEQ60GlobalScore_miss), #variables you want to include
 
 
 tab <- 
-  norspis2::make_table_DQ_missing(RegData = data_ordinary_tom2020_VOP, 
+  norspis2::make_table_DQ_missing(RegData = data_ordinary_tom2021_VOP, 
                                   varsInMissTab = myvarStringMiss,
                                   #comparison
                                   comparison = TRUE,
-                                  RegDataComparison = data_ordinary_only2021_VOP) 
+                                  RegDataComparison = data_ordinary_only2022_VOP) 
 
 
 #Then variables which depend on bot start AND end registrations:
@@ -961,11 +961,11 @@ myvarStringMissStartEnd <- c(quo(EDEQ60GlobalScore_missStartEnd), #variables you
                              quo(MedBMI_start18.5_slutt18.5_miss))
 
 tab2 <- 
-  norspis2::make_table_DQ_missing(RegData = data_start_end_tom2020_onlyEndIkkeAvbrudd_VOP,  
+  norspis2::make_table_DQ_missing(RegData = data_start_end_tom2021_onlyEndIkkeAvbrudd_VOP,  
                        varsInMissTab = myvarStringMissStartEnd,
                        #comparison
                        comparison = TRUE,
-                       RegDataComparison = data_start_end_2021_onlyEndIkkeAvbrudd_VOP) 
+                       RegDataComparison = data_start_end_2022_onlyEndIkkeAvbrudd_VOP) 
 
 
 tab_merged <- rbind(tab,
@@ -1054,11 +1054,11 @@ myvarStringMissStartEnd <- c(#quo(EDEQ60GlobalScore_missStartEnd), #variables yo
                              )
 
 tab2 <- 
-  norspis2::make_table_DQ_missing(RegData = data_start_end_tom2020_onlyEndIkkeAvbrudd_VOP,  
+  norspis2::make_table_DQ_missing(RegData = data_start_end_tom2021_onlyEndIkkeAvbrudd_VOP,  
                        varsInMissTab = myvarStringMissStartEnd,
                        #comparison
                        comparison = TRUE,
-                       RegDataComparison = data_start_end_2021_onlyEndIkkeAvbrudd_VOP) 
+                       RegDataComparison = data_start_end_2022_onlyEndIkkeAvbrudd_VOP) 
 #*2
 tab_merged2 <- rbind(tab,
                     tab2)
@@ -1069,11 +1069,11 @@ myvarStringMiss <- c(quo(MedBMI_missStart),
                      quo(MedBMI_missEnd))
                      
 tab <- 
-  norspis2::make_table_DQ_missing(RegData = data_ordinary_tom2020_VOP, 
+  norspis2::make_table_DQ_missing(RegData = data_ordinary_tom2021_VOP, 
                                   varsInMissTab = myvarStringMiss,
                                   #comparison
                                   comparison = TRUE,
-                                  RegDataComparison = data_ordinary_only2021_VOP) 
+                                  RegDataComparison = data_ordinary_only2022_VOP) 
 
 
 #Then variables which depend on bot start AND end registrations:
@@ -1083,11 +1083,11 @@ myvarStringMissStartEnd <- c(#quo(EDEQ60GlobalScore_missStartEnd), #variables yo
                              )
 
 tab2 <- 
-  norspis2::make_table_DQ_missing(RegData = data_start_end_tom2020_onlyEndIkkeAvbrudd_VOP,  
+  norspis2::make_table_DQ_missing(RegData = data_start_end_tom2021_onlyEndIkkeAvbrudd_VOP,  
                        varsInMissTab = myvarStringMissStartEnd,
                        #comparison
                        comparison = TRUE,
-                       RegDataComparison = data_start_end_2021_onlyEndIkkeAvbrudd_VOP) 
+                       RegDataComparison = data_start_end_2022_onlyEndIkkeAvbrudd_VOP) 
 #*3
 tab_merged3 <- rbind(tab,
                      tab2)
@@ -1099,11 +1099,11 @@ myvarStringMiss <- c(quo(PO09Utbytte_miss),
                      )
                      
 tab_4_5 <- 
-  norspis2::make_table_DQ_missing(RegData = data_ordinary_tom2020_VOP, 
+  norspis2::make_table_DQ_missing(RegData = data_ordinary_tom2021_VOP, 
                                   varsInMissTab = myvarStringMiss,
                                   #comparison
                                   comparison = TRUE,
-                                  RegDataComparison = data_ordinary_only2021_VOP) 
+                                  RegDataComparison = data_ordinary_only2022_VOP) 
 
 
 #1,2,3,4,5
@@ -1154,12 +1154,12 @@ ft <- flextable::height(ft, height = 0.22, part = "body")
 # Borders and lines
 # add extra table header row on top:
 ft <- flextable::add_header(ft,
-                            `NA` = "T.o.m. 2020",
-                            `N` = "T.o.m. 2020",
-                            `Kompletthet` = "T.o.m. 2020",
-                            `NA ` = "2021",
-                            `N ` = "2021",
-                            `Kompletthet ` = "2021",
+                            `NA` = "T.o.m. 2021",
+                            `N` = "T.o.m. 2021",
+                            `Kompletthet` = "T.o.m. 2021",
+                            `NA ` = "2022",
+                            `N ` = "2022",
+                            `Kompletthet ` = "2022",
                             top = TRUE )
 # merge new headers rows horizontally when there are identical values
 ft <- flextable::merge_h(ft, part = "header")
@@ -1202,11 +1202,11 @@ myvarStringMiss <- c(#quo(EDEQ60GlobalScore_miss), #variables you want to includ
                      quo(PT05OrientertBrukerorg_miss))
                      
 tab <- 
-  norspis2::make_table_DQ_missing(RegData = data_ordinary_tom2020_VOP, 
+  norspis2::make_table_DQ_missing(RegData = data_ordinary_tom2021_VOP, 
                                   varsInMissTab = myvarStringMiss,
                                   #comparison
                                   comparison = TRUE,
-                                  RegDataComparison = data_ordinary_only2021_VOP) 
+                                  RegDataComparison = data_ordinary_only2022_VOP) 
 
 
 
@@ -1250,12 +1250,12 @@ ft <- flextable::height(ft, height = 0.22, part = "body")
 # Borders and lines
 # add extra table header row on top:
 ft <- flextable::add_header(ft,
-                            `NA` = "T.o.m. 2020",
-                            `N` = "T.o.m. 2020",
-                            `Kompletthet` = "T.o.m. 2020",
-                            `NA ` = "2021",
-                            `N ` = "2021",
-                            `Kompletthet ` = "2021",
+                            `NA` = "T.o.m. 2021",
+                            `N` = "T.o.m. 2021",
+                            `Kompletthet` = "T.o.m. 2021",
+                            `NA ` = "2022",
+                            `N ` = "2022",
+                            `Kompletthet ` = "2022",
                             top = TRUE )
 # merge new headers rows horizontally when there are identical values
 ft <- flextable::merge_h(ft, part = "header")
